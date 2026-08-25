@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Leather — Registro de Pedido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:           #F8F6F1;
+  --card:         #FFFFFF;
+  --olive:        #7A8B3E;
+  --olive-light:  #9AAE45;
+  --olive-soft:   #B8C47A;
+  --olive-dark:   #3E4A1F;
+  --olive-pale:   #EEF0E4;
+  --charcoal:     #2A2A26;
+  --charcoal-soft:#5A5A50;
+  --stone:        #8C8778;
+  --border:       #D8D4C8;
+  --border-focus: #9AAE45;
+  --error:        #B54A3F;
+  --shadow:       0 4px 24px rgba(62,74,31,.08);
+  --shadow-lg:    0 12px 40px rgba(62,74,31,.12);
+  --radius:       16px;
+  --radius-sm:    10px;
+  --radius-pill:  999px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background: radial-gradient(1200px 600px at 10% -5%, #eef0dd55, transparent 60%),
+              radial-gradient(1000px 500px at 110% 10%, #e7e2c855, transparent 55%),
+              var(--bg);
+  color:var(--charcoal);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.stitch-frame{position:fixed;inset:12px;border:2px dashed var(--border);border-radius:28px;pointer-events:none;z-index:0;opacity:.6}
+.deco-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.deco{position:absolute;font-size:22px;opacity:.15;filter:grayscale(.2) sepia(.3) hue-rotate(30deg);animation:float 10s ease-in-out infinite}
+.deco:nth-child(1){top:6%;left:5%;animation-delay:0s}
+.deco:nth-child(2){top:18%;right:8%;animation-delay:2s;font-size:28px}
+.deco:nth-child(3){bottom:10%;left:8%;animation-delay:4s}
+.deco:nth-child(4){bottom:20%;right:6%;animation-delay:1s;font-size:18px}
+.deco:nth-child(5){top:45%;left:3%;animation-delay:3s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(6deg)}}
+.page{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:24px 20px 80px}
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(28px,5vw,44px)}
+.brand{text-align:center;margin-bottom:28px}
+.brand-name{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,38px);font-weight:700;color:var(--olive-dark);letter-spacing:-0.02em;line-height:1.1}
+.brand-name span{font-weight:400;font-style:italic;color:var(--olive)}
+.brand-sub{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-top:6px}
+.brand-tag{display:inline-block;margin-top:10px;padding:6px 18px;background:var(--olive-pale);color:var(--olive-dark);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:var(--radius-pill)}
+h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:var(--charcoal);font-weight:600;margin-bottom:6px;line-height:1.2}
+.subtitle{font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal-soft);margin-bottom:24px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
+.form-grid .full{grid-column:1/-1}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-group{position:relative}
+.form-group label{
+  display:block;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--olive-dark);margin-bottom:6px;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;font-family:'Inter',sans-serif;font-size:15px;font-weight:400;color:var(--charcoal);
+  background:#FAFAF8;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;outline:none;
+  transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#B5B0A3}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--border-focus);background:#fff;box-shadow:0 0 0 4px rgba(154,174,69,.12);
+}
+.form-group input:read-only,.form-group input:disabled,.form-group select:disabled{
+  background:var(--olive-pale);color:var(--stone);cursor:not-allowed;opacity:.8;
+}
+.form-group select{cursor:pointer;appearance:none;background:#FAFAF8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235A5A50' d='M6 8L0 0h12z'/%3E%3C/svg%3E") no-repeat right 14px center}
+.form-group select:disabled{cursor:not-allowed}
+.form-group textarea{resize:vertical;min-height:80px}
+.field-error{display:none;font-size:12px;color:var(--error);margin-top:4px;font-weight:500}
+.form-group.invalid input,.form-group.invalid select,.form-group.invalid textarea{border-color:var(--error)}
+.form-group.invalid .field-error{display:block}
+.hint{font-size:12px;color:var(--stone);margin-top:4px;font-style:italic}
+.price-badge{
+  display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:8px 16px;
+  background:var(--olive-pale);color:var(--olive-dark);border-radius:var(--radius-pill);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+}
+.price-badge .amount{font-size:16px;color:var(--olive)}
+.btn{
+  font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:var(--radius-pill);
+  padding:14px 28px;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{background:var(--olive-dark);color:#fff;box-shadow:0 6px 18px rgba(62,74,31,.3)}
+.btn-primary:hover:not(:disabled){background:var(--olive);transform:translateY(-2px);box-shadow:0 10px 24px rgba(62,74,31,.35)}
+.btn-primary:active:not(:disabled){transform:translateY(0)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--charcoal-soft);border:1.5px dashed var(--border)}
+.btn-ghost:hover{color:var(--olive-dark);border-color:var(--olive)}
+.actions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:32px}
+@media(max-width:480px){.actions{flex-direction:column-reverse;align-items:stretch}}
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(42,42,38,.5);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;z-index:50;padding:18px;
+  opacity:0;animation:fadeIn .35s ease forwards;
+}
+@keyframes fadeIn{to{opacity:1}}
+.modal-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  max-width:560px;width:100%;max-height:92vh;overflow-y:auto;padding:clamp(28px,5vw,40px);box-shadow:var(--shadow-lg);
+  transform:scale(.95) translateY(20px);opacity:0;animation:modalUp .5s .1s ease forwards;
+}
+@keyframes modalUp{to{transform:scale(1) translateY(0);opacity:1}}
+.modal-head{text-align:center;margin-bottom:24px}
+.modal-head h1{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,26px);color:var(--charcoal)}
+.modal-head p{color:var(--charcoal-soft);font-size:14px;margin-top:6px}
+.ship-options{display:grid;grid-template-columns:1fr;gap:12px}
+.ship-card{
+  position:relative;display:flex;align-items:center;gap:14px;background:var(--bg);border:2px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px;cursor:pointer;transition:all .25s ease;text-align:left;
+}
+.ship-card:hover{border-color:var(--olive-light);transform:translateY(-2px);box-shadow:var(--shadow)}
+.ship-card.selected{border-color:var(--olive-dark);background:var(--olive-pale);box-shadow:0 0 0 4px rgba(122,139,62,.12)}
+.ship-icon{font-size:24px;flex-shrink:0}
+.ship-name{display:block;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:var(--charcoal)}
+.ship-desc{display:block;font-size:12.5px;color:var(--charcoal-soft);margin-top:2px}
+.ship-check{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%) scale(0);width:22px;height:22px;
+  border-radius:50%;background:var(--olive-dark);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:transform .25s ease;
+}
+.ship-card.selected .ship-check{transform:translateY(-50%) scale(1)}
+.step-panel[hidden]{display:none}
+#btnUbicacion[hidden]{display:none!important}
+.step-panel{animation:panelIn .45s ease both}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.thanks-card{text-align:center}
+.thanks-title{
+  font-family:'Playfair Display',serif;font-size:clamp(36px,7vw,52px);color:var(--olive);letter-spacing:.01em;
+  margin:8px 0 16px;animation:titlePop .6s ease both;
+}
+@keyframes titlePop{0%{opacity:0;transform:scale(.85) rotate(-1deg)}60%{transform:scale(1.03) rotate(.5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.thanks-ribbon{
+  display:inline-block;background:var(--olive-dark);color:var(--bg);font-family:'DM Sans',sans-serif;
+  font-weight:700;font-size:12px;letter-spacing:.06em;padding:10px 22px;border-radius:var(--radius-pill);margin-bottom:22px;
+}
+.thanks-summary{text-align:left;background:var(--olive-pale);border-radius:var(--radius-sm);padding:20px 22px;display:grid;gap:10px;margin-bottom:20px}
+.thanks-summary .row{display:flex;justify-content:space-between;font-size:14px;border-bottom:1px dashed var(--border);padding-bottom:8px}
+.thanks-summary .row:last-child{border-bottom:none;padding-bottom:0}
+.thanks-summary .row b{color:var(--olive-dark);font-weight:600}
+.thanks-copy{color:var(--charcoal-soft);font-size:14px;max-width:440px;margin:0 auto 22px;line-height:1.6}
+.mt-3{margin-top:24px}
+.text-center{text-align:center}
+.radio-group{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.radio-option{
+  flex:1;min-width:140px;background:#FAFAF8;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 14px;cursor:pointer;transition:all .2s;text-align:center;font-size:14px;font-weight:500;
+}
+.radio-option:hover{border-color:var(--olive-light)}
+.radio-option.selected{border-color:var(--olive-dark);background:var(--olive-pale);color:var(--olive-dark);font-weight:600}
+.radio-option input{display:none}
+.notice-box{
+  background:var(--olive-pale);border:1.5px dashed var(--olive-soft);border-radius:var(--radius-sm);
+  padding:14px 16px;font-size:13px;color:var(--olive-dark);line-height:1.5;margin-top:10px;
+}
+::selection{background:var(--olive-soft);color:var(--olive-dark)}
+</style>
+</head>
+<body>
+
+<div class="stitch-frame" aria-hidden="true"></div>
+<div class="deco-wrap" aria-hidden="true">
+  <span class="deco">🍃</span><span class="deco">♥</span><span class="deco">🍃</span><span class="deco">♥</span><span class="deco">🍃</span>
+</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="brand">
+    <div class="brand-name">Infinity <span>Leather</span></div>
+    <div class="brand-sub">by Rut Armas</div>
+    <div class="brand-tag">Registro de Pedido</div>
+  </div>
+
+  <!-- PASO 1: Modal Envío -->
+  <div id="modalEnvio" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div style="font-size:32px;margin-bottom:4px">👋</div>
+        <h1>¿Cómo deseas recibir tu pedido?</h1>
+        <p>Selecciona el tipo de envío para continuar con tu compra.</p>
+      </div>
+
+      <div class="ship-options">
+        <div class="ship-card" data-tipo="1" onclick="seleccionarEnvio(1)">
+          <div class="ship-icon">🎁</div>
+          <div><span class="ship-name">Entrega gratuita</span><span class="ship-desc">Entrega gratuita en punto Comas</span></div>
+          <div class="ship-check">✓</div>
+        </div>
+        <div class="ship-card" data-tipo="2" onclick="seleccionarEnvio(2)">
+          <div class="ship-icon">🛵</div>
+          <div><span class="ship-name">Envío motorizado</span><span class="ship-desc">Programa la fecha de entrega (Lima/Callao)</span></div>
+          <div class="ship-check">✓</div>
+        </div>
+        <div class="ship-card" data-tipo="3" onclick="seleccionarEnvio(3)">
+          <div class="ship-icon">📦</div>
+          <div><span class="ship-name">Envío Shalom</span><span class="ship-desc">Entrega a nivel nacional vía agencia Shalom</span></div>
+          <div class="ship-check">✓</div>
+        </div>
+        <div class="ship-card" data-tipo="4" onclick="seleccionarEnvio(4)">
+          <div class="ship-icon">⚡</div>
+          <div><span class="ship-name">Envío Express</span><span class="ship-desc">Entrega el mismo día — solo Lima/Callao</span></div>
+          <div class="ship-check">✓</div>
+        </div>
+      </div>
+
+      <button id="btnContinuar" class="btn btn-primary mt-3" style="width:100%" disabled onclick="continuarEnvio()">Continuar</button>
+    </div>
+  </div>
+
+  <!-- PASO 2: Formulario -->
+  <div id="panelFormulario" class="step-panel" hidden>
+    <div class="card">
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;padding:10px 20px;background:var(--olive-dark);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:var(--radius-pill)">
+        <span id="ribbonIcono">🛵</span><span id="ribbonTexto">Envío seleccionado</span>
+      </div>
+
+      <h2 id="tituloFormulario">Completa tus datos</h2>
+      <p class="subtitle" id="subtituloFormulario">Revisa que toda la información sea correcta antes de confirmar.</p>
+
+      <form id="pedidoForm" onsubmit="return false;">
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label for="nombres">Nombres completos</label>
+            <input type="text" id="nombres" placeholder="Ej: María Elena Rojas">
+            <div class="field-error">Ingresa tu nombre completo</div>
+          </div>
+
+          <div class="form-group" id="grupoDNI">
+            <label for="dni">DNI</label>
+            <input type="text" id="dni" maxlength="8" placeholder="Ej: 45678912">
+            <div class="field-error">Ingresa un DNI válido (8 dígitos)</div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input type="tel" id="telefono" placeholder="Ej: 987654321">
+            <div class="field-error">Ingresa un número válido</div>
+          </div>
+
+          <!-- Campos comunes de ubicación -->
+          <div class="form-group">
+            <label for="departamento">Departamento</label>
+            <select id="departamento" onchange="onDepartamentoChange()">
+              <option value="" disabled selected>Selecciona departamento</option>
+            </select>
+            <div class="field-error">Selecciona un departamento</div>
+          </div>
+
+          <div class="form-group">
+            <label for="provincia">Provincia</label>
+            <select id="provincia" onchange="onProvinciaChange()" disabled>
+              <option value="" disabled selected>Selecciona provincia</option>
+            </select>
+            <div class="field-error">Selecciona una provincia</div>
+          </div>
+
+          <div class="form-group full">
+            <label for="zona">Zona / Distrito</label>
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <select id="zona" onchange="onZonaChange()" disabled style="flex:1">
+                <option value="" disabled selected>Selecciona zona</option>
+              </select>
+              <button type="button" id="btnUbicacion" onclick="abrirUbicacionMaps()" title="Ver ubicación en Maps" hidden
+                style="flex-shrink:0;width:46px;height:46px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:#FAFAF8;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s">
+                📍
+              </button>
+            </div>
+            <div class="field-error">Selecciona una zona</div>
+          </div>
+
+          <!-- Modalidad de envío Shalom -->
+          <div class="form-group full" id="grupoModalidadShalom" hidden>
+            <label>Modalidad de envío</label>
+            <div class="radio-group">
+              <label class="radio-option selected" onclick="seleccionarModalidadShalom(this,'terrestre')">
+                <input type="radio" name="modalidadShalom" value="terrestre" checked>
+                <span>🚌 Terrestre</span>
+              </label>
+              <label class="radio-option" onclick="seleccionarModalidadShalom(this,'aereo')">
+                <input type="radio" name="modalidadShalom" value="aereo">
+                <span>✈️ Aéreo</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Lugar de entrega Shalom -->
+          <div class="form-group full" id="grupoLugarEntrega" hidden>
+            <label for="lugarEntrega">Punto de entrega Shalom</label>
+            <select id="lugarEntrega">
+              <option value="" disabled selected>Selecciona el punto de entrega</option>
+            </select>
+            <div class="field-error">Selecciona un punto de entrega</div>
+            <div id="lugarEntregaInfo" class="hint"></div>
+          </div>
+
+          <!-- Dirección (motorizado, express, shalom) -->
+          <div class="form-group full" id="grupoDireccion" hidden>
+            <label for="direccion">Dirección de entrega</label>
+            <textarea id="direccion" rows="2" placeholder="Calle, número, interior, referencia..."></textarea>
+            <div class="field-error">Ingresa la dirección completa</div>
+          </div>
+
+          <!-- Ubicación Maps (motorizado) -->
+          <div class="form-group full" id="grupoMaps" hidden>
+            <label for="ubicacionMaps">Ubicación actual (Google Maps) <span style="font-weight:400;color:var(--stone)">— Opcional</span></label>
+            <input type="text" id="ubicacionMaps" placeholder="Pega aquí el enlace de tu ubicación de Google Maps">
+            <div class="hint">Ej: https://maps.app.goo.gl/...</div>
+          </div>
+
+          <!-- Fecha recojo en tienda -->
+          <div class="form-group" id="grupoFechaRecojo" hidden>
+            <label for="fechaRecojo">Fecha de entrega</label>
+            <input type="date" id="fechaRecojo">
+            <div class="field-error">La fecha no puede ser anterior a hoy</div>
+          </div>
+
+          <!-- Horario recojo -->
+          <div class="form-group" id="grupoHorarioRecojo" hidden>
+            <label>Horario de entrega</label>
+            <div class="radio-group">
+              <label class="radio-option" onclick="seleccionarHorario(this,'10:00-12:00')">
+                <input type="radio" name="horarioRecojo" value="10:00-12:00">
+                <span>🌅 10:00 am – 12:00 pm</span>
+              </label>
+              <label class="radio-option" onclick="seleccionarHorario(this,'17:00-19:00')">
+                <input type="radio" name="horarioRecojo" value="17:00-19:00">
+                <span>🌇 5:00 pm – 7:00 pm</span>
+              </label>
+            </div>
+            <div class="field-error" id="errorHorarioRecojo" style="display:none;margin-top:6px">Selecciona un horario de entrega</div>
+            <div class="notice-box" style="margin-top:10px">
+              📢 <strong>Importante:</strong> Antes de realizar la entrega te avisaremos con <strong>1 hora de anticipación</strong> para que estés listo.
+            </div>
+          </div>
+
+          <!-- Fecha motorizado -->
+          <div class="form-group full" id="grupoFechaMotorizado" hidden>
+            <label for="fechaMotorizado">Fecha programada de entrega</label>
+            <input type="date" id="fechaMotorizado">
+            <div class="field-error">La fecha debe ser posterior a hoy</div>
+          </div>
+
+          <!-- Nota horario motorizado -->
+          <div class="form-group full" id="grupoNotaMotorizado" hidden>
+            <div class="notice-box">🛵✨ Importante sobre el horario de entrega: Los envíos con motorizado se realizan en el rango de 12:00 p. m. a 7:00 p. m. 🙏 Por el momento no es posible coordinar una hora exacta de entrega, ya que esto depende de las condiciones y normativas de la courier. 💬 Mil disculpas por los inconvenientes y gracias por su comprensión 🤍</div>
+          </div>
+
+          <!-- Fecha express -->
+          <div class="form-group full" id="grupoFechaExpress" hidden>
+            <label for="fechaExpress">Fecha de entrega express</label>
+            <input type="date" id="fechaExpress" readonly>
+          </div>
+
+          <!-- Fecha Shalom -->
+          <div class="form-group full" id="grupoFechaShalom" hidden>
+            <label for="fechaShalom">Fecha de envío</label>
+            <input type="date" id="fechaShalom">
+            <div class="field-error">La fecha no puede ser anterior a hoy</div>
+          </div>
+
+          <!-- Precio motorizado -->
+          <div class="form-group full" id="grupoPrecioMotorizado" hidden>
+            <div id="precioContainer"></div>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" onclick="volverAtras()">← Cambiar tipo de envío</button>
+          <button type="button" class="btn btn-primary" onclick="confirmarPedido()">Confirmar pedido</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PASO 3: Gracias -->
+  <div id="panelGracias" class="step-panel" hidden>
+    <div class="card thanks-card">
+      <div style="font-size:28px;margin-bottom:4px">🍃</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--charcoal)">¡Muchas</div>
+      <div class="thanks-title">Gracias!</div>
+      <div class="thanks-ribbon">Por tu compra y la confianza brindada ♥</div>
+      <p class="thanks-copy">Tu apoyo significa mucho para nosotros. Esperamos que disfrutes al máximo nuestro producto y que cumpla con tus expectativas.</p>
+      <div class="thanks-summary" id="resumenPedido"></div>
+      <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--olive);font-style:italic;margin-bottom:4px">¡Gracias por elegirnos!</p>
+      <p style="font-size:13px;color:var(--charcoal-soft)">Tu satisfacción es nuestra mayor motivación.</p>
+      <div style="margin-top:22px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:12px;color:var(--stone);font-weight:600;text-transform:uppercase;letter-spacing:.06em">
+        <span>♥ Calidad garantizada</span><span>♥ Hecho con pasión</span><span>♥ Empaque seguro</span>
+      </div>
+      <button class="btn btn-primary mt-3" onclick="location.reload()">Realizar otro pedido</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== JSON de agencias Shalom ===== */
+const shalomData = {"AMAZONAS":{"BAGUA":{"BAGUA":[{"id":622,"abr":"BGACHCA","dir":"JR. AMAZONAS C-9 MZ. 126 LT. 25, BAGUA - BAGUA - AMAZONAS, REF. FRENTE AL PARQUE JERUSALEN Y/O COSTADO DE AVICOLA YACEG","lugar":"AMAZONAS-BAGUA-BAGUA","lat":-5.6347003028441,"lon":-78.528378922503}]},"BONGARA":{"JAZAN":[{"id":49,"abr":"PRU","dir":"AV. SACSAHUAMAN N° 513 - PEDRO RUIZ, REF. A MEDIA CUADRA DE LA UGEL","lugar":"AMAZONAS-BONGARA-JAZAN","lat":-5.9481590587064,"lon":-77.979191086497}]},"CHACHAPOYAS":{"CHACHAPOYAS":[{"id":3,"abr":"CHH","dir":"JR. DOS DE MAYO CDRA. 15 S/N CHACHAPOYAS, REFERENCIA: JUNTO A TERMINAL DE COMBIS ETSA","lugar":"AMAZONAS-CHACHAPOYAS-CHACHAPOYAS","lat":-6.238673290149498,"lon":-77.86800826533634},{"id":356,"abr":"CHAC ","dir":"JR. GRAU 270, REF. JUNTO A LA AGENCIA DE VIAJES MONTEVERDE","lugar":"AMAZONAS-CHACHAPOYAS-CHACHAPOYAS","lat":-6.226990739068646,"lon":-77.87195979113727}]},"LUYA":{"LUYA":[{"id":468,"abr":"LYAMZ","dir":"JR. RAMÓN CASTILLA S/N, LUYA - AMAZONAS, REF. ENTRE EL COLEGIO SECUNDARIO RAMÓN CASTILLA Y EL JR. JOSÉ GÁLVEZ, A MEDIA CDRA. DEL AGENTE DE VENTA DE PASAJES DE CIVA, MÓVIL Y TRANSPORTE CHICLAYO","lugar":"AMAZONAS-LUYA-LUYA","lat":-6.159612028355,"lon":-77.944719801561}]},"UTCUBAMBA":{"BAGUA GRANDE":[{"id":48,"abr":"BAG","dir":"AV. CHACHAPOYAS 1094 SECTOR GONCHILLO, REF. A 2 CUADRAS DE LA CLÍNICA SEÑOR DE LOS MILAGROS","lugar":"AMAZONAS-UTCUBAMBA-BAGUA GRANDE","lat":-5.7502771328253,"lon":-78.449191047248}]}},"ANCASH":{"CARHUAZ":{"CARHUAZ":[{"id":350,"abr":"CHZ","dir":"CARRETERA CENTRAL 00S/N CENT CARHUAZ - CARHUAZ - ÁNCASH, ref. MEDIA CUADRA ANTES DE LLEGAR AL ESTADIO MUNICIPAL CAPITAN CARLOS MEJIA","lugar":"ANCASH-CARHUAZ-CARHUAZ","lat":-9.2841105,"lon":-77.6468648}]},"CASMA":{"CASMA":[{"id":188,"abr":"CASMA","dir":"AV. MIGUEL GRAU MZ. D 4 LT. 1 CASMA - ANCASH, REF. FRENTE AL JARDÍN DE INFANCIA","lugar":"ANCASH-CASMA-CASMA","lat":-9.4718613228196,"lon":-78.303136341104}]},"HUARAZ":{"HUARAZ":[{"id":125,"abr":"HRZ","dir":"AV. 27 DE NOVIEMBRE CDRA. 20 S/N - VILLON BAJO, REFERENCIA: AL COSTADO DEL GRIFO PRIMAX","lugar":"ANCASH-HUARAZ-HUARAZ","lat":-9.541547,"lon":-77.531075}]},"HUARMEY":{"HUARMEY":[{"id":183,"abr":"HUARM","dir":"CARR. PANAMERICANA NORTE N° KM 293 SECT. PANAMERICANA HUARMEY – ANCASH, REF. A 4 CDRAS. DEL TERMINAL TERRESTRE DE SUR A NORTE","lugar":"ANCASH-HUARMEY-HUARMEY","lat":-10.064877234999,"lon":-78.156818888783}]},"HUAYLAS":{"CARAZ":[{"id":302,"abr":"CAR","dir":"AV. 9 DE OCTUBRE N° 259 - HUAYLAS, REFERENCIA: AL COSTADO DE LA EMPRESA MÓVIL TOURS","lugar":"ANCASH-HUAYLAS-CARAZ","lat":-9.0478790288089,"lon":-77.803470533954}]},"SANTA":{"CHIMBOTE":[{"id":17,"abr":"CBT","dir":"Av. Enrique Meiggs N° 2457.","lugar":"ANCASH-SANTA-CHIMBOTE","lat":-9.0939502716064,"lon":-78.568466186523},{"id":298,"abr":"AVGAL","dir":"AV. JOSÉ GÁLVEZ 791, CHIMBOTE - SANTA - ANCASH, REF. A 1 CDRA. ANTES DE LLEGAR AL PUENTE GÁLVEZ","lugar":"ANCASH-SANTA-CHIMBOTE","lat":-9.0711845135623,"lon":-78.58882269437},{"id":474,"abr":"CHCO","dir":"PAR. PARCELA N° 16757 - E SECTOR LA PERLA TRES CABEZAS - ANCASH, REF. FRENTE AL ESTADIO CENTENARIO","lugar":"ANCASH-SANTA-CHIMBOTE","lat":-9.0982171678222,"lon":-78.558546562114}],"NUEVO CHIMBOTE":[{"id":177,"abr":"NCBT","dir":"Urbanización José Carlos Mariategui (ex UNICRETO) mz R 3 lt 3 Ref. A una cuadra del óvalo la familia","lugar":"ANCASH-SANTA-NUEVO CHIMBOTE","lat":-9.127764,"lon":-78.517709},{"id":297,"abr":"TRESOCT","dir":"AV. JOSÉ PARDO MZ. K, LT. 17 - TRES DE OCTUBRE, REFERENCIA: FRENTE AL ÓVALO LAS AMÉRICAS","lugar":"ANCASH-SANTA-NUEVO CHIMBOTE","lat":-9.1178189102457,"lon":-78.537899051291},{"id":564,"abr":"GATA","dir":"URB. NICOLAS GARATEA MZ. 100 LT. 24 - NUEVO CHIMBOTE - SANTA - ANCASH, REF. FRENTE AL PARADERO AUTOS N.- GARATEA","lugar":"ANCASH-SANTA-NUEVO CHIMBOTE","lat":-9.1184982806451,"lon":-78.506110723207},{"id":568,"abr":"AVBEN","dir":"AA.HH. BELEN MZ O LT 28 - NUEVO CHIMBOTE - SANTA - ANCASH, REF. FRENTE AL GRIFO DOXA","lugar":"ANCASH-SANTA-NUEVO CHIMBOTE","lat":-9.1329718245368,"lon":-78.509082613845}],"SANTA":[{"id":321,"abr":"SRA","dir":"PANAMERICANA NORTE KM 442 - B, SANTA, REF. AL LADO DE LA FERRETERIA LA LLAVE","lugar":"ANCASH-SANTA-SANTA","lat":-8.9894225762046,"lon":-78.617430260416}]},"YUNGAY":{"YUNGAY":[{"id":363,"abr":"YUN","dir":"JR. INDUSTRIAL, LTE. 14 - YUNGAY, REF. AL COSTADO DEL TERMINAL TERRESTRE Y LA TAPICERIA FREDY","lugar":"ANCASH-YUNGAY-YUNGAY","lat":-9.1397382909279,"lon":-77.747211445572}]}},"APURIMAC":{"ABANCAY":{"ABANCAY":[{"id":15,"abr":"ABA","dir":"AV. PANAMERICANA S/N - ABANCAY - APURÍMAC, REF. A 100 METROS DE LA COMISARÍA DE BELLAVISTA, AL COSTADO DE MADERERA VEGA","lugar":"APURIMAC-ABANCAY-ABANCAY","lat":-13.638156277625,"lon":-72.898993460113}]},"ANDAHUAYLAS":{"ANDAHUAYLAS":[{"id":9,"abr":"AND","dir":"AV. MALINAS 1355 POCHCCOTA, ANDAHUAYLAS - ANDAHUAYLAS -  APURÍMAC, REF. AL COSTADO DE LA EX CANCHA EL CENTENARIO O ALTURA DE LA UNIVERSIDAD UNSAAC","lugar":"APURIMAC-ANDAHUAYLAS-ANDAHUAYLAS","lat":-13.660854303166,"lon":-73.375429023314}]},"COTABAMBAS":{"CHALLHUAHUACHO":[{"id":675,"abr":"CHHO","dir":"BARRIO WICHAYPAMPA LT. 13 - 15 - 16, CHALLHUAHUACHO - COTABAMBAS - APURÍMAC, REF. A DOS CDRAS DEL TERMINAL TERRESTRE DE CHALLHUAHUACHO / A ESPALDAS DEL TALLER E&L","lugar":"APURIMAC-COTABAMBAS-CHALLHUAHUACHO","lat":-14.123588600655,"lon":-72.25614026073}]}},"AREQUIPA":{"AREQUIPA":{"ALTO SELVA ALEGRE":[{"id":443,"abr":"ASLVAL","dir":"AV. LIMA N° 406 – ALTO SELVA ALEGRE - AREQUIPA, REF. ESQUINA CON AV. OBRERA CUADRA 20","lugar":"AREQUIPA-AREQUIPA-ALTO SELVA ALEGRE","lat":-16.373025713808,"lon":-71.512111770517},{"id":508,"abr":"SRBY","dir":"AUGUSTO SALAZAR BONDY MZ J LT 4 ALTO SELVA ALEGRE - AREQUIPA, REF.  A MEDIA CDRA. DE LA IGLESIA GUADALUPE","lugar":"AREQUIPA-AREQUIPA-ALTO SELVA ALEGRE","lat":-16.380360193926,"lon":-71.525778403804}],"AREQUIPA":[{"id":7,"abr":"AQP","dir":"AV. PARRA 379 - Arequipa","lugar":"AREQUIPA-AREQUIPA-AREQUIPA","lat":-16.414719927538,"lon":-71.547783910033},{"id":484,"abr":"AQPA","dir":"Aeropuerto Internacional Alfredo Rodríguez","lugar":"AREQUIPA-AREQUIPA-AREQUIPA","lat":0,"lon":0},{"id":677,"abr":"MPQAQPA","dir":"AV. LAMBRAMANI 325, AREQUIPA - AREQUIPA- AREQUIPA, REF. DENTRO DEL MALL LAMBRAMANI (SOTANO PISO -4)","lugar":"AREQUIPA-AREQUIPA-AREQUIPA","lat":-16.410501929707,"lon":-71.519777129466}],"CAYMA":[{"id":146,"abr":"CAYMA","dir":"AV. RAMÓN CASTILLA N° 1000 - B  LA TOMIllA  CAYMA  -  REFERENCIA: EN LA MISMA PLAZA TOMIlla","lugar":"AREQUIPA-AREQUIPA-CAYMA","lat":-16.3575544,"lon":-71.5437086},{"id":504,"abr":"AVNI","dir":"AV. CHARCANI 401 ASOC. JOSE OLAYA, REF. FRENTE AL COLEGIO MENDEL","lugar":"AREQUIPA-AREQUIPA-CAYMA","lat":-16.339917952103,"lon":-71.540474523392}],"CERRO COLORADO":[{"id":140,"abr":"CIUDADMUN","dir":"MZ. A, SUB LT. 2 A, ASENTAMIENTO POBLACIONAL ASOCIACIÓN CENTRO INDUSTRIAL LAS CANTERAS, CERRO COLORADO - AREQUIPA, REF. AL COSTADO DEL GRIFO PRIMAX","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.327887664431,"lon":-71.594528470558},{"id":142,"abr":"CERCOLF","dir":"asoc. las flores zn.2  mz.j  lt.8  - cerro colorado  -  referencia: AV 54 - A MEDIA CUADRA DE FERRETERÍA GINO","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.327233470874,"lon":-71.569310892237},{"id":148,"abr":"C. COL PUM","dir":"URB. SAN FELIPE AV PUMACAHUA LT 14, CERRO COLORADO AREQUIPA, ref. A DOS CDRAS. ANTES DE LLEGAR AL METRO CENCOSUD / EX NOTARIA CONCHA REVILLA.","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.37753080525749,"lon":-71.55688960685174},{"id":503,"abr":"ZCLA","dir":"CALLE YAVARÍ 507 B - ZAMACOLA - CERRO COLORADO – AREQUIPA, REF. A UNA CUADRA DE LA POSTA DE ZAMACOLA (MARCISA CAMPOS)","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.35166707504,"lon":-71.560805179972},{"id":505,"abr":"VCS","dir":"AV. LOS INCAS N° 604 SEMIRURAL PACHACUTEC – CERRO COLORADO - AREQUIPA, REF. ESQUINA CON CALLE SAN MARTIN SEMIRURAL PACHACUTEC","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.392024899212,"lon":-71.570138064496},{"id":567,"abr":"ATAYA","dir":"ASOC. URBANIZADORA PERUARBO SECTOR PERU ZONA I MZ. B4 LT. 4 - AUTOPISTA LA JOYA - AREQUIPA, REF. AUTOPISTA AREQUIPA - LA JOYA, A DOS CDRAS. DEL SAUNA CANDAMO","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.346111743448,"lon":-71.6060278},{"id":575,"abr":"CRCDO","dir":"NUEVO HORIZONTE MZ.H LOTE 12 - CERRO COLORADO - AREQUIPA, REF. CON AV.54 A CUATRO CDRAS. DE INKAFARMA","lugar":"AREQUIPA-AREQUIPA-CERRO COLORADO","lat":-16.327308817549,"lon":-71.5541667}],"JACOBO HUNTER":[{"id":556,"abr":"JCBHR","dir":"CALLE ARGENTINA # 405 - A, JACOBO HUNTER - AREQUIPA, REF. FRENTE AL CAJERO DE CAJA AREQUIPA Y ESQUINA CON EL BANCO CAJA AREQUIPA","lugar":"AREQUIPA-AREQUIPA-JACOBO HUNTER","lat":-16.43913925543,"lon":-71.559500110635}],"LA JOYA":[{"id":479,"abr":"LJY","dir":"LATERAL 12 C LT. 32, EL CRUCE LA JOYA - AREQUIPA, REF. AL COSTADO DEL GRIFO PRIMAX DE LA JOYA","lugar":"AREQUIPA-AREQUIPA-LA JOYA","lat":-16.492806242963,"lon":-71.847805600027}],"MARIANO MELGAR":[{"id":153,"abr":"M. MEL","dir":"CALLE ANCASH N° 202 - MARIANO MELGAR, REF. A LA ALTURA DEL COLISEO DEL NIÑO","lugar":"AREQUIPA-AREQUIPA-MARIANO MELGAR","lat":-16.40347178489046,"lon":-71.5114991875102}],"MIRAFLORES":[{"id":162,"abr":"MIRAFAQP","dir":"URB. RESIDENCIAL FELIPE SANTIAGO SALAVERRY - CALLE TENIENTE RODRÍGUEZ MZ. H LT. 11, MIRAFLORES - AREQUIPA - AREQUIPA, REF. A MEDIA CDRA. DE LA COMPAÑIA DE BOMBERO DE MIRAFLORES","lugar":"AREQUIPA-AREQUIPA-MIRAFLORES","lat":-16.391344690541,"lon":-71.513189845233}],"PAUCARPATA":[{"id":163,"abr":"PAUC","dir":"CALLE BELÉN N°100 - A URB. MANUEL PRADO - PAUCARPATA  REFERENCIA: A ESPALDAS DEL CC. MALL AVENTURA PORONGOCHE","lugar":"AREQUIPA-AREQUIPA-PAUCARPATA","lat":-16.4169283,"lon":-71.5124596},{"id":569,"abr":"JSTA","dir":"AV. JESÚS N° 1100 PAUCARPATA – AREQUIPA, REF. CON ESQUINA ARTURO VILLEGAS N° 101.","lugar":"AREQUIPA-AREQUIPA-PAUCARPATA","lat":-16.414803670337,"lon":-71.508945070551}],"SOCABAYA":[{"id":155,"abr":"SOCAB","dir":"AV. SOCABAYA 301 - URB. SAN MARTÍN DE SOCABAYA, REF. AL FRENTE DEL PARQUE VICTOR BARRIGA","lugar":"AREQUIPA-AREQUIPA-SOCABAYA","lat":-16.43784754394,"lon":-71.529989703615},{"id":572,"abr":"HCIGZ","dir":"ASENTAMIENTO URBANO MUNICIPAL HORACIO ZEBALLOS GAMEZ SECTOR E MZ. 1 LT. 18 SOCABAYA - AREQUIPA, REF. AL COSTADO DEL COLEGIO JOULE Y/O 2 CDRAS. DEL PENAL DE SOCABAYA","lugar":"AREQUIPA-AREQUIPA-SOCABAYA","lat":-16.4853889,"lon":-71.501417370552}],"UCHUMAYO":[{"id":393,"abr":"CONARQ","dir":"URB. EL CARMEN M. E. LT. 1 CONGATA DEL DISTRITO UCHUMAYO - AREQUIPA, REF. A DOS CDRAS. DE LA COMISARIA CONGATA","lugar":"AREQUIPA-AREQUIPA-UCHUMAYO","lat":-16.445521,"lon":-71.61994}],"YURA":[{"id":570,"abr":"CDSYRA","dir":"MZ. O LT. 4 ZNA 2 CIUDAD DE DIOS - YURA - AREQUIPA, REF. CARRETERA YURA","lugar":"AREQUIPA-AREQUIPA-YURA","lat":-16.306749604497,"lon":-71.615276458895}]},"CAMANA":{"CAMANA":[{"id":293,"abr":"CAM","dir":"CALLE AGUSTÍN GAMARRA N° 451, CERCADO CAMANÁ, REFERENCIA: AL FRENTE DEL DELIVEY CASERITOS","lugar":"AREQUIPA-CAMANA-CAMANA","lat":-16.618666,"lon":-72.710622}]},"CARAVELI":{"CHALA":[{"id":582,"abr":"CLA","dir":"AV. EMANCIPACION NRO. S/N MZ. 78 LT. 10. REF. A MEDIA CDRA. DEL PARQUE DEL NIÑO CHALINO","lugar":"AREQUIPA-CARAVELI-CHALA","lat":-15.849445506231,"lon":-74.25530717556}]},"CASTILLA":{"APLAO":[{"id":663,"abr":"APLO","dir":"UBICA EN LA MANZANA X1, LOTE 07, DE LA CALLE 8 DE SETIEMBRE, APLAO - CASTILLA - AREQUIPA, REF. A UNA CDRA. DE MINISTERIAL PÚBLICO FISCALÍA","lugar":"AREQUIPA-CASTILLA-APLAO","lat":-16.078428090429,"lon":-72.491853483296}]},"CAYLLOMA":{"MAJES":[{"id":295,"abr":"CRYBB","dir":"CALLE YARABAMBA, MZ. Y LT 7. VILLA EL PEDREGAL, MAJES - CAYLLOMA - AREQUIPA, REF. A MEDIA CDRA. DE LA NOTARIA TERÁN BEJAR","lugar":"AREQUIPA-CAYLLOMA-MAJES","lat":-16.358222616241,"lon":-72.190472238385},{"id":672,"abr":"MJSco","dir":"AV. LOTE COLONIZADORES. 4 PARCELA 180, MAJES - CAYLLOMA - AREQUIPA, REF. A MEDIA CDRA. DEL GRIFO EL EJE","lugar":"AREQUIPA-CAYLLOMA-MAJES","lat":-16.35228970001533,"lon":-72.18092614106098}]},"ISLAY":{"COCACHACRA":[{"id":656,"abr":"COCHRA","dir":"CENTRO POBLADO COCACHACRA MZ. N5 SUB-LOTE 5B CALLE DEAN VALDIVIA, COCACHACRA - ISLAY - AREQUIPA, REF. DEL PARQUE SAN FRANCISCO UNA CDRA. HACIA ABAJO","lugar":"AREQUIPA-ISLAY-COCACHACRA","lat":-17.096111691038,"lon":-71.773000126693}],"ISLAY":[{"id":648,"abr":"MTNI","dir":"ASENTAMIENTO HUMANO. PUERTO NUEVO MZ. I LT. 18 AV. BELLO HORIZONTE, ISLAY - ISLAY - AREQUIPA, REF. FRENTE AL PARQUE ECOLÓGICO","lugar":"AREQUIPA-ISLAY-ISLAY","lat":-16.99849950877,"lon":-72.096777058153}],"MOLLENDO":[{"id":282,"abr":"MOLLE","dir":"MARISCAL CASTILLA 472 –A, AREQUIPA - ISLAY - MOLLENDO, REF. AL COSTADO DE CEI “MI CARRUSEL”","lugar":"AREQUIPA-ISLAY-MOLLENDO","lat":-17.021804037741,"lon":-72.013916892237},{"id":294,"abr":"CERMOLL","dir":"CALLE DEAN VALDIVIA 388 CERCADO, REFERENCIA: ESQUINA CON BLONDEL","lugar":"AREQUIPA-ISLAY-MOLLENDO","lat":-17.0279153,"lon":-72.014653}]}},"AYACUCHO":{"HUAMANGA":{"AYACUCHO":[{"id":21,"abr":"AYP","dir":"AA.HH  COMPLEJO ARTESANAL T1 LT1 - ayacucho  -  rEFERENCIA :  a una cuadra de la puerta 2 del terminal terrestre libertadores de AMÉRICA","lugar":"AYACUCHO-HUAMANGA-AYACUCHO","lat":-13.1349252,"lon":-74.2326602}],"CARMEN ALTO":[{"id":595,"abr":"AYCOCMAT","dir":"ASENTAMIENTO HUMANO CARMEN ALTO MZ B1 LOTE 9 ZONA II ACUCHIMAY CARMEN ALTO – HUAMANGA- AYACUCHO, REF. A 1 CUADRA DE LA MUNICIPALIDAD DE CARMEN ALTO","lugar":"AYACUCHO-HUAMANGA-CARMEN ALTO","lat":-13.178399652891,"lon":-74.220495670554}],"JESUS NAZARENO":[{"id":438,"abr":"JSNAZ","dir":"JR. JOSÉ MARÍA EGUREN 451 - JESUS NAZARENO - HUAMANGA - AYACUCHO, REF. CRUCE CON JR. MARIANO MELGAR","lugar":"AYACUCHO-HUAMANGA-JESUS NAZARENO","lat":-13.154760305912,"lon":-74.214073329448}],"SAN JUAN BAUTISTA":[{"id":686,"abr":"SJBTSA","dir":"AV. VENEZUELA N° 431 – URB. APROVISA, SAN JUAN BAUTISTA - HUAMANGA - AYACUCHO, REF. ALTURA DEL HOSTAL LA ORIENTAL, CERCA AL SEGURO DE ESSALUD","lugar":"AYACUCHO-HUAMANGA-SAN JUAN BAUTISTA","lat":-13.175943594201,"lon":-74.199324499991}]},"HUANTA":{"HUANTA":[{"id":143,"abr":"HUANTA","dir":"JR. GERVASIO SANTILLANA N°976 - HUANTA - AYACUCHO. REF, CRUCE CON JR. REVOLUCIÓN","lugar":"AYACUCHO-HUANTA-HUANTA","lat":-12.937385673235,"lon":-74.255491005798}]}},"CAJAMARCA":{"CAJABAMBA":{"CAJABAMBA":[{"id":372,"abr":"CJBAM","dir":"JR. LARA N° 100 ,CAJABAMBA - CAJABAMBA - CAJAMARCA, REF. A UNA CDRA. DEL COMPLEJO DEPORTIVO “SANTA ANA”","lugar":"CAJAMARCA-CAJABAMBA-CAJABAMBA","lat":-7.6268617255628,"lon":-78.048167560925}]},"CAJAMARCA":{"CAJAMARCA":[{"id":12,"abr":"CJM","dir":"Av. Independencia N° 787 Barrio Santa Elena","lugar":"CAJAMARCA-CAJAMARCA-CAJAMARCA","lat":-7.1712133,"lon":-78.5120151},{"id":225,"abr":"HCEV","dir":"JR. EMILIO BARRANTES MZ X LOTE 3 URB. HORACIO ZEVALLOS - CAJAMARCA. REFERENCIA A UNA CUADRA DE LA UNIVERSIDAD PRIVADA DEL NORTE (UPN) Y VÍA DE EVITAMIENTO NORTE CUADRA 13.","lugar":"CAJAMARCA-CAJAMARCA-CAJAMARCA","lat":-7.1494038,"lon":-78.5064654},{"id":243,"abr":"BSJ","dir":"Jr. Chanchamayo N° 1162 - Barrio San José Cajamarca,  REFERENCIA: Paralela Con Jr. Huancavelica y Jr. Sara Macdougall.","lugar":"CAJAMARCA-CAJAMARCA-CAJAMARCA","lat":-7.1497829958282,"lon":-78.5206235201},{"id":482,"abr":"cja","dir":"aeropuerto MAYOR GENERAL FAP ARMANDO REVOREDO IGLESIAS","lugar":"CAJAMARCA-CAJAMARCA-CAJAMARCA","lat":null,"lon":null},{"id":555,"abr":"HBCHA","dir":"MZ. A LOTE S/N – BARRIO HUAMBOCANCHA BAJA – CAJAMARCA, REF. A UNA CDRA. DEL PARADERO DE LA P13/AL COSTADO DEL CAMPO DEPORTIVO EL PATRIARCA","lugar":"CAJAMARCA-CAJAMARCA-CAJAMARCA","lat":-7.118417325098,"lon":-78.528418064811},{"id":676,"abr":"BSNMTN","dir":"JIRÓN LOS GLADIOLOS N° 336 BARRIO SAN MARTÍN, CAJAMARCA – CAJAMARCA – CAJAMARCA, REF. A LA ALTURA DE LA CDRA. 13 DE LA VÍA DE EVITAMIENTO SUR /A UNA CDRA. DE LA UNIVERSIDAD NACIONAL DE CAJAMARCA","lugar":"CAJAMARCA-CAJAMARCA-CAJAMARCA","lat":-7.1699003050971,"lon":-78.499003664337}],"JESUS":[{"id":554,"abr":"HCLLA","dir":"MZ. A LOTE S/N CP HUARACLLA - JESUS - CAJAMARCA, REF. A UNA CDRA. DE LA I.E. JOSÉ OLAYA BALANDRA.","lugar":"CAJAMARCA-CAJAMARCA-JESUS","lat":-7.2328604675508,"lon":-78.410917671899}],"LOS BANOS DEL INCA":[{"id":247,"abr":"BINC","dir":"JR. CAHUIDE N° 242 – LOTIZ. HURTADO MILLER – BAÑOS DEL INCA – CAJAMARCA, REF. A ESPALDAS DE SENATI Y A UNA CDRA. DE LA BASE DE SERENAZGO DE BAÑOS DEL INCA","lugar":"CAJAMARCA-CAJAMARCA-LOS BANOS DEL INCA","lat":-7.163558261272,"lon":-78.468443729448}]},"CELENDIN":{"CELENDIN":[{"id":315,"abr":"CEL","dir":"JR. PEDRO ORTIZ MONTOYA 148, REFERENCIA: ESQUINA CON AV. AMAZONAS","lugar":"CAJAMARCA-CELENDIN-CELENDIN","lat":-6.8714795543587,"lon":-78.14372690136}]},"CHOTA":{"CHOTA":[{"id":50,"abr":"CHO","dir":"AV. FRAY JOSÉ ARANA N 805 - REFERENCIA : frente al terminal angel divino","lugar":"CAJAMARCA-CHOTA-CHOTA","lat":-6.562775,"lon":-78.653349}]},"CONTUMAZA":{"CHILETE":[{"id":699,"abr":"CLT","dir":"JR. SANTA ROSA N° 121, CHILETE – CONTUMAZÁ – CAJAMARCA, REF. A UNA CDRA. DEL TERRAPUERTO Y A 100 MTS. DEL PUENTE DE INGRESO A CHILETE","lugar":"CAJAMARCA-CONTUMAZA-CHILETE","lat":-7.2225019957084,"lon":-78.838027799969}],"YONAN":[{"id":581,"abr":"TDRA","dir":"JR. BOLOGNESI S/N – TEMBLADERA - YONAN - CONTUMAZÁ - CAJAMARCA, REF. AL FRENTE DEL PARQUE VÍCTOR RAÚL HAYA DE LA TORRE","lugar":"CAJAMARCA-CONTUMAZA-YONAN","lat":-7.2525846006918,"lon":-79.132860979091}]},"CUTERVO":{"CUTERVO":[{"id":128,"abr":"CTV","dir":"av. SALOMÓN VILCHEZ murga  S/N. CDRA 9  REFERENCIA : FRENTE A LA CLÍNICA CUTERVO","lugar":"CAJAMARCA-CUTERVO-CUTERVO","lat":-6.37884,"lon":-78.812233}]},"HUALGAYOC":{"BAMBAMARCA":[{"id":2,"abr":"BAM","dir":"AV. TUPAC AMARU 1105, REFERENCIA: AL COSTADO DEL PARADERO AL CUMBE","lugar":"CAJAMARCA-HUALGAYOC-BAMBAMARCA","lat":-6.677954,"lon":-78.525601}]},"JAEN":{"JAEN":[{"id":28,"abr":"JAE","dir":"AV. PAKAMMUROS CUADRA 6 S/N - referencia: ESQUINA CON CALLE LIBERTAD N° 490","lugar":"CAJAMARCA-JAEN-JAEN","lat":-5.7098471730858,"lon":-78.80305781963}]},"SAN IGNACIO":{"SAN IGNACIO":[{"id":139,"abr":"SIGN","dir":"PASAJE TRES N° 113 URB SANTA ROSA, CAJAMARCA - SAN IGNACIO, REF. FRENTE AL ESTADO MUNICIPAL","lugar":"CAJAMARCA-SAN IGNACIO-SAN IGNACIO","lat":-5.1428081364603,"lon":-78.998320738098}]},"SAN MARCOS":{"PEDRO GALVEZ":[{"id":371,"abr":"SM","dir":"JR. ADOLFO AMORIN BUENO N° 140 SAN MARCOS – CAJAMARCA, REF. AL  FRENTE DE LA PLAZA AGROPECUARIA","lugar":"CAJAMARCA-SAN MARCOS-PEDRO GALVEZ","lat":-7.3343555505042,"lon":-78.174261935812}]},"SAN MIGUEL":{"SAN MIGUEL":[{"id":592,"abr":"SNMGL","dir":"JR. BOLOGNESI N° 717 – SAN MIGUEL – CAJAMARCA - CAJAMARCA, REF. AL COSTADO DEL COLISEO Y EL PARADERO DE LLAPA Y COCHÁN.","lugar":"CAJAMARCA-SAN MIGUEL-SAN MIGUEL","lat":-7.0007791311052,"lon":-78.849751341107}]},"SAN PABLO":{"SAN PABLO":[{"id":593,"abr":"SNPBLO","dir":"JR. TNT. LORENZO IGLESIA N° 910 - SAN PABLO – CAJAMARCA - CAJAMARCA, REF. A MEDIA CDRA. DEL HOSPITAL SAN PABLO","lugar":"CAJAMARCA-SAN PABLO-SAN PABLO","lat":-7.1151079999997,"lon":-78.823372000001}]}},"CALLAO":{"CALLAO":{"BELLAVISTA":[{"id":373,"abr":"bcll","dir":"AV. ELMER FAUCETT 1641 - URB. JARDINES VIRÚ MZ. B LT 46, BELLAVISTA - CALLAO, REF. A 2 CUADRAS DEL CRUCE DE AV. FAUCETT CON AV. VENEZUELA","lugar":"CALLAO-CALLAO-BELLAVISTA","lat":-12.06081372976117,"lon":-77.0975644930893}],"CALLAO":[{"id":72,"abr":"CALL FAU","dir":"AV. ELMER FAUCETT N° 492","lugar":"CALLAO-CALLAO-CALLAO","lat":-12.04995801753946,"lon":-77.09809500001097},{"id":448,"abr":"AVQIL","dir":"UNIDAD INMOBILIARIA N° 1, AV. QUILCA MZ. G SUB LT. 11C, URB. AEROPUERTO – SEGUNDO SECTOR - CALLAO, REF. CRUCE CON CALLE 1, FRENTE A LA IGLESIA DE TESTIGOS DE JEHOVÁ","lugar":"CALLAO-CALLAO-CALLAO","lat":-12.03346241857328,"lon":-77.0964266665613},{"id":480,"abr":"CLLO","dir":"AEROPUERTO INTERNACIONAL JORGE CHAVEZ","lugar":"CALLAO-CALLAO-CALLAO","lat":null,"lon":null},{"id":540,"abr":"OTART","dir":"AV. ELMER FAUCETT 3443 - CALLAO, REF. AL COSTADO DEL AEROPUERTO JORGE CHÁVEZ","lugar":"CALLAO-CALLAO-CALLAO","lat":-12.01887304347937,"lon":-77.10865123042156},{"id":583,"abr":"UBHABTLO","dir":"AV. ALEJANDRO BERTELLO BOLLATI MZ. B LT. 20 Y 21 – URB. PROGRESIVA BAHÍA BLANCA – CALLAO - CALLAO - CALLAO, REF. FRENTE AL MERCADO COSTA AZUL","lugar":"CALLAO-CALLAO-CALLAO","lat":-11.98568461186894,"lon":-77.11583789999891},{"id":601,"abr":"AVSZPA","dir":"AV. SAENZ PEÑA N° 414 - 416 - CALLAO - CALLAO, REF. CRUCE CON AV. MARCO POLO","lugar":"CALLAO-CALLAO-CALLAO","lat":-12.06101270000423,"lon":-77.14257909998511}],"LA PERLA":[{"id":498,"abr":"OVLA","dir":"AV. LA MARINA 530, URB. BENJAMIN DOIGG LOSSIO, LA PERLA, CALLAO, REF. A 3 CUADRAS DEL ÓVALO DE LA PERLA","lugar":"CALLAO-CALLAO-LA PERLA","lat":-12.06800075573293,"lon":-77.11576445275213}],"MI PERU":[{"id":638,"abr":"MPR","dir":"V. VICTOR RAUL HAYA DE LA TORRE MZ. A LT. 02 ASENTAMIENTO HUMANO CONFRATERNIDAD - III SECTOR - MI PERU – CALLAO - CALLAO, REF. CRUCE CON AV. AREQUIPA","lugar":"CALLAO-CALLAO-MI PERU","lat":-11.85744556617434,"lon":-77.12850028736655}],"VENTANILLA":[{"id":104,"abr":"VEN","dir":"CALLE 19, Mz. J Lt. 26 ZN - URB. Coop. De La Marina, REFERENCIA: AL COSTADO DE LUBRICENTRO PABLITO ROMERO","lugar":"CALLAO-CALLAO-VENTANILLA","lat":-11.87987048810658,"lon":-77.12691298460291},{"id":464,"abr":"PACHA","dir":"AV. 225 MZ. H SUB LT. T. 11 - ASOC  PROY. ESP. CIUDAD PACHACUTEC, REF. A 1 CDRA. DEL CRUCE CON AV. LOS PROYECTISTAS, VENTANILLA - LIMA - LIMA","lugar":"CALLAO-CALLAO-VENTANILLA","lat":-11.841691881151,"lon":-77.137115856604},{"id":659,"abr":"AV225","dir":"AV. 225 MZ F LOTE 2 SECTOR A GRUPO RESIDENCIAL A2 - PROYECTO PILOTO NUEVO PACHACUTEC, VENTANILLA - CALLAO - CALLAO, REF. FRENTE AL CENTRO DE SALUD 3 DE FEBRERO","lugar":"CALLAO-CALLAO-VENTANILLA","lat":-11.829064116198,"lon":-77.158289677599},{"id":666,"abr":"PCHTC","dir":"AV. 150 IZQUIERDA MZ. W2 LT. 01 PROYECTO PILOTO NUEVO PACHACUTEC, VENTANILLA - CALLAO - CALLAO, REF. A 1 CDRA. DEL CRUCE AV. CAMINO DEL INCA","lugar":"CALLAO-CALLAO-VENTANILLA","lat":-11.83827335241167,"lon":-77.15642144840947},{"id":671,"abr":"PDR","dir":"POR DEFINIR","lugar":"CALLAO-CALLAO-VENTANILLA","lat":null,"lon":null}]}},"CUSCO":{"ANTA":{"ANTA":[{"id":223,"abr":"ANTIZC","dir":"PARQUE DEL CARMEN LT. 1 MZ. B 2, ANTA - ANTA - CUSCO, REF. PARADERO CARMEN, PISTA PRINCIPAL IZCUCHACA","lugar":"CUSCO-ANTA-ANTA","lat":-13.469611752105,"lon":-72.135833970585}]},"CALCA":{"CALCA":[{"id":447,"abr":"CCL","dir":"AV. VILCANOTA MZ. A LT 4 CALCA - CUSCO, REF. FRENTE AL GRIFO PETRO PERÚ O EL ÓVALO PUMA - ENTRADA DE CALCA","lugar":"CUSCO-CALCA-CALCA","lat":-13.32544905492,"lon":-71.953392422748}],"PISAC":[{"id":521,"abr":"PSC","dir":"AV VILCANOTA S/N, PISAC - CALCA - CUSCO, REF. A MEDIA CDRA. DEL PUENTE DE PISAC / CARRETERA A TARAY","lugar":"CUSCO-CALCA-PISAC","lat":-13.423507817134,"lon":-71.85281378755}]},"CANCHIS":{"COMBAPATA":[{"id":511,"abr":"CBTA","dir":"AV. SEÑOR DE HUANCA S/N - COMBAPATA - CANCHIS - CUSCO, REF. AL COSTADO DEL GRIFO SEÑOR DE QOYLLURITI - A ORILLAS DE LA MISMA CARRETERA A SICUANI","lugar":"CUSCO-CANCHIS-COMBAPATA","lat":-14.102278291534,"lon":-71.427169751185}],"SICUANI":[{"id":34,"abr":"SIC","dir":"PROLONG. AV. AREQUIPA 1010  S/N, REF: AL COSTADO DEL GRIFO GUADALUPE EN EL ÓVALO SAN ANDRÉS","lugar":"CUSCO-CANCHIS-SICUANI","lat":-14.285420707913,"lon":-71.225136970083},{"id":607,"abr":"SNIMNLCZS","dir":"JR. INAMBARI NRO. 208, SICUANI - CANCHIS - CUSCO, REF. AL FRENTE DEL BCP Y DE CAJA PIURA","lugar":"CUSCO-CANCHIS-SICUANI","lat":-14.268306864713,"lon":-71.227834102622}]},"CHUMBIVILCAS":{"SANTO TOMAS":[{"id":559,"abr":"STOMAS","dir":"CALLE BOLOGNESI MZ. 02 LT. 25, SANTO TOMAS - CHUMBIVILCAS - CUSCO, REF. A ESPALDAS DE LA POLLERIA PICO DORADO Y A MEDIA CDRA. DE LA AV SANTA BARBARA","lugar":"CUSCO-CHUMBIVILCAS-SANTO TOMAS","lat":-14.450639460425,"lon":-72.084860024965}]},"CUSCO":{"CUSCO":[{"id":481,"abr":"CCO","dir":"AEROPUERTO INTERNACIONAL ALEJANDRO VELASCO ASTETE","lugar":"CUSCO-CUSCO-CUSCO","lat":null,"lon":null},{"id":541,"abr":"ACTCA","dir":"ARCO TICATICA PUSTIPATA, LT. N° A - 11 - 2, CUSCO, REF. EN LA AV. PRINCIPAL A 3 CDRAS. DEL MERCADO TICA TICA","lugar":"CUSCO-CUSCO-CUSCO","lat":-13.507250998862,"lon":-71.998752093836}],"SAN JERONIMO":[{"id":203,"abr":"SJER","dir":"CALLE CIRO ALEGRÍA 226 - 224, REF. UNA CUADRA ANTES DEL PARADERO PENAL EN EL CARRIL DE BAJADA","lugar":"CUSCO-CUSCO-SAN JERONIMO","lat":-13.545038230775,"lon":-71.895806395877}],"SAN SEBASTIAN":[{"id":510,"abr":"CHYO","dir":"URB. CACHIMAYO A-37 AV. LA CULTURA – SAN SEBASTIAN – CUSCO, REF. ENTRE PARADERO ENACO Y PARQUE CACHIMAYO, A 2 CUADRA DE LA UNIVERSIDAD ANDINA.","lugar":"CUSCO-CUSCO-SAN SEBASTIAN","lat":-13.534609281872,"lon":-71.910668384545},{"id":517,"abr":"VAEXSA","dir":"URB. TUPAC AMARU B-1-2 SAN SEBASTIAN – CUSCO, REF. TERMINANDO LA VIA EXPRESA ZONA SUR","lugar":"CUSCO-CUSCO-SAN SEBASTIAN","lat":-13.539137908489,"lon":-71.906443678608},{"id":664,"abr":"EVTOCYCO","dir":"AV. EVITAMIENTO S/N UPS CHACAHUAYCO, SAN SEBASTIAN - CUSCO - CUSCO, REF. VÍA EVITAMIENTO EN EL PARADERO HORACIO","lugar":"CUSCO-CUSCO-SAN SEBASTIAN","lat":-13.542279103821,"lon":-71.918194399996}],"SANTIAGO":[{"id":213,"abr":"SANTCUS","dir":"Prolongación Av. Antonio Lorena # 140 - Santiago, Cusco, Referencia: al frente del cementerio Almudena","lugar":"CUSCO-CUSCO-SANTIAGO","lat":-13.5257396,"lon":-71.9879012},{"id":534,"abr":"AVAL","dir":"AV. INDUSTRIAL URB. BANCOPATA J-20, SANTIAGO - CUSCO, REF. A 2 CDRAS. DEL OVALO PACHACUTEC, FRENTE A LA EMPRESA COCA COLA","lugar":"CUSCO-CUSCO-SANTIAGO","lat":-13.53302993621,"lon":-71.970140480922},{"id":650,"abr":"ubvlla","dir":"URB. VILLA UNION F-1-B HUANCARO, SANTIAGO - CUSCO - CUSCO, REF. FRENTE A LA IGLESIA DE LOS MORMONES/ A UNA CDRA. DEL MERCADO HUANCARO","lugar":"CUSCO-CUSCO-SANTIAGO","lat":-13.53844524951822,"lon":-71.981750657335}],"WANCHAQ":[{"id":18,"abr":"CUS","dir":"AV. LAS AMERICAS MZ. E LT. 20, 2DA ETAPA, URB. PARQUE INDUSTRIAL, WANCHAQ - CUSCO, REF. AL FRENTE DE TALLERES PFURO, AL FRENTE DE MEDERERA URPI, PARALELA A LA AV VIA EXPRESA.","lugar":"CUSCO-CUSCO-WANCHAQ","lat":-13.532971798458,"lon":-71.944027560633},{"id":258,"abr":"AVPA","dir":"AV. PACHACUTEC 429 - WANCHAQ, REF. A 100 MTRS. DE LA PISCINA WANCHAQ","lugar":"CUSCO-CUSCO-WANCHAQ","lat":-13.524395751135,"lon":-71.970136579029},{"id":311,"abr":"vel.ast","dir":"VELASCO ASTETE D3 - WANCHAQ, REFERENCIA: A 2 CDRAS. DEL AEREOPUERTO","lugar":"CUSCO-CUSCO-WANCHAQ","lat":-13.53848438482397,"lon":-71.94663732182276}]},"ESPINAR":{"YAURI ( ESPINAR )":[{"id":75,"abr":"ESPN","dir":"CALLE SAN JOSE N° 703 BARRIO PROGRESO, YAURI (ESPINAR) - ESPINAR - CUSCO, REF.  A MEDIA CDRA. DEL GRIFO SAN JOSE / A MEDIA CDRA. DE LA AV. TINTAYA","lugar":"CUSCO-ESPINAR-YAURI ( ESPINAR )","lat":-14.794805680154,"lon":-71.40547176079}]},"LA CONVENCION":{"PICHARI":[{"id":703,"abr":"PCHRI","dir":"ASOC. GRAL. JUAN VELASCO A. MZ. B LT. 2 , PICHARI - LA CONVENCION – CUSCO, REF. AL COSTADO DE TECHO PROPIO","lugar":"CUSCO-LA CONVENCION-PICHARI","lat":-12.522202082844,"lon":-73.823762832914}],"SANTA ANA":[{"id":238,"abr":"QUILL","dir":"JR. PUNO LT. 10 Y 11 MZ. G URB. SANTA ANA, CUSCO - LA CONVENCION - SANTA ANA, REF. A MEDIA CDRA.l DEL ESTADIO MUNICIPAL DE QUILLABAMBA / CRUCE CON PROLONGACION Jr. MARTIN PIO CONCHA","lugar":"CUSCO-LA CONVENCION-SANTA ANA","lat":-12.867000552803,"lon":-72.691361212547}]},"QUISPICANCHI":{"OCONGATE":[{"id":680,"abr":"OGTE","dir":"SECT. MAYO UCJO S/N, OCONGATE - QUISPICANCHI - CUSCO, REF. A LA ESPALDA DEL TERMINAL DE BUSES DE OCONGATE / A ORILLAS DE LA CARRETA A MAZUKO","lugar":"CUSCO-QUISPICANCHI-OCONGATE","lat":-13.627390139692,"lon":-71.388750657298}],"OROPESA":[{"id":597,"abr":"OPS","dir":"SEC. CHIMPAPAMPA APV. JOSE CCARLOS MAREATEGUI S/N, OROPESA - QUISPICANCHI - CUSCO, REF. A UNA CDRA. DE LA CARRETA A URCOS / A UNA CDRA. DE LA PANIFICADORA CACHITO AMARILLO","lugar":"CUSCO-QUISPICANCHI-OROPESA","lat":-13.600056251744,"lon":-71.76866737056}],"URCOS":[{"id":520,"abr":"UCS","dir":"MAYUPATA S/N PAUCARBAMBA, URCOS - QUISPICANCHI - CUSCO REFERENCIA: AL FRENDE DEL ESTADIO MUNICIPAL DE URCOS / AL FRENTE DEL TERMINAL TERRESTRE DE URCOS","lugar":"CUSCO-QUISPICANCHI-URCOS","lat":-13.683279585148,"lon":-71.623473408855}]},"URUBAMBA":{"CHINCHERO":[{"id":237,"abr":"CHRO","dir":"AV. MATEO PUMACAHUA S/N, CHINCHERO - URUBAMBA - CUSCO, ref AL COSTADO DE LA CAJA CUSCO / EN LA MISMA CARRETERA A URUBAMBA","lugar":"CUSCO-URUBAMBA-CHINCHERO","lat":-13.3916558,"lon":-72.050836126361}],"URUBAMBA":[{"id":235,"abr":"URUB","dir":"LT. E-3 FRACCIÓN -1, SECTOR PATAHUASI, URUBAMBA – URUBAMBA - CUSCO, REF. A UNA CDRA. DE LA CARRETERA A OLLANTAYTAMBO / A MEDIA CDRA. DEL PARQUE TERESITA","lugar":"CUSCO-URUBAMBA-URUBAMBA","lat":-13.300611752565,"lon":-72.125221529448}]}},"HUANCAVELICA":{"HUANCAVELICA":{"HUANCAVELICA":[{"id":257,"abr":"HUANCA","dir":"AV. UNIVERSITARIA 1003 - HUANCAVELICA, REF. A 1 CDRA. DE LA ESCUELA SANTA ANA Y A 3 CDRAS. DEL PUENTE DEL EJÉRCITO (BARRIO SANTA ANA)","lugar":"HUANCAVELICA-HUANCAVELICA-HUANCAVELICA","lat":-12.783667969689,"lon":-74.964528087041}]}},"HUANUCO":{"AMBO":{"AMBO":[{"id":137,"abr":"AMB","dir":"AV. LAS AMERICAS 501, REF. AL FRENTE DEL COLEGIO JUAN JOSÉ CRESPO Y CASTILLO","lugar":"HUANUCO-AMBO-AMBO","lat":-10.120588660119,"lon":-76.206691676387}]},"HUANUCO":{"AMARILIS":[{"id":471,"abr":"AMSCO","dir":"JR. LOS PINOS LOTE 3 -D2 URB LOS PINOS - AMARILIS - HUÁNUCO, REF. A LA ESPALDA DE TOYOTA HUÁNUCO","lugar":"HUANUCO-HUANUCO-AMARILIS","lat":-9.9139073583669,"lon":-76.233213644157}],"HUANUCO":[{"id":27,"abr":"HCO","dir":"Jr. Aguilar N° 872 -  Huánuco","lugar":"HUANUCO-HUANUCO-HUANUCO","lat":-9.933953,"lon":-76.240018}]},"LEONCIO PRADO":{"JOSE CRESPO Y CASTIL":[{"id":415,"abr":"ACAU","dir":"JR. CHICLAYO 247 0C-02 CENT AUCAYU, LEONCIO PRADO, HUÁNUCO, REF. ATRÁS DEL ESTADIO MUNICIPAL","lugar":"HUANUCO-LEONCIO PRADO-JOSE CRESPO Y CASTIL","lat":-8.9322596556481,"lon":-76.112530146816}],"RUPA RUPA":[{"id":55,"abr":"TIN","dir":"CALLE ROSARIO CENTRAL, REFERENCIA: SEGUNDA ENTRADA DE BUENOS AIRES, EN LA MISMA ESQUINA","lugar":"HUANUCO-LEONCIO PRADO-RUPA RUPA","lat":-9.3212843,"lon":-75.9933975},{"id":355,"abr":"TMAMZ","dir":"AV. TITO JAIME 914, RUPA RUPA-  LEONCIO PRADO - HUANUCO, REF. A DOS CDRAS. DE LA PLAZA DE ARMAS LEONCIO PARDO","lugar":"HUANUCO-LEONCIO PRADO-RUPA RUPA","lat":-9.2920534325924,"lon":-75.997412332603}]}},"ICA":{"CHINCHA":{"CHINCHA ALTA":[{"id":23,"abr":"CHN","dir":"PROLONGACION LUIS MASSARO  N°247 -  CHINCHA ALTA","lugar":"ICA-CHINCHA-CHINCHA ALTA","lat":-13.417292,"lon":-76.139622},{"id":603,"abr":"CHANTA","dir":"CALLE LOS ÁNGELES N° CASA 217 01 - A SIN BARRIIO CERCADO, CHINCHA ALTA - CHINCHA - ICA, REF. A 2 CDRAS. DE LA PLAZA DE ARMAS DE CHNCHA PASANDO ELECTRODUNAS","lugar":"ICA-CHINCHA-CHINCHA ALTA","lat":-13.416193893866,"lon":-76.131554534509}],"PUEBLO NUEVO":[{"id":452,"abr":"CHIPN","dir":"AA. HH. LOS ALAMOS, CALLE LOS LAURELES MZ. 17 LT. 11- A, REF. A 2 CDRAS. DE LA POSTA LOS ÁLAMOS","lugar":"ICA-CHINCHA-PUEBLO NUEVO","lat":-13.399703209779,"lon":-76.140172536272}],"SUNAMPE":[{"id":637,"abr":"CHACMPE","dir":"CARR. PANAMERICANA SUR NRO. 198 -B , SIN BARRIO CERCADO SUNAMPE, SUNAMPE - CHINCHA - ICA, REF. ANTIGUA PANAMERICANA SUR FRENTE A LA ENTRADA DE GROCIO PRADO.","lugar":"ICA-CHINCHA-SUNAMPE","lat":-13.411199184426,"lon":-76.161001005329}]},"ICA":{"ICA":[{"id":8,"abr":"ICA","dir":"Pasaje Grau N° 101 San Joaquin - ICA  REFERENCIA : A 1 cdra de Petro Peru","lugar":"ICA-ICA-ICA","lat":-14.0643326,"lon":-75.7409599},{"id":405,"abr":"CVOA","dir":"MANZANA B, SUB-LOTE 02 DEL FUNDO LA PALMA ICA, REF. CRUCE DE AV. CUTERVO CON AV. J.J ELIAS","lugar":"ICA-ICA-ICA","lat":-14.07358570085,"lon":-75.731736729448},{"id":417,"abr":"ICMZLLA","dir":"AV. MANUEL SANTANA CHIRI N°359 A1 – ICA, REF. CRUCE CON CALLE BALTAZAR CARAVEDO","lugar":"ICA-ICA-ICA","lat":-14.075173411545,"lon":-75.723226190124}],"LA TINGUINA":[{"id":403,"abr":"TICA","dir":"CALLE FRANCISCO SALES SOTELO N° 298 SUB LOTE 3, LA TINGUIÑA - ICA – ICA, REF. CRUCE DE LA AV.FRNCISCO SALES SOTELO Y AV. JOSE CARLOS MARIATEGUI","lugar":"ICA-ICA-LA TINGUINA","lat":-14.039900990771,"lon":-75.711601465608}],"PARCONA":[{"id":565,"abr":"PCNA","dir":"CP. DE PARCONA -CERCADO (PRIMERA ETAPA) MZ. B LOTE 16 PARCONA - ICA, REF. AV. 18 DE FEBRERO Y CRUCE DE AV. NATIVIDAD PACO","lugar":"ICA-ICA-PARCONA","lat":-14.0474001492,"lon":-75.708398960386}],"SALAS":[{"id":404,"abr":"SLS","dir":"SUB LOTE 01 ZONA PANAMERICANA SUR KM. 293.350, SALAS GUADALUPE -  ICA - ICA, REF. FRENTE AL ESTADIO DE SALAS GUADALUPE","lugar":"ICA-ICA-SALAS","lat":-13.988307260089,"lon":-75.771832996982}],"SANTIAGO":[{"id":402,"abr":"SANCA","dir":"CENTRO POBLADO SANTIAGO MZ. E, LT. 01 SECTOR II SANTIAGO - ICA - ICA, REF. FRENTE A LA COMISARIA DE SANTIAGO","lugar":"ICA-ICA-SANTIAGO","lat":-14.184709950323,"lon":-75.714393999999}],"SUBTANJALLA":[{"id":608,"abr":"ICNO","dir":"C.P - SECTOR MACACONA /PREDIO PARCELA 214 LOTE 2, SUBTANJALLA - ICA - ICA, REF. PANAMERICANA SUR FRENTE A LA ENTRADA DEL ARRABAL","lugar":"ICA-ICA-SUBTANJALLA","lat":-14.035221650519,"lon":-75.75583767055}]},"NAZCA":{"EL INGENIO":[{"id":518,"abr":"INGCA","dir":"AV. PRINCIPAL TULIN 204, EL INGENIO - NAZCA - ICA, REF. FREMTE  A A LA PLAZA DE TULIN","lugar":"ICA-NAZCA-EL INGENIO","lat":-14.64720106174,"lon":-75.07065165982}],"MARCONA":[{"id":131,"abr":"MCN","dir":"A.H. SAN MARTIN DE PORRES E-28 SAN JUAN DE MARCONA - NAZCA - ICA, REF. ENTRE EL HOTEL SAN MARTIN Y EL MINIMARKET LANA","lugar":"ICA-NAZCA-MARCONA","lat":-15.372112427204,"lon":-75.157416924082}],"NAZCA":[{"id":130,"abr":"NZC","dir":"EN LA ESQUINA DE LA AV. CIRCUNVALACIÓN CON CALLE S/N, HOY CALLE LAS MERCEDES S/N NASCA - REFERENCIA: AL LADO DE LA IEP JEAN PIAGET","lugar":"ICA-NAZCA-NAZCA","lat":-14.8252316,"lon":-74.9463744}],"VISTA ALEGRE":[{"id":669,"abr":"VSTLGRCO","dir":"CARRETERA PANAMERICANA SUR N\\u00b0 906, VISTA ALEGRE - NAZCA -\\u00a0ICA, REF. FRENTE AL AEROPUERTO DE VISTA ALEGRE","lugar":"ICA-NAZCA-VISTA ALEGRE","lat":-14.850980032038,"lon":-74.957309986507}]},"PISCO":{"PISCO":[{"id":56,"abr":"PIS","dir":"AV. ABRAHAM VALDELOMAR NRO. PUERTA 965 PISCO - PISCO - ICA, REF. A UNA CDRA. POR LA POSTA SAN MARTIN","lugar":"ICA-PISCO-PISCO","lat":-13.717889589276,"lon":-76.207415719224},{"id":472,"abr":"VLA","dir":"C. P. OBLACION VILLA LOS ANGELES MZ.A LT 13 B LA VILLA PISCO-PISCO-ICA, REF. A 100 METROS CON DIRECCIÓN AL SUR DEDL CRUCE PANAMERICANA ANTIGUA C/N AV. FERMÍN TANGÜIS","lugar":"ICA-PISCO-PISCO","lat":-13.714378,"lon":-76.153788}],"SAN CLEMENTE":[{"id":496,"abr":"PSC","dir":"AV. LOS LIBERTADORES GRUPO NÚMERO 1 MZ,91 LOTE 7ª SAN CLEMENTE - PISCO - ICA, REF. LIBERTADORES SEXTA CUADRA,FRENTE DEL GRIFO SANTA ROSA","lugar":"ICA-PISCO-SAN CLEMENTE","lat":-13.680502366805,"lon":-76.151887445621}]}},"JUNIN":{"CHANCHAMAYO":{"BAJO PICHANAQUI":[{"id":167,"abr":"PICHAN","dir":"AV. VENUS LT. 20 CIUDAD SATÉLITE - REF. ( A 1 CUADRA Y MEDIA DEL PARQUE DE SATÉLITE)","lugar":"JUNIN-CHANCHAMAYO-BAJO PICHANAQUI","lat":-10.919270732705,"lon":-74.878801}],"LA MERCED":[{"id":166,"abr":"LMER","dir":"AV. PERU 931 SECTOR PAMPA DEL CARMEN, LA MERCED  -CHANCHAMAYO - JUNÍN, REF. FRENTE A LA COOPERATIVA CHANCHAMAYO","lugar":"JUNIN-CHANCHAMAYO-LA MERCED","lat":-11.070138136554,"lon":-75.336406736317}],"PERENE":[{"id":314,"abr":"PER","dir":"AV. MARGINAL S/N AA.VV SAN JACINTO - PERENE - CHANCHAMAYO - JUNIN, REF. ANTES DEL ULTIMO ROMPEMUELLE DE SAN JACINTO","lugar":"JUNIN-CHANCHAMAYO-PERENE","lat":-10.949521894979,"lon":-75.223239171096}],"SAN RAMON":[{"id":165,"abr":"SRAM","dir":"JR. UCAYALI 102 - SAN RAMÓN, REFERENCIA: FRENTE A LA CAJA HUANCAYO Y EL PARQUE EL AVIÓN","lugar":"JUNIN-CHANCHAMAYO-SAN RAMON","lat":-11.124126,"lon":-75.355581}]},"CHUPACA":{"CHUPACA":[{"id":58,"abr":"CHU","dir":"JR. RAMON CASTILLA 201, CHUPACA - CHUPACA - JUNIN, REF. A UNA CDRA. DE LA PLAZA PRINCIPAL DE CHUPACA","lugar":"JUNIN-CHUPACA-CHUPACA","lat":-12.061264754772,"lon":-75.286272902005}]},"CONCEPCION":{"CONCEPCION":[{"id":26,"abr":"CON","dir":"CARRETERA CENTRAL LT. 7 - MZ. E5, CONCEPCIÓN - CONCEPCIÓN - JUNÍN, REF. ESQUINA CON TUPAC AMARU","lugar":"JUNIN-CONCEPCION-CONCEPCION","lat":-11.918185909992,"lon":-75.322057252364}]},"HUANCAYO":{"CHILCA":[{"id":214,"abr":"CHILH","dir":"JR. 28 DE JULIO N° 935, REF. ESQUINA 28 DE JULIO Y SANTOS CHOCANO","lugar":"JUNIN-HUANCAYO-CHILCA","lat":-12.084192324029,"lon":-75.202691995668},{"id":689,"abr":"CLCACO","dir":"JR. LEONICO PRADO 656, CHILCA – HUANCAYO - JUNÍN REFERENCIA: ESQUINA CON JIRON JOSE OLAYA","lugar":"JUNIN-HUANCAYO-CHILCA","lat":-12.075860337839,"lon":-75.196962163462}],"EL TAMBO":[{"id":24,"abr":"HYO","dir":"AV MARISCAL CASTILLA 2769  RefERENCIA : Frente al colegio Andres bello","lugar":"JUNIN-HUANCAYO-EL TAMBO","lat":-12.0428748,"lon":-75.2267209},{"id":550,"abr":"HYOAVHCA","dir":"AV. HUANCAVELICA 1201, EL TAMBO - HUANCAYO - JUNÍN, REF. ESQUINA CON EL JR. LA VICTORIA","lugar":"JUNIN-HUANCAYO-EL TAMBO","lat":-12.059666604967,"lon":-75.221244266004},{"id":590,"abr":"TBOCVN","dir":"AV. CIRCUNVALACIÓN 480 T-1, EL TAMBO - HUANCAYO - JUNIN, REF. ESQUINA CON PROLONGACIÓN MARIATEGUI","lugar":"JUNIN-HUANCAYO-EL TAMBO","lat":-12.049266655779,"lon":-75.210464658895},{"id":634,"abr":"CUDDUNVA","dir":"Jr Tarma Nro. 37 - 24, EL TAMBO - HUANCAYO - JUNÍN REF. AL COSTADO DE LA FACULTaD DE INGENIERÍA  METALÚRGICA UNCP","lugar":"JUNIN-HUANCAYO-EL TAMBO","lat":-12.030532662807,"lon":-75.235135251462}],"HUANCAYO":[{"id":181,"abr":"JRICA","dir":"JR. ICA Nº 1143 - HUANCAYO, REFERENCIA: ENTRE EL JR. ICA Y EL JR. TACNA","lugar":"JUNIN-HUANCAYO-HUANCAYO","lat":-12.0739582,"lon":-75.2141862},{"id":182,"abr":"TERM, BUS","dir":"Av. Evitamiento s/n - counter N°13 ","lugar":"JUNIN-HUANCAYO-HUANCAYO","lat":-12.04850584425361,"lon":-75.23572860354552},{"id":401,"abr":"TTAES","dir":"AV. FERROCARRIL S/N - HUANCAYO - COUNTER N° 14, REF. TERMINAL TERRESTRE LOS ANDES, FRENTE AL OPEN PLAZA","lugar":"JUNIN-HUANCAYO-HUANCAYO","lat":-12.061289165519,"lon":-75.20892492023},{"id":440,"abr":"SNCARL","dir":"PJ. SAN FERNANDO 209 HUANCAYO - HUANCAYO - JUNIN, REF. ESQUINA DEL JR. SAN FERNANDO Y MÁRTIRES DEL PERIODISMO","lugar":"JUNIN-HUANCAYO-HUANCAYO","lat":-12.054983032705,"lon":-75.201461670555}],"PILCOMAYO":[{"id":585,"abr":"PLYO","dir":"PLAZA INDEPENDENCIA 131, PILCOMAYO - HUANCAYO - JUNÍN, REF. PLAZA PRINCIPAL DE PILCOMAYO","lugar":"JUNIN-HUANCAYO-PILCOMAYO","lat":-12.054989295684,"lon":-75.254161844677}],"SAN AGUSTIN":[{"id":296,"abr":"SANAGU","dir":"CARRETERA CENTRAL KM 7.5 S/N SAN AGUSTIN – HUANCAYO – JUNÍN, REF. FRENTE A LA ENVASADORA SOLGAS","lugar":"JUNIN-HUANCAYO-SAN AGUSTIN","lat":-12.010163420625,"lon":-75.246695070583}]},"JAUJA":{"JAUJA":[{"id":13,"abr":"JAU","dir":"Jr. ESTANISLAO MARQUEZ 286, YAUYOS - JAUJA - JUNÍN, REF. ESQUINA CON JR. 4 DE ENERO","lugar":"JUNIN-JAUJA-JAUJA","lat":-11.785629433895,"lon":-75.493856236131},{"id":692,"abr":"TRNALJUJA","dir":"JR.LUIS BARDALES S/N, JAUJA – JAUJA – JUNÍN, REF. TERMINAL TERRESTRE HATUN XAUXA","lugar":"JUNIN-JAUJA-JAUJA","lat":-11.772218425795,"lon":-75.492098458891}]},"SATIPO":{"MAZAMARI":[{"id":455,"abr":"MAZ","dir":"JR. JORGE CHAVEZ NRO 144 LT. 8A JUNÍN - SATIPO– MAZAMARI, REF. CERCA A LA VÍA PRINCIPAL, AL COSTADO DEL HOSPEDAJE LUJÁN 1ER PISO","lugar":"JUNIN-SATIPO-MAZAMARI","lat":-11.328194232542,"lon":-74.532861406404}],"PANGOA":[{"id":461,"abr":"SMARPA","dir":"AV. MARGINAL S/N NÚMERO VILLA CHAVINI PANGOA - SATIPO - JUNÍN, REF. AL COSTADO DE LA TIENDA HONDA INVERSIONES ARAUCO SAN MARTÍN DE PANGOA","lugar":"JUNIN-SATIPO-PANGOA","lat":-11.419797368222,"lon":-74.489787911117}],"SATIPO":[{"id":164,"abr":"SAT","dir":"JR. FRANCISCO IRAZOLA 1077 - JUNÍN , REF. FÁBRICA LA SATIPEÑA","lugar":"JUNIN-SATIPO-SATIPO","lat":-11.259616493652,"lon":-74.64248165158}]},"TARMA":{"TARMA":[{"id":168,"abr":"TARM","dir":"JR. AMAZONAS NRO. 1164 TARMA - JUNÍN, REF. ENTRE JR. AMAZONAS CON AV. VIENRICH","lugar":"JUNIN-TARMA-TARMA","lat":-11.417779771838,"lon":-75.693027799999}]},"YAULI":{"LA OROYA":[{"id":242,"abr":"OTAMB","dir":"AV. ARÉVALO S/N (CARRETERA CENTRAL) - ANEXO EL TAMBO - SANTA ROSA DE SACCO","lugar":"JUNIN-YAULI-LA OROYA","lat":-11.5707657,"lon":-75.9586329}]}},"LA LIBERTAD":{"ASCOPE":{"CASA GRANDE":[{"id":632,"abr":"CSGND","dir":"CALLE LUIS SÁNCHEZ N° 152 SECTOR PARTE ALTA. CASA GRANDE - ASCOPE - LA LIBERTAD, REF. CRUCE CON AV. ESTADIO","lugar":"LA LIBERTAD-ASCOPE-CASA GRANDE","lat":-7.7392758167105,"lon":-79.187860328116}],"PAIJAN":[{"id":121,"abr":"PAI","dir":"AV. PANAMERICANA NORTE N° 1320 - paijan","lugar":"LA LIBERTAD-ASCOPE-PAIJAN","lat":-7.7338355,"lon":-79.3006298}]},"CHEPEN":{"CHEPEN":[{"id":93,"abr":"CHE","dir":"PROLONGACION EZEQUIEL GONZALES CACEDA 193 - SEC. CHEPEN, FRENTE AL COLISEO","lugar":"LA LIBERTAD-CHEPEN-CHEPEN","lat":-7.2211028,"lon":-79.436371}],"PACANGA":[{"id":251,"abr":"PACAN","dir":"CARRETERA PANAMERICANA  # 835 - URB. PACANGUILLA - DISTRITO PACANGA, REFERENCIA: EN LA MISMA PANAMERICANA","lugar":"LA LIBERTAD-CHEPEN-PACANGA","lat":-7.154513,"lon":-79.446302}]},"OTUZCO":{"OTUZCO":[{"id":117,"abr":"OTUZ","dir":"AV. ALFREDO GUTIÉRREZ N° 120 - Otuzco - Otuzco - La Libertad.","lugar":"LA LIBERTAD-OTUZCO-OTUZCO","lat":-7.9063204,"lon":-78.5644849}]},"PACASMAYO":{"GUADALUPE":[{"id":424,"abr":"CDOS","dir":"MZ. A LT. 01 CPM CIUDAD DE DIOS - SEC. LOS ÁNGELES – GUADALUPE – LA LIBERTAD, REF. AL COSTADO DEL MOLINO SAMÁN Y A DOS CUADRAS DEL CRUCE A CAJAMARCA","lugar":"LA LIBERTAD-PACASMAYO-GUADALUPE","lat":-7.3078077719091,"lon":-79.480498695801},{"id":425,"abr":"GPE","dir":"AV. NILLA CERRUTY N° 299 - GUADALUPE – PACASMAYO – LA LIBERTAD, ref. AL COSTADO DEL GRIFO REPSOL - NEOTECH","lugar":"LA LIBERTAD-PACASMAYO-GUADALUPE","lat":-7.2469439071577,"lon":-79.46819496902}],"PACASMAYO":[{"id":94,"abr":"PAC","dir":"CTRA. PANAMERICANA NORTE N° MZ. P LT. 4A - A.H. LAS PALMERAS, REFERENCIA: ENTRE AV. SUCRE Y AV. LEONCIO PRADO","lugar":"LA LIBERTAD-PACASMAYO-PACASMAYO","lat":-7.3942461776644,"lon":-79.564250835777},{"id":529,"abr":"PCTRO","dir":"AV. GONZALO UGAZ SALCEDO S/N - PACASMAYO - LA LIBERTAD, REF. AL COSTADO DEL ESTADIO MUNICIPAL DE PACASMAYO / A MEDIA CDRA. DEL SUPERMERCADO TOTTUS","lugar":"LA LIBERTAD-PACASMAYO-PACASMAYO","lat":-7.3998619490134,"lon":-79.566583624171}],"SAN PEDRO DE LLOC":[{"id":544,"abr":"SPLLC","dir":"AV. VÍA DE EVITAMIENTO N° 407, SAN PEDRO DE LLOC - PACASMAYO - LA LIBERTAD, REF. A MEDIA CDRA. DE LA CALLE LIBERTAD/ A MEDIA CDRA. DEL PARADERO DE LA VIA DE EVITAMIENTO","lugar":"LA LIBERTAD-PACASMAYO-SAN PEDRO DE LLOC","lat":-7.432359975376,"lon":-79.500667425779}]},"SANCHEZ CARRION":{"HUAMACHUCO":[{"id":118,"abr":"HMCC","dir":"JR. SIMON BOLIVAR 763, HUAMACHUCO SANCHEZ CARRION - LA LIBERTAD, REF. ENTRE JR. INDEPENDECIA Y JR. ALFONSO UGARTE","lugar":"LA LIBERTAD-SANCHEZ CARRION-HUAMACHUCO","lat":-7.8123777275905,"lon":-78.049513218584}]},"TRUJILLO":{"EL PORVENIR":[{"id":212,"abr":"EPORV","dir":"AV. HERMANOS ANGULO 628, TRUJILLO, REF. A ESPALDAS DE LA MUNICIPALIDAD EL PORVENIR","lugar":"LA LIBERTAD-TRUJILLO-EL PORVENIR","lat":-8.0843892837298,"lon":-79.000249497004},{"id":301,"abr":"ALTTRU","dir":"AV. PROLONGACIÓN 12 DE NOVIEMBRE, MZ. Q, LT. 25, REFERENCIA: A MEDIA CDRA. DE LA COMISARÍA ALTO TRUJILLO","lugar":"LA LIBERTAD-TRUJILLO-EL PORVENIR","lat":-8.0688863115724,"lon":-79.021611486879},{"id":560,"abr":"AVMGS","dir":"AV. LAS MAGNOLIAS MZ. 25 LT. 2A NUEVO PORVENIR, EL PORVENIR - TRUJILLO - LA LIBERTAD, REF. A UNA CDRA. DEL PODER JUDICIAL CISAJ SEDE EL PORVENIR","lugar":"LA LIBERTAD-TRUJILLO-EL PORVENIR","lat":-8.0701613262859,"lon":-79.011612049897},{"id":574,"abr":"JRCDE","dir":"JR. CAHUIDE N° 342 AA.HH LA MERCED - EL PORVENIR - TRUJILLO - LA LIBERTAD, REF. A UNA CDRA. DEL ARCO DEL PORVENIR / A UNA CDRA. DE LA PARROQUIA EL BUEN PASTOR","lugar":"LA LIBERTAD-TRUJILLO-EL PORVENIR","lat":-8.0861170633811,"lon":-79.004310200334}],"HUANCHACO":[{"id":561,"abr":"AVPCO","dir":"CARRETERA VIA DE EVITAMIENTO 576.2 HUANCHAQUITO ALTO - TRUJILLO - LA LIBERTAD, REF. A 1 CDRA. DE OVALO HUANCHACO / AL COSTADO DE CONDOMINIO LAS BRISAS","lugar":"LA LIBERTAD-TRUJILLO-HUANCHACO","lat":-8.0940006638734,"lon":-79.097945741105},{"id":614,"abr":"ELMGRO","dir":"AV. INDUSTRIAL MZ 23 LT. 13 SECTOR II – EL MILAGRO, HUANCHACO - TRUJILLO - LA LIBERTAD, REF. A 2 CDRAS. DE LA PLAZA DE ARMAS DE EL MILAGRO","lugar":"LA LIBERTAD-TRUJILLO-HUANCHACO","lat":-8.0226277284451,"lon":-79.068544041134}],"LA ESPERANZA":[{"id":211,"abr":"LESP","dir":"AV. TAHUANTINSUYO N° 739, LA ESPERANZA – TRUJILLO – LA LIBERTAD, REF. DIAGONAL A GRIFO EL AMIGO. / ENTRE PASAJE SANTA ANA Y AV. LOS LAURELES","lugar":"LA LIBERTAD-TRUJILLO-LA ESPERANZA","lat":-8.0860539275375,"lon":-79.041433559277},{"id":284,"abr":"WINCH","dir":"MZ. 1 LT. 23 AA.HH WICHANZAO – LA ESPERANZA – TRUJILLO – LA LIBERTAD, REF. AL COSTADO DEL ALMACÉN SUNAT. / DIAGONAL AL HOSPITAL DE ALTA COMPLEJIDAD VIRGEN DE LA PUERTA","lugar":"LA LIBERTAD-TRUJILLO-LA ESPERANZA","lat":-8.0521209280154,"lon":-79.05562705114}],"MOCHE":[{"id":444,"abr":"MCH","dir":"AV. LA MARINA LOTE 25 - B – MOCHE – TRUJILLO - LA LIBERTAD, REF. A MEDIA CDRA DE LA COMISARÍA DE MOCHE","lugar":"LA LIBERTAD-TRUJILLO-MOCHE","lat":-8.1718883345549,"lon":-79.011334590606}],"TRUJILLO":[{"id":39,"abr":"TRU","dir":"Calle LiverpoOl N° 329 / Urb. Santa Isabel - Trujillo.  referencia : a una cuadra antes de la Iglesia de Mansiche","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":-8.103728,"lon":-79.042822},{"id":396,"abr":"LPR","dir":"AV. LA PERLA MZ. E LOTE 05 URB. INGENIERIA – TRUJILLO – LA LIBERTAD, REF. A 1 cDRA. DEL COLEGIO BRUNING","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":-8.1279459649259,"lon":-79.027663092444},{"id":420,"abr":"ATPA","dir":"CALLE ATAHUALPA 481 – TRUJILLO – LA LIBERTAD, REF. A 1/2 CDRA DE LA AV LOS INCAS","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":-8.1150950743473,"lon":-79.023006204424},{"id":483,"abr":"TRJLO","dir":"Aeropuerto Internacional Capitán FAP Carlos Martinez de Pinillos","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":null,"lon":null},{"id":524,"abr":"CLLCUZ","dir":"CALLE SANTA CRUZ N° 389 CHICAGO - TRUJILLO - LA LIBERTAD, REF. A MEDIA CDRA. DE LA AV. AMERICA SUR/A MEDIA CUADRA DEL ESTADIO CHAN CHAN.","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":-8.1169719966571,"lon":-79.017168118756},{"id":596,"abr":"HNSUCDA","dir":"AV. HERMANOS UCEDA MEZA N° 269 URB MIRAFLORES II ETAPA - TRUJILLO - TRUJILLO - LA LIBERTAD, REF. A UNA CDRA. DE AV. AMERICA NORTE. / ENTRE AV. MIRAFLORES Y AV. SALVADOR LARA","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":-8.0988234915918,"lon":-79.02339297055},{"id":633,"abr":"OVLPPL","dir":"URB. VISTA HERMOSA MZ. F LT. 11 PISO °1 TRUJILLO - TRUJILLO - LA LIBERTAD, REF. A ESPALDAS DEL METRO DEL OVALO PAPAL","lugar":"LA LIBERTAD-TRUJILLO-TRUJILLO","lat":-8.1196746638327,"lon":-79.042061399999}],"VICTOR LARCO HERRERA":[{"id":309,"abr":"AV.LAR","dir":"AV. LARCO 865, TRUJILLO - TRUJILLO - LA LIBERTAD, REF.  MZ X LT 28 CUI SAN ANDRES V ETAPA TERCER SECTOR Y FRENTE AL COLEGIO JESUS MARIA","lugar":"LA LIBERTAD-TRUJILLO-VICTOR LARCO HERRERA","lat":-8.137749685409007,"lon":-79.05033495086825}]},"VIRU":{"CHAO":[{"id":112,"abr":"CHAO","dir":"AV. VICTOR RAUL HAYA DE LA TORRE 575 CHAO - VIRU, REF. A MEDIA CDRA. DE LA COMISARÍA DE CHAO","lugar":"LA LIBERTAD-VIRU-CHAO","lat":-8.5379739271001,"lon":-78.678412960146}],"VIRU":[{"id":421,"abr":"VRU","dir":"PANAMERICANA NORTE N° 933 PUENTE VIRÚ - VIRÚ - LA LIBERTAD, REF. a MEDIA CDRA. DEL GRIFO ZONA ETNA/MEDIA CDRA. DEL SEMAFORO ZONA ETNA","lugar":"LA LIBERTAD-VIRU-VIRU","lat":-8.4283352899314,"lon":-78.778388900003},{"id":512,"abr":"LMDS","dir":"CALLE PUNO N° 125 - MZ. 32 LT. 7A - VIRÚ - LA LIBERTAD, REF. A MEDIA CDRA. DEL CRUCE DE LA AV. VIRU CON LA CALLE JORGE CHAVEZ / A MEDIA CDRA. DE LA PLAZUELA MARIA PARADO DE BELLIDO","lugar":"LA LIBERTAD-VIRU-VIRU","lat":-8.4153338853584,"lon":-78.75430648376}]}},"LAMBAYEQUE":{"CHICLAYO":{"CHICLAYO":[{"id":158,"abr":"MIRAF","dir":"AV. PANAMERICANA 975 PP JJ LUIS ALBERTO SANCHEZ, CHICLAYO - CHICLAYO - LAMBAYEQUE, REF. A MEDIA CDRA. DEL OVALO SEÑOR DE SIPAN / AL FRENTE DE DERCO CENTER","lugar":"LAMBAYEQUE-CHICLAYO-CHICLAYO","lat":-6.7587235317862,"lon":-79.862861099996},{"id":184,"abr":"MARNIET","dir":"CALLE MARISCAL NIETO N° 390, REFERENCIA: ENTRE MARISCAL NIETO Y MIGUEL GRAU","lugar":"LAMBAYEQUE-CHICLAYO-CHICLAYO","lat":-6.7748775,"lon":-79.8324065},{"id":486,"abr":"CYO","dir":"Aeropuerto Internacional Capitán FAP José Abelardo Quiñones Gonzáles","lugar":"LAMBAYEQUE-CHICLAYO-CHICLAYO","lat":null,"lon":null},{"id":602,"abr":"AVARCS","dir":"AV. LAS AMÉRICAS LT. 42 MZ. D, URB. MONTERRICO - I ETAPA, CHICLAYO - CHICLAYO - LAMBAYEQUE, REF. A MEDIA CDRA. ENTRE LA AV. COLECTORA Y AV. LAS AMERICAS Y A MEDIA CDRA. DEL GRIFO SR. DE SIPÁN","lugar":"LAMBAYEQUE-CHICLAYO-CHICLAYO","lat":-6.7805011639111,"lon":-79.852166441757}],"CHONGOYAPE":[{"id":647,"abr":"CYPE","dir":"AV. ATAHUALPA N° 1200 - CHONGOYAPE - CHICLAYO - LAMBAYEQUE, REF. INTERSECCION CON CALLE IQUITOS / A 2 CDRAS. DE LA INTERSECCION CON LA AV. CHICLAYO","lugar":"LAMBAYEQUE-CHICLAYO-CHONGOYAPE","lat":-6.6378895883335,"lon":-79.391862272577}],"JOSE LEONARDO ORTIZ":[{"id":187,"abr":"JOSLE","dir":"CALLE TAHUANTINSUYO 995 - URB. SAN LORENZO - JOSE LEONARDO ORTIZ - CHICLAYO - LAMBAYEQUE, REF. ENTRE LA CDRA. 2 DE AV. AMÉRICA Y LA CALLE TAHUANTINSUYO/A MEDIA CDRA. DE LA IGLESIA LOS MORMONES","lugar":"LAMBAYEQUE-CHICLAYO-JOSE LEONARDO ORTIZ ","lat":-6.7606203740115,"lon":-79.841664422679},{"id":502,"abr":"AVBTA","dir":"AV. JOSE BALTA N° 3653 C.P.M. PRIMERO DE MAYO JOSE LEONARDO ORTIZ -CHICLAYO -LAMBAYEQUE, REF. ENTRE LA AV. BALTA Y NÉSTOR BARSALLO / A 2 CUADRAS DE LA AV. CHICLAYO","lugar":"LAMBAYEQUE-CHICLAYO-JOSE LEONARDO ORTIZ ","lat":-6.7475994398994,"lon":-79.836109469451}],"LA VICTORIA":[{"id":25,"abr":"CIX","dir":"av. VÍCTOR RAUL HAYA DE LA TORRE 2470 La Victoria - Chiclayo  REFERENCIA : ENTRE LA VIA EVITAMIENTO Y PANAMERICANA","lugar":"LAMBAYEQUE-CHICLAYO-LA VICTORIA","lat":-6.8003757,"lon":-79.830527}],"MONSEFU":[{"id":600,"abr":"MSF","dir":"AV. VENEZUELA N° 221, MONSEFÚ - CHICLAYO - LAMBAYEQUE, REF. REF 01: A MEDIA CDRA. DE LA CALLE DIEGO FERRE Y A CDRA. Y MEDIA DEL PARQUE ARTESANAL DE MONSEFÚ","lugar":"LAMBAYEQUE-CHICLAYO-MONSEFU","lat":-6.8800297971621,"lon":-79.868249329452}],"PATAPO":[{"id":660,"abr":"PTP","dir":"AV. CHONGOYAPE N° S/N SECTOR CERRO MIRADOR, PATAPO - CHICLAYO - LAMBAYEQUE, REF. A UNA CDRA. Y MEDIA DE LA INTERSECCIÓN CON AV TRAPICHE / AL FRENTE DEL POLIDEPORTIVO DEL CERRO MIRADOR","lugar":"LAMBAYEQUE-CHICLAYO-PATAPO","lat":-6.7394168760271,"lon":-79.637638965613}],"PIMENTEL":[{"id":477,"abr":"PTL","dir":"CALLE MIGUEL GRAU MZ B LOTE 3 - PIMENTEL - CHICLAYO - LAMBAYEQUE, REF. AL COSTADO DE LA COMISARIA DE PIMENTEL","lugar":"LAMBAYEQUE-CHICLAYO-PIMENTEL","lat":-6.8347500905235,"lon":-79.935907463187}],"POMALCA":[{"id":649,"abr":"PMCA","dir":"CALLE 25 MZ. I LT. 6 SECT. 6 SAN JUAN, POMALCA - CHICLAYO - LAMBAYEQUE, REF. A UNA CDRA. Y MEDIA DE LA INTERSECCIÓN CON AV. SAN MARTIN/ AL FRENTE DE LA IGLESIA MORMON","lugar":"LAMBAYEQUE-CHICLAYO-POMALCA","lat":-6.7680844845415,"lon":-79.780749746733}],"REQUE":[{"id":645,"abr":"RQUE","dir":"AV. MARISCAL RAMON CASTILLA MZ. 4 LOTE 14, REQUE - CHICLAYO - LAMBAYEQUE, REF. A MEDIA CDRA. DE LA INTERSECCION CON CALLE SAN MARTIN / A UNOS MTRS DE ALBORADA EVENTOS Y RECEPCIONES","lugar":"LAMBAYEQUE-CHICLAYO-REQUE","lat":-6.8670559848257,"lon":-79.816861574083}],"TUMAN":[{"id":197,"abr":"TUMAN","dir":"AV. CHOTA N° 288 SECTOR ACAPULCO, TUMAN - CHICLAYO - LAMBAYEQUE, REF. AL COSTADO DEL RESTAURANT MANOS CHOTANAS","lugar":"LAMBAYEQUE-CHICLAYO-TUMAN","lat":-6.7435012497878,"lon":-79.697416401677}]},"FERRENAFE":{"FERRENAFE":[{"id":138,"abr":"FER","dir":"AV. ANDRÉS A. CÁCERES N°550A, REFERENCIA: AL COSTADO DEL GRIFO PRIMAX","lugar":"LAMBAYEQUE-FERRENAFE-FERRENAFE","lat":-6.646179,"lon":-79.790525}]},"LAMBAYEQUE":{"JAYANCA":[{"id":549,"abr":"JYCA","dir":"CALLE DIEGO FERRE N°1321 - JAYANCA - LAMBAYEQUE, REF. AL FRENTE DEL CENTRO DE SALUD DE JAYANCA / A MEDIA CDRA. DEL GRIFO ASIA","lugar":"LAMBAYEQUE-LAMBAYEQUE-JAYANCA","lat":-6.384834348558,"lon":-79.818776772611}],"LAMBAYEQUE":[{"id":171,"abr":"LAMB","dir":"CALLE PARAGUAY MZ. D LT 2A UNIDAD VECINAL INDOAMÉRICA - LAMBAYEQUE, REF. AL COSTADO DE LA FÁBRICA DE KINKONES BRUNING / A 01 CUADRA DEL PUENTE LAMBAYEQUE","lugar":"LAMBAYEQUE-LAMBAYEQUE-LAMBAYEQUE","lat":-6.6950640309514,"lon":-79.903733032828},{"id":618,"abr":"LMBYQCTO","dir":"AV. FEDERICO VILLARREAL N° 491, LAMBAYEQUE - LAMBAYEQUE - LAMBAYEQUE, REF. A MEDIA CDRA. DE LA INTERSECCION DE LA AV. FEDERICO VILLARREAL CON CALLE EMILIANO NIÑO","lugar":"LAMBAYEQUE-LAMBAYEQUE-LAMBAYEQUE","lat":-6.7051384276932,"lon":-79.909416873063}],"MORROPE":[{"id":494,"abr":"MRP","dir":"CALLE TAHUANTINSUYO N° 821, MORROPE - LAMBAYEQUE, REF. FRENTE AL PARQUE INFANTIL DE MORROPE","lugar":"LAMBAYEQUE-LAMBAYEQUE-MORROPE","lat":-6.543444405424585,"lon":-80.01232827124002}],"MOTUPE":[{"id":160,"abr":"MOTU","dir":"CALLE LOS PINOS N°116 - LOTIZACION LA PRIMAVERA  REFERENCIA :  A MEDIA CUADRA DE LA PANAMERICANA CARRETERA FERNANDO BELAUNDE TERRY","lugar":"LAMBAYEQUE-LAMBAYEQUE-MOTUPE","lat":-6.1504717509297,"lon":-79.711388575277}],"OLMOS":[{"id":157,"abr":"OLMOS","dir":"AV. AUGUSTO B. LEGUÍA MZ. 87 LT. 32  - OLMOS - LAMBAYEQUE, REF. AL FRENTE DE LA COMISARIA DE OLMOS.","lugar":"LAMBAYEQUE-LAMBAYEQUE-OLMOS","lat":-5.9871924350643,"lon":-79.743017122659}],"TUCUME":[{"id":288,"abr":"TUC","dir":"AV. FEDERICO VILLARREAL N° 982 (CTRA. FERNANDO BELAUNDE TERRY), REFERENCIA: A MEDIA CDRA. DEL CEMENTERIO JARDINES DE LA PAZ","lugar":"LAMBAYEQUE-LAMBAYEQUE-TUCUME","lat":-6.5041100012906,"lon":-79.859217670553}]}},"LIMA":{"BARRANCA":{"BARRANCA":[{"id":16,"abr":"BAR","dir":"JR. ANDRES REYES BUITRON 416. BARRANCA - BARRANCA – LIMA, REF. A 2 CDRS. DEL PARQUE EL OLVIVAR / A MTRS. DE LA CASA DEL MAESTRO","lugar":"LIMA-BARRANCA-BARRANCA","lat":-10.75297285877768,"lon":-77.75544507054775}],"PARAMONGA":[{"id":141,"abr":"PRM","dir":"AV. CENTRAL N° 305 MZ. N1 LT. 17, rEF. URB. MIGUEL GRAU","lugar":"LIMA-BARRANCA-PARAMONGA","lat":-10.673598,"lon":-77.815645}],"SUPE":[{"id":631,"abr":"SPE","dir":"AV. FRANCISCO VIDAL 1120, SUPE - BARRANCA - LIMA, REF. AL COSTADO DE LUBRICENTRO CIRIACO Y MEDIA CDRA. DE LA CRUZ MISIONERA","lugar":"LIMA-BARRANCA-SUPE","lat":-10.79769068263226,"lon":-77.7110626706071}]},"CAÑETE":{"CHILCA":[{"id":670,"abr":"ATPNSR","dir":"ANTIGUA PANAMERICANA SUR CDRA. 11 MZ. 46, LT. 08. CHILCA - CAÑETE - LIMA, REF. A MEDIA CDRA. DEL HOTEL EL PACÍFICO","lugar":"LIMA-CAÑETE-CHILCA","lat":-12.51949963574545,"lon":-76.73222309911321}],"IMPERIAL":[{"id":419,"abr":"CÑIRAL","dir":"JR. AUGUSTO B. LEGUÍA N.º 457, MZ E, CENTRO POBLADO IMPERIAL, IMPERIAL - CAÑETE - lima, ref. CEVICHERÍA BRISAS DEL MAR","lugar":"LIMA-CAÑETE-IMPERIAL","lat":-13.05935862439696,"lon":-76.35372113923681}],"MALA":[{"id":156,"abr":"MALA","dir":"Av. Marchand # 250, distrito de Mala .    referencia:  a unas casas frente a la distribuidora primax gas","lugar":"LIMA-CAÑETE-MALA","lat":-12.6571028,"lon":-76.6366831}],"NUEVO IMPERIAL":[{"id":584,"abr":"NVOIRAL","dir":"FUNDO SANTA ADELA, MZ. A, LOTES 8 Y 9 – CARRETERA CAÑETE A YAUYOS NUEVO IMPERIAL - CAÑETE - LIMA, REF. AL COSTADO DEL RESTAURANT LA RUTA BRAVA","lugar":"LIMA-CAÑETE-NUEVO IMPERIAL","lat":-13.07183165317584,"lon":-76.33534999999453}],"SAN VICENTE DE CANET":[{"id":22,"abr":"CAÑ","dir":"AA.HH. VÍCTOR ANDRÉS BELAUNDE MZ. B LT. 12, SAN VICENTE DE CAÑETE - CAÑETE - LIMA","lugar":"LIMA-CAÑETE-SAN VICENTE DE CANET","lat":-13.07651825101844,"lon":-76.39128869885437},{"id":433,"abr":"JRSTA","dir":"JR. SANTA RITA 399, REF. CRUCE CON AV. LIBERTADORES","lugar":"LIMA-CAÑETE-SAN VICENTE DE CANET","lat":-13.07617065316496,"lon":-76.39023934110445}]},"HUARAL":{"CHANCAY":[{"id":161,"abr":"CHANC","dir":"PROLONGACIÓN SAN MARTÍN N°403 CHANCAY - REFERENCIA: A UNA CDRA. DE LA AV. PANAMERICANA NORTE","lugar":"LIMA-HUARAL-CHANCAY","lat":-11.5643122,"lon":-77.2673802}],"HUARAL":[{"id":124,"abr":"HRL","dir":"AV. JORGE CHAVEZ 647, REFERENCIA: ENTRE LA AV. GRAU Y BOLOGNESI (CERCA AL PARADERO MOTO NATURALES)","lugar":"LIMA-HUARAL-HUARAL","lat":-11.4922796340686,"lon":-77.2052552735911}]},"HUAROCHIRI":{"SAN ANTONIO":[{"id":473,"abr":"sjca","dir":"AV. SINCHI ROCA MZ. P LT. 16A P lote 16A, AAHH LAS PRADERAS DE JICAMARCA – SECTOR EL CERCADO – ANEXO 22 JICAMARCA – HUAROCHIRI, REF. CERCA AL ARCO PORTON DE JICAMARCA","lugar":"LIMA-HUAROCHIRI-SAN ANTONIO","lat":-11.93111234393463,"lon":-76.96588399999963}]},"HUAURA":{"HUACHO":[{"id":19,"abr":"HUA","dir":"PROLONGACIÓN salaverry  n° 764  huacho -  referencia : cruce con la av la paz  ","lugar":"LIMA-HUAURA-HUACHO","lat":-11.1094203,"lon":-77.5991073},{"id":441,"abr":"HAVIN","dir":"AV. MERCEDES INDACOCHEA 1276 HUACHO - HUAURA - LIMA, REF. INTERSECCIÓN CON PEDRO RUIZ GALLO, A 2 CDRAS. DE LA UNIVERSIDAD NACIONAL JOSÉ FAUSTINO SÁNCHEZ CARRIÓN","lugar":"LIMA-HUAURA-HUACHO","lat":-11.1185268130511,"lon":-77.6103892352451}],"HUAURA":[{"id":394,"abr":"HUAr","dir":"AV. LAS MALVINAS MZ. C LOTE 16 URB. EL ROSARIO SUR HUAURA, REF. A ESPALDAS DE LA PLAZA DE ARMAS, A 1 CDRA. DE LA CALLE LOS ALAMOS","lugar":"LIMA-HUAURA-HUAURA","lat":-11.0713592723957,"lon":-77.5999746859657}],"SAYAN":[{"id":519,"abr":"SYN","dir":"CALLE NARANJO N° 211.SAYAN - HUAURA - LIMA, REF. A MEDIA CDRA. DE LA PLAZA DE ARMAS Y DE LA MUNICIPALIDAD ","lugar":"LIMA-HUAURA-SAYAN","lat":-11.13519587994052,"lon":-77.19272381237359}]},"LIMA":{"ANCON":[{"id":654,"abr":"ANCN","dir":"CARRETERA SERPENTÍN DE PASAMAYO MZ. G LT. 3 SUBLT. B - ASOC. DE PROP. CASA HUERTA IND. PECUARIAS SAN PEDRO ZONA 4, ANCÓN - LIMA-LIMA, REF. A 1 CDRA. DEL OVALO DE ANCÓN","lugar":"LIMA-LIMA-ANCON","lat":-11.77403983781282,"lon":-77.16181025497632}],"ATE-VITARTE":[{"id":60,"abr":"He","dir":"Carretera central km 17 MZ. E LT. 1,  Ref. Entrada de Huaycan al costado del grifo PRIMAX. ex grifo el negro.","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-11.9988136,"lon":-76.8368031},{"id":109,"abr":"marc","dir":"AV. MARCO PUENTE LLANOS 309, MZ. A, LT. 03","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.03217632093867,"lon":-76.92178990219485},{"id":202,"abr":"pnt. s.a.","dir":"Av. Nicolás Ayllón N° 3080  - Ate vitarte","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.05712699890137,"lon":-76.96934509277344},{"id":216,"abr":"HUAY.STA","dir":"AV. JOSÉ CARLOS MARIÁTEGUI Z. E LT. 23 UCV 5 (ZONA COMERCIO) - PUEBLO JOVEN \"PROYECTO ESPECIAL HUAYCÁN\" ATE VITARTE - LIMA, REF. A DOS CDRAS. DEL CRUCE CON AV. 15 DE JULIO","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.01482132097014,"lon":-76.82313108705995},{"id":217,"abr":"ATE.SAU","dir":"AV. SANTA ROSA N°773 MANZANA “A” LOTE 6 URB LOS SAUCES - ATE - REFERENCIA: CRUCE CON LA AV SEPARADORA INDUSTRIAL","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.0709298,"lon":-76.9809503},{"id":377,"abr":"STA CLA","dir":"Av. Pedro Ruíz Gallo Mz. H Lt. 3. Asoc. Viv. Villa San Luis, Santa Clara - Ate Vitarte - LimaRef: Entre el Real Plaza y la UTP Santa Clara","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.01391197206726,"lon":-76.88419892952268},{"id":390,"abr":"LSAME","dir":"AV. ESPERANZA MZ. K LT. 06 LAS AMERICAS - ATE VITARTE - LIMA, REF. PASANDO MERCADO RAUCANA","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.03197489814294,"lon":-76.90489476767831},{"id":475,"abr":"AVSL","dir":"AV. EL SOL MZ. S LT. 2 ZONA 03 - ASOC. PARQUE INDUSTRIAL EL ASESOR, SECTOR 010 ZONA 03 - ATE, REF. A UNA CUADRA Y MEDIA DE LA CARRETERA CENTRAL","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.03836516909159,"lon":-76.93396781379997},{"id":620,"abr":"HNMTTGI","dir":"AV. JOSE CARLOS MARIATEGUI MZA. B LTE 06, RESIDENCIAL PARIACHI SEC. 031 ZON. 05, ATE - LIMA - LIMA, REF. CRUCE CON LA AV. LOS INCAS","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.00438812050747,"lon":-76.83611140249312},{"id":630,"abr":"AVFRL","dir":"AV. FERROCARRIL MZ. C LT. 19 PARCELA 3, URB. SANTA ELVIRA SEC. 018 ZONA 3, REF. A MEDIA CDRA. DEL CRUCE CON AV. DE LA CULTURA","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.02853129999344,"lon":-76.950749770605},{"id":636,"abr":"AVHCIOZLS","dir":"AV. HORACIO ZEBALLOS MZ. V LT. 12 PROG. VIV. RESIDENCIAL PARIACHI (SEC. 031) ZONA 5, ATE - LIMA - LIMA, REF. FRENTE AL CIRCUITO DE MANEJO GARCILASO DE LA VEGA","lugar":"LIMA-LIMA-ATE-VITARTE","lat":-12.00769348403152,"lon":-76.8424867018833}],"BRENA":[{"id":123,"abr":"BRE","dir":"AV. VENEZUELA 1670 - BREÑA, REFERENCIA: AL COSTADO DEL POLICLÍNICO DE BREÑA","lugar":"LIMA-LIMA-BRENA","lat":-12.05538480746569,"lon":-77.05571332375156},{"id":476,"abr":"JR.HZ","dir":"JR. HUARAZ 1633, BREÑA -LIMA, REF. EN MEDIO DEL CRUCE DE JR. GRAL ORBEGOSO Y JR. CENTENARIO CON JR. HUARAZ","lugar":"LIMA-LIMA-BRENA","lat":-12.06581574648953,"lon":-77.04986305455087}],"CARABAYLLO":[{"id":108,"abr":"CRB","dir":"AV. TUPAC AMARU N? 441 - 443, MZ. O2 LT. 35, REFERENCIA: PARADERO ESTABLO, A UNA CUADRA DE LA URB. SANTA ISABEL","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.9035821,"lon":-77.0309854},{"id":230,"abr":"TRA.CAR","dir":"AV. TRAPICHE MZ. P LT. 48, URB. TUNGASUCA REFERENCIA: AUX. AV. CHIMPU OCLLO CON AUX. CHILLÓN TRAPICHE, A 1 CUADRA DEL MERCADO QATUNA","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.8914255429216,"lon":-77.04442551681062},{"id":300,"abr":"KM.CAR","dir":"MZ. 1A - LT. 8 AV. TUPAC AMARU N° 10472, CARABAYLLO - LIMA, REF. AL COSTADO DEL COLEGIO CIRO ALEGRÍA","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.88113999457249,"lon":-77.02180581911568},{"id":384,"abr":"CAY","dir":"AV. TÚPAC AMARU KM. 23.5 - CARABAYLLO, REF. FRENTE A LA IGLESIA DE MORMONES - A UNA CDRA. DEL ÚLTIMO PARADERO DEL RÁPIDO","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.84431075765574,"lon":-77.00039932685678},{"id":465,"abr":"AVJOSRC","dir":"AV. JOSÉ SACO ROJAS MZ. A LT. 15 PROGRAMA DE VIVIENDA EL PINO, SAN ANTONIO - CARABAYLLO, REF. FRENTE AL CHIFA HONG FU Y A 3 CUADRAS DEL GRAN MERCADO EL PINO","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.85813181098182,"lon":-77.04414250346564},{"id":536,"abr":"STODGO","dir":"AV. A MZ. L2 LT. 20 URB. SANTO DOMINGO – VI ETAPA CARABAYLLO - LIMA, REF. EN EL CRUCE DE LAS AV. CHILLON TRAPICHE Y AV. CAMINO REAL ","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.87300472482705,"lon":-77.0290837822141},{"id":538,"abr":"AVTCAU","dir":"AV. TUPAC AMARU 3493 – P.J. EL PROGRESO (PARTE BAJA) MZ. K LT. 11B ZONA II, CARABAYLLO - LIMA, REF. A UNA CDRA. DEL CRUCE CON LA AV. MANUEL PRADO","lugar":"LIMA-LIMA-CARABAYLLO","lat":-11.87231636114172,"lon":-77.01521214760115}],"CERCADO LIMA":[{"id":209,"abr":"DISTR","dir":"","lugar":"LIMA-LIMA-CERCADO LIMA","lat":null,"lon":null},{"id":220,"abr":"JRRIC","dir":"JR. RICARDO TRENEMAN N° 920, REFERENCIA: DENTRO DEL LOCAL FARENET","lugar":"LIMA-LIMA-CERCADO LIMA","lat":-12.046751,"lon":-77.054634},{"id":392,"abr":"MLGVLL","dir":"JR. PRESBÍTERO GARCÍA VILLON NRO. 560 CERCADO LIMA - LIMA, REF. A LA ALTURA DE LA CDRA. 5 DE AV. OSCAR R. BENAVIDES (EX AV. COLONIAL), EN MEDIO DE LAS AV. GUILLERMO DANSEY Y AV. OSCAR R. BENAVIDES","lugar":"LIMA-LIMA-CERCADO LIMA","lat":-12.04638719585,"lon":-77.049473000003},{"id":449,"abr":"lAVTM","dir":"AV. TINGO MARÍA N°1252-A - CERCADO DE LIMA - LIMA, REF. A MEDIA CDRA. DEL CRUCE CON JR. GRAL. ORBEGOSO","lugar":"LIMA-LIMA-CERCADO LIMA","lat":-12.0606406907256,"lon":-77.0589838666984},{"id":651,"abr":"AVNLSDÑA","dir":"AV. NICOLAS DUEÑAS 584 MZ. C LT. 4 – AAHH PRIMERO DE SETIEMBRE, CERCADO DE LIMA – LIMA - LIMA, REF. A MEDIA CDRA. DEL CRUCE CON JR. PEDRO GAREZON","lugar":"LIMA-LIMA-CERCADO LIMA","lat":-12.04168546977184,"lon":-77.06569704398638}],"CHORRILLOS":[{"id":70,"abr":"CHR","dir":"AV. SANTA ANITA N.° 580, CHORRILLOS - LIMA, REF. AL COSTADO DEL MERCADO SANTA ANITA, CRUCE CON SAN GENARO","lugar":"LIMA-LIMA-CHORRILLOS","lat":-12.19049228146922,"lon":-77.01532743242808},{"id":170,"abr":"CHORSOL","dir":"AV. LOS FAISANES 420, REFERENCIA: AL COSTADO DE LA TIENDA JOHN HOLDEN","lugar":"LIMA-LIMA-CHORRILLOS","lat":-12.176072,"lon":-76.998107},{"id":327,"abr":"LDS CHOR.","dir":"AV. 12 DE OCTUBRE MZ. A - 03, LT. 02, URB. ARIA - LAS DELICIAS DE VILLA, REF. A DOS CUADRAS DE LA AV. DEFENSORES DEL MORRO (EX AV. HUAYLAS) ","lugar":"LIMA-LIMA-CHORRILLOS","lat":-12.19588881091088,"lon":-76.99802766343377},{"id":450,"abr":"TDAMP","dir":"AV. ALAMEDA SUR 5, CHORRILLOS 15067, REF. CRUCE DE AV. ALAMEDA SUR CONAV. ALAMEDA SAN MARCOS","lugar":"LIMA-LIMA-CHORRILLOS","lat":-12.19672190971743,"lon":-77.01160198642162}],"CIENEGUILLA":[{"id":522,"abr":"CGLLA","dir":"AV. ARTERIAL HUAROCHIRI D MZ. B LT. 19, ASOC. DE VIVIENDAS LAS CUMBRES DE CIENEGUILLA, LIMA, REF. AL COSTADO DE LA TIENDA MASS","lugar":"LIMA-LIMA-CIENEGUILLA","lat":-12.08930398228075,"lon":-76.85365371221069},{"id":523,"abr":"RSL","dir":"SAN LUIS","lugar":"LIMA-LIMA-CIENEGUILLA","lat":-12.08930398228075,"lon":-76.85365371221069}],"COMAS":[{"id":67,"abr":"COM","dir":"AV. UNIVERSITARIA N° 7241, REFERENCIA: EX BOULEVARD DE RETABLO / A 2 CDRAS DEL METRO DE BELAUNDE","lugar":"LIMA-LIMA-COMAS","lat":-11.93731452413451,"lon":-77.05809407916101},{"id":228,"abr":"TRA.COM","dir":"AV. TRAPICHE 886 A 16 2P 2 - URB. PINAR, REFERENCIA: FRENTE AL COMPLEJO DEPORTIVO WALON","lugar":"LIMA-LIMA-COMAS","lat":-11.91918929266535,"lon":-77.06050258466907},{"id":229,"abr":"TACOL","dir":"AV. TUPAC AMARU N° 7837- 7839 MZ. C LT. 010 URB. POPULAR SAN JUAN BAUTISTA I ETAPA, COMAS - LIMA, REF. A UNA CDRA. DE LA ENTRADA DE COLLIQUE","lugar":"LIMA-LIMA-COMAS","lat":-11.915107566733,"lon":-77.040662268934},{"id":629,"abr":"AVTPCMR","dir":"AV. TUPAC AMARU 5725-5727 - URB. HUAQUILLAY I ETAPA, COMAS - LIMA - LIMA, REF. A MEDIA CDRA. DEL BANCO DE LA NACIÓN","lugar":"LIMA-LIMA-COMAS","lat":-11.94531264566485,"lon":-77.05054907824643},{"id":652,"abr":"AVURIAPQZ","dir":"AV. UNIVERSITARIA NORTE MZN. Q1 LTE. 030 URB. PRIMAVERA,COMAS-LIMA - LIMA, REF. A MEDIA CDRA. DEL INGRESO AL PARQUE ZONA SINCHI ROCA","lugar":"LIMA-LIMA-COMAS","lat":-11.91999506384665,"lon":-77.05093521974257},{"id":687,"abr":"UBRTCN","dir":"AV. TUPAC AMARU 3184 URB. REPARTICION, COMAS - LIMA - LIMA, REF. A MEDIA CDRA. DE AV. VICTOR ANDRES BELAUNDE Y/O FRENTE A DOLLARCITY","lugar":"LIMA-LIMA-COMAS","lat":-11.939410443955,"lon":-77.0500541}],"EL AGUSTINO":[{"id":116,"abr":"AGUS","dir":"AV 1° DE MAYO 3071 - URB HUANCAYO  referencia : FRENTE AL GRIFO REPSOL","lugar":"LIMA-LIMA-EL AGUSTINO","lat":-12.0300919,"lon":-76.9991156},{"id":655,"abr":"JRANCS","dir":"JR. ANCASH MZ. B LT. 11 AAHH ANCIETA ALTA, EL AGUSTINO - LIMA - LIMA, REF. FRENTE AL INGRESO DE AGUSTINO PLAZA","lugar":"LIMA-LIMA-EL AGUSTINO","lat":-12.04136547764861,"lon":-77.00264283281007}],"INDEPENDENCIA":[{"id":172,"abr":"indep.","dir":"AV. TUPAC AMARU N° 4708 - 4710, REF. A UNA CDRA. DEL PARADERO ESTACIÓN NARANJAL","lugar":"LIMA-LIMA-INDEPENDENCIA","lat":-11.97888250230648,"lon":-77.0591044310316},{"id":244,"abr":"PNSE","dir":"Av. GERARDO UNGER NRO. 6917 INT. LB 19","lugar":"LIMA-LIMA-INDEPENDENCIA","lat":-12.004946,"lon":-77.055867},{"id":256,"abr":"PZNE","dir":"Av. GERARDO UNGER NRO. 6917 INT. LB 19","lugar":"LIMA-LIMA-INDEPENDENCIA","lat":-12.004946,"lon":-77.055867},{"id":532,"abr":"MPICA","dir":"CENTRO COMERCIAL MEGA PLAZA AV. ALFREDO MENDIOLA 3698 LIMA - INDEPENDENCIA. REF. PRIMER PISO DE MEGA PLAZA / AL COSTADO DEL ESTACIONAMIENTO DE BICICLETA","lugar":"LIMA-LIMA-INDEPENDENCIA","lat":-11.99328667055402,"lon":-77.06326926907906},{"id":588,"abr":"CLLA","dir":"CALLE A, MZ. D LT. 26 URBANIZACIÓN PANAMERICANA (PRIMER PISO) INDEPENDENCIA - LIMA - LIMA, REF. A 1 CDRA. DEL CRUCE CON AV. INDUSTRIAL (LATERAL DE MEGAPLAZA)","lugar":"LIMA-LIMA-INDEPENDENCIA","lat":-11.99265099998189,"lon":-77.06030747047947}],"JESUS MARIA":[{"id":180,"abr":"AV.SANFEL","dir":"AV. SAN FELIPE 1195 - JESÚS MARÍA","lugar":"LIMA-LIMA-JESUS MARIA","lat":-12.0822274,"lon":-77.0459498},{"id":276,"abr":"AV.ARE","dir":"AV. ARENALES 391, REFERENCIA: A 2 CDRAS. DE AV. 28 DE JULIO A LA ESPALDA DE LA UTP","lugar":"LIMA-LIMA-JESUS MARIA","lat":-12.068228,"lon":-77.037967},{"id":374,"abr":"JM","dir":"AV. MARISCAL LUZURIAGA 584-586 JESÚS MARÍA - LIMA, REF. A CUADRA Y MEDIA DEL PARQUE SAN JOSÉ, PARALELO A LA AV. MELLO FRANCO","lugar":"LIMA-LIMA-JESUS MARIA","lat":-12.07627704929211,"lon":-77.0481659884218},{"id":500,"abr":"RPSRY","dir":"CENTRO COMERCIAL REAL PLAZA SALAVERRY, AV. GRAL. SALAVERRY 2370, JESÚS MARÍA 15076, REF. FRENTE A LA ESCUELA DE POSTGRADO UTP","lugar":"LIMA-LIMA-JESUS MARIA","lat":-12.089813084346,"lon":-77.052643198724}],"LA MOLINA":[{"id":92,"abr":"LM.FON","dir":"Av la fontana 440 - La Molina (CC La Rotonda II local 1018)","lugar":"LIMA-LIMA-LA MOLINA","lat":-12.072691,"lon":-76.9548488},{"id":426,"abr":"LMLFNS","dir":"AV. LOS FRESNOS 1305 TIENDA 2 - URB. PORTADA DEL SOL I ETAPA - LA MOLINA - LIMA, REF. A 3 CDRAS. DEL ÓVALO DE LOS CÓNDORES","lugar":"LIMA-LIMA-LA MOLINA","lat":-12.104084611289,"lon":-76.9414167},{"id":531,"abr":"SLMNA","dir":"AV. LA MOLINA (EXAV. LA UNIVERSIDAD) #3551 TDA -7 MZ. H SUBLOTE 1C, URB. EL SOL DE LA MOLINA I ETAPA LA MOLINA - LIMA, REF. A MEDIA CDRA. DEL CRUCE CON AV. EL SOL","lugar":"LIMA-LIMA-LA MOLINA","lat":-12.085763100386,"lon":-76.913409441937},{"id":545,"abr":"AVFATN","dir":"AV. FLORA TRISTÁN N° 885, URB. SANTA PATRICIA III ETAPA, LA MOLINA - LIMA, REF.  A MEDIA CDRA. DE MOLISALUD","lugar":"LIMA-LIMA-LA MOLINA","lat":-12.06415660971258,"lon":-76.9455208508212},{"id":662,"abr":"PQLMNA","dir":"AV. LA MOLINA 2448, LA MOLINA 15026, LA MOLINA - LIMA - LIMA, REF. ESTACIONAMIENTO NIVEL -3","lugar":"LIMA-LIMA-LA MOLINA","lat":-12.07532253461305,"lon":-76.93612151388963},{"id":665,"abr":"AVAMDACR","dir":"AV. ALAMEDA DEL CORREGIDOR MZ. U LT. 19 UI 1 - URB LA CAPILLA, LA MOLINA - LIMA - LIMA, REF. A 2 CDRAS. DEL CRUCE CON ALAMEDA DE LOS CÓNDORES","lugar":"LIMA-LIMA-LA MOLINA","lat":-12.105549936759,"lon":-76.946964207289}],"LA VICTORIA":[{"id":4,"abr":"LIMM","dir":"AV. MEXICO 1125, LA VICTORIA - LIMA","lugar":"LIMA-LIMA-LA VICTORIA","lat":-12.073430785867,"lon":-77.01758370586},{"id":5,"abr":"LIM.L","dir":"JR. LUNA PIZARRO N° 701 - LA VICTORIA,  REFERENCIA: ESQUINA HIPÓLITO UNANUE","lugar":"LIMA-LIMA-LA VICTORIA","lat":-12.0670586,"lon":-77.0273264},{"id":43,"abr":"LIM.R","dir":"JR. ANTONIO RAYMONDI NRO. 113","lugar":"LIMA-LIMA-LA VICTORIA","lat":-12.06109783000733,"lon":-77.0344310742025},{"id":233,"abr":"CAN","dir":"AV. CANADÁ 1603, REFERENCIA: ENTRE AV. CANADÁ CON AV. AVIACIÓN","lugar":"LIMA-LIMA-LA VICTORIA","lat":-12.0840074,"lon":-77.0058111},{"id":236,"abr":"CF","dir":"direccion","lugar":"LIMA-LIMA-LA VICTORIA","lat":0,"lon":0},{"id":557,"abr":"CTM","dir":"cargando","lugar":"LIMA-LIMA-LA VICTORIA","lat":null,"lon":null}],"LINCE":[{"id":579,"abr":"JRDGOCVA","dir":"JR. DOMINGO CASANOVA N°318 LINCE - LIMA, REF. CRUCE CON PETIT THOUARS","lugar":"LIMA-LIMA-LINCE","lat":-12.089639700017,"lon":-77.032406270598},{"id":591,"abr":"JSL","dir":"AV. CORONEL JOSÉ LEAL 648, URB. FUNDO LOBATÓN, LINCE - LINCE, REF. PARALELA A LA CDRA. 6 DE LA AV. CANEVARO","lugar":"LIMA-LIMA-LINCE","lat":-12.0853666557045,"lon":-77.04022637039473},{"id":704,"abr":"TERM","dir":"PRUEBA SISTEMAS","lugar":"LIMA-LIMA-LINCE","lat":-12.213123,"lon":-77.3421234324}],"LOS OLIVOS":[{"id":6,"abr":"PALM","dir":"AV. LAS PALMERAS N° 5236 URB. VILLA NORTE - LOS OLIVOS ","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.97585293968262,"lon":-77.07207437848116},{"id":175,"abr":"PRO","dir":"AV. LOS PRÓCERES MZ. PP2 LT.21, URB. PUERTAS DE PRO - LOS OLIVOS","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.9450493,"lon":-77.0775764},{"id":227,"abr":"GAM","dir":"AV. ANGELICA GAMARRA DE LEON VALVERDE N° 621 URB EL TREBOL, LOS OLIVOS - LIMA, REF. A LA ALTURA DEL KFC / CRUCE CON AV. ALFA","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-12.00564059430335,"lon":-77.06833392202753},{"id":250,"abr":"hdoy","dir":"AV. PRÓCERES, MZ. 3, LT. 23 A.H. LAURA CALLER - LOS OLIVOS, REFERENCIA: CRUCE ENTRE AV. HUANDOY Y MARAÑÓN","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.970678,"lon":-77.080356},{"id":385,"abr":"2 OCT","dir":"AV. 2 DE OCTUBRE MZ. H LT. 2 - LOS OLIVOS - PRO, REF. AV. 2 DE OCTUBRE CON AV. CANTA CALLAO, AL COSTADO DEL CENTRO DE SAlUD PRO","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.95057177592816,"lon":-77.08493089999897},{"id":423,"abr":"CARIZA","dir":"CALLE DAVID ALVA MANZANA H LOTE 4 URB. CAJABAMBA LOS OLIVOS - LIMA, REF. ENTRE LA AV. CARLOS IZAGUIRRE CON LA AV. UNIVERSITARIA (FRENTE AL COLEGIO PAMER)","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.99171956456272,"lon":-77.08044440622403},{"id":466,"abr":"AVLPLA ","dir":"AV. LOS PLATINOS N°. 259, MZ. A - LT. 17, URB. LOTIZACIÓN INDUSTRIAL INFANTAS LOS OLIVOS - LIMA, REF. A DOS CDRAS. Y MEDIA DE LA AV. ALFREDO MENDIOLA Y/O PANAMERICANA NORTE (ALTURA DEL PARADERO CASETA)","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.97003818805704,"lon":-77.06456792944489},{"id":577,"abr":"AVPRSHY","dir":"AV. HUANDOY MZA. 72 LTE. 54 P.J. P.M.V. “CONFRATERNIDAD” - AAHH. ENRIQUE MILLA OCHOA LOS OLIVOS - LIMA, REF. A UNA CDRA. DEL CRUCE CON AV. CENTRAL","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.95782225600082,"lon":-77.07594487055076},{"id":701,"abr":"SGDAPRO","dir":"AV. ALFREDO MENDIOLA 8161 URB. PRO, LOS OLIVOS - LIMA - LIMA, REF. A UNA CDRA. DEL COLEGIO JOSÉ MARÍA ARGUEDAS","lugar":"LIMA-LIMA-LOS OLIVOS","lat":-11.933223203028,"lon":-77.073028216717}],"LURIGANCHO":[{"id":147,"abr":"T.HUAC","dir":"v","lugar":"LIMA-LIMA-LURIGANCHO","lat":-12.0164326,"lon":-76.912636},{"id":169,"abr":"CHOS.","dir":"EL SOL 124 (PARQUE ECHENIQUE) LURIGANCHO - CHOSICA","lugar":"LIMA-LIMA-LURIGANCHO","lat":-11.93352928120618,"lon":-76.69333509527566},{"id":365,"abr":"HPACO","dir":"HUACHIPA ESTE - MANZANA A18 LOTE 1, 2, 3 CALLE B, CALLE 08, CALLE A, REF. AL COSTADO DE INDUSTRIAS ELÉCTRICAS KBA","lugar":"LIMA-LIMA-LURIGANCHO","lat":-11.93555028829747,"lon":-76.86833430093904},{"id":469,"abr":"SNMAHUL","dir":"AV. CIRCUNVALACIÓN MZ. A LT. 1 - D C - P SANTA MARÍA DE HUACHIPA - LURIGANCHO - CHOSICA, REF. ENTRE LA AV. CIRCUNVALACIÓN Y LA AV. HUACHIPA","lugar":"LIMA-LIMA-LURIGANCHO","lat":-12.01643907207164,"lon":-76.91240974118337},{"id":700,"abr":"HPACO2","dir":"HUACHIPA ESTE - MANZANA A18 LOTE 1, 2, 3 CALLE B, CALLE 08, CALLE A, REF. AL COSTADO DE INDUSTRIAS ELÉCTRICAS KBA","lugar":"LIMA-LIMA-LURIGANCHO","lat":-11.935550288297,"lon":-76.868334300939}],"LURIN":[{"id":122,"abr":"LUR","dir":"AV. ANTIGUA PANAMERICANA SUR KM 37 MZ C LT 17 - FUNDO LAS SALINAS  - referencia a cuadra y media del mercado virgen de las mercedes.","lugar":"LIMA-LIMA-LURIN","lat":-12.2819873,"lon":-76.8658386},{"id":530,"abr":"PTLRN","dir":"ANTIGUA PANAMERICANA SUR, LOTE 2, MZ. B, PRIMER PISO LURÍN - LIMA, REF. A CDRA. Y MEDIA DEL CRUCE CON AV. SANTA CRUZ","lugar":"LIMA-LIMA-LURIN","lat":-12.25508377880026,"lon":-76.89009010408147}],"MAGDALENA DEL MAR":[{"id":186,"abr":"AYA.MAG","dir":"JR. AYACUCHO N° 756, REFERENCIA: A UNA CDRA. DEL MERCADO MODELO DE MAGDALESY A 3 CDRAS. DE LA IGLESIA CÚPULA DE SUCRE","lugar":"LIMA-LIMA-MAGDALENA DEL MAR","lat":-12.08620999887782,"lon":-77.07142297178575}],"MIRAFLORES":[{"id":190,"abr":"AV.JP","dir":"AV. JOSE PARDO N?533","lugar":"LIMA-LIMA-MIRAFLORES","lat":-12.11931911764497,"lon":-77.03435394423252},{"id":226,"abr":"CABER","dir":"Calle Berlín 219  - Miraflores","lugar":"LIMA-LIMA-MIRAFLORES","lat":-12.12188111403754,"lon":-77.03219965402278},{"id":286,"abr":"AG2","dir":"AV. ROOSEVELT 6297 (ANTES REP. PANAMÁ) - MIRAFLORES","lugar":"LIMA-LIMA-MIRAFLORES","lat":-12.12746185891619,"lon":-77.01786268247683},{"id":434,"abr":"ALFRBV","dir":"AV. ALFREDO BENAVIDES 1851 - MIRAFLORES, REF. AL COSTADO DEL BEMBOS AURORA BENAVIDES ","lugar":"LIMA-LIMA-MIRAFLORES","lat":-12.12674917645544,"lon":-77.0132233288232},{"id":435,"abr":"COMESP","dir":"AV. COMANDANTE ESPINAR 330-MIRAFLORES, REF. ENTRE EL CRUCE DE CALLE ENRIQUE PALACIOS Y LA AV. COMANDANTE ESPINAR","lugar":"LIMA-LIMA-MIRAFLORES","lat":-12.11636136108547,"lon":-77.03680649389766},{"id":661,"abr":"LCMR","dir":"MALECÓN DE LA RESERVA 610, MIRAFLORES 15074, MIRAFLORES - LIMA - LIMA, REF. SÓTANO NIVEL A","lugar":"LIMA-LIMA-MIRAFLORES","lat":-12.13176251520779,"lon":-77.03007421242233}],"PACHACAMAC":[{"id":90,"abr":"CNGL","dir":"AV. PROLONGACIÓN DE LA AV. LA MOLINA MZ. E LOTE 21. AH PAUL POBLET LIND, PACHACAMAC - LIMA, REF. A MEDIA CDRA. DE MI BANCO","lugar":"LIMA-LIMA-PACHACAMAC","lat":-12.0847512110265,"lon":-76.8761664787276},{"id":580,"abr":"MCYPC","dir":"AV. VICTOR MALASQUEZ MZ. B11 SUB-LOTE 06-A - AAHH CENTRO POBLADO RURAL LOS HUERTOS DE MANCHAY SECTOR B PACHACAMAC - LIMA, REF.  A MEDIA CDRA. DEL PARADERO ","lugar":"LIMA-LIMA-PACHACAMAC","lat":-12.11436293739549,"lon":-76.87350734288519},{"id":586,"abr":"AVMNLVE","dir":"AV. MANUEL VALLE SUB - LOTE 2 - 1, NÚMERO DE PARCELA J, PROYECTO HUERTOS DE PACHACAMAC, VALLE LURÍN - PACHACAMAC - LIMA, REF. FRENTE AL ESTUDIO DE CANAL 4 (AMERICA TELEVISIÓN)","lugar":"LIMA-LIMA-PACHACAMAC","lat":-12.23251455532842,"lon":-76.86432399999713}],"PUEBLO LIBRE":[{"id":105,"abr":"PLI","dir":"AV. LA MARINA 1640 - REFERENCIA :  A UNA CUADRA DEL CENTRO COMERCIAL PLAZA SAN MIGUEL ","lugar":"LIMA-LIMA-PUEBLO LIBRE","lat":-12.0775694,"lon":-77.0799465},{"id":587,"abr":"AVBVR","dir":"AV. BOLIVAR 1097, PUEBLO LIBRE - LIMA, REF. A MEDIA CDRA. DEL CRUCE AV. GRAL. JOSÉ MARÍA EGUSQUIZA","lugar":"LIMA-LIMA-PUEBLO LIBRE","lat":-12.07241485572152,"lon":-77.06500307055026}],"PUENTE PIEDRA":[{"id":73,"abr":"PUEARI","dir":"PANAMERICANA NORTE  KM 32.5 , A 1/2  CUADRA DEL PUENTE ARICA  - AL COSTADO DEL GRIFO REPSOL","lugar":"LIMA-LIMA-PUENTE PIEDRA","lat":-11.8531295,"lon":-77.088719},{"id":198,"abr":"PP.ZAP","dir":"AV. ANCÓN 678, REF. A LA ESPALDA DEL PRECIO UNO DE FUNDICION","lugar":"LIMA-LIMA-PUENTE PIEDRA","lat":-11.83075037012298,"lon":-77.11410941944563},{"id":499,"abr":"AVLZO","dir":"AV. SAN LORENZO MZ C LT 20 - ADP VIRGEN DE COPACABANA, PUENTE PIEDRA - LIMA. REF, A MEDIA CUADRA DEL PARQUE VIRGEN DE COPACABANA  ","lugar":"LIMA-LIMA-PUENTE PIEDRA","lat":-11.8567236,"lon":-77.06764117055229},{"id":576,"abr":"ovlpdra","dir":"AV. MIGUEL GRAUÂ MZ. A LT. 07 Y 08 URB. SAN MARTIN DE PORRES, CERCADO PUENTE PIEDRA - LIMA, REF. ESPALDAS DE TOTTUS DE PUENTE PIEDRA","lugar":"LIMA-LIMA-PUENTE PIEDRA","lat":-11.8690911986368,"lon":-77.0736756180273},{"id":635,"abr":"AVBNRS","dir":"AV. BUENOS AIRES MZ. D, SUB-LOTE 188E1 ASOCIACIÓN DE POBLADORESMICAELA BASTIDAS, PUENTE PIEDRA - LIMA - LIMA, REF. A 2 CDRAS. DE LA DEMUNA DE PUENTE PIEDRA","lugar":"LIMA-LIMA-PUENTE PIEDRA","lat":-11.8466089579004,"lon":-77.0980102328854}],"PUNTA HERMOSA":[{"id":458,"abr":"PTSA","dir":"CAR. AUTOPISTA PANAMERICANA SUR N° 2001 (KM. 38) INTERIOR H02A - PUNTA HERMOSA","lugar":"LIMA-LIMA-PUNTA HERMOSA","lat":-12.3014700000051,"lon":-76.78319325684035},{"id":628,"abr":"PTHMS","dir":"AV. GARCIA RADA MZ.B LT.04, AAHH ASOCIACION DE VIVIENDA Y DESARROLLO INTEGRAL NUEVA GENERACION, PUNTA HERMOSA - LIMA, REF. A UNA CDRA. DEL PARADERO PEATONAL DE PUNTA HERMOSA","lugar":"LIMA-LIMA-PUNTA HERMOSA","lat":-12.32830111945804,"lon":-76.82488673250228}],"RIMAC":[{"id":176,"abr":"RIM.","dir":"Av. Amancaes Nro. 644 urb. Ciudad y campo - Rimac","lugar":"LIMA-LIMA-RIMAC","lat":-12.0220967,"lon":-77.0306918},{"id":451,"abr":"RGR9","dir":"SECCIÓN INMOBILIARIA N°2 – PRIMER PISO LT. 11 DE LA MZ. 2, URB. VILLACAMPA RIMAC, REF. A UNA CDRA. DEL CRUCE CON AV. FELIPE ARANCIBIA","lugar":"LIMA-LIMA-RIMAC","lat":-12.02969411556273,"lon":-77.03647277723022}],"SAN BORJA":[{"id":179,"abr":"JAV.PRA","dir":"AV. JAVIER PRADO ESTE N? 1810 - EST. 05 MZ. A - 1 LT. 04","lugar":"LIMA-LIMA-SAN BORJA","lat":-12.08886456970369,"lon":-77.00711528847536},{"id":239,"abr":"AVI","dir":"AV. AVIACIÓN 2819, URB. SAN BORJA SUR, REFERENCIA: AL FRENTE DE BEMBOS","lugar":"LIMA-LIMA-SAN BORJA","lat":-12.0966861,"lon":-77.0021534},{"id":273,"abr":"AVI.299","dir":"AV. AVIACIÓN 2999, REFERENCIA: A 1 CDRA. DE LA ESTACIÓN DEL TREN SAN BORJA SUR","lugar":"LIMA-LIMA-SAN BORJA","lat":-12.099414,"lon":-77.001675},{"id":459,"abr":"AVAG","dir":"AV. ANGAMOS ESTE 2521 (EX AV. PRIMAVERA) - CONJUNTO HABITACIONAL LIMATAMBO -  SAN BORJA. REF. CERCA AL CRUCE DE AV. ANGAMOS ESTE CON AV. PRINCIPAL","lugar":"LIMA-LIMA-SAN BORJA","lat":-12.111695444371,"lon":-77.004615170566}],"SAN ISIDRO":[{"id":274,"abr":"RIB.NAV","dir":"AV. RIVERA NAVARRETE 465, REFERENCIA: CRUCE DE JAVIER PRADO CON RIVERA NAVARRETE","lugar":"LIMA-LIMA-SAN ISIDRO","lat":-12.092087,"lon":-77.026871},{"id":275,"abr":"CORPAC","dir":"CALLE 21 785, REFERENCIA: AL COSTADO DEL MINISTERIO DEL INTERIOR","lugar":"LIMA-LIMA-SAN ISIDRO","lat":-12.097055,"lon":-77.014892},{"id":287,"abr":"AG3","dir":"CALLE LAS BEGONIAS 774 - SAN ISIDRO","lugar":"LIMA-LIMA-SAN ISIDRO","lat":-12.09576161570898,"lon":-77.02598394628174},{"id":436,"abr":"CLLMDS","dir":"CALLE MIGUEL DASSO 126 - SAN ISIDRO, REF. EN EL CRUCE DE CALLE LEONIDAS YEROVI Y CALLE MIGUEL DASSO","lugar":"LIMA-LIMA-SAN ISIDRO","lat":-12.10599889858564,"lon":-77.04049877946747}],"SAN JUAN DE LURIGANCHO":[{"id":44,"abr":"STROSA","dir":"Av. Santa Rosa MZ. D1 lote 1 Urb. Los Alamos 2da Etapa  - referencia altura de la cuadra 13 del paradero canto grande","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.965189930601,"lon":-76.997693918962},{"id":66,"abr":"SJLP","dir":"AV. 13 DE ENERO Nº2057, URB. SAN HILARIÓN, REFERENCIA: CERCA A LA ESTACIÓN LOS POSTES","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.997585,"lon":-77.005279},{"id":144,"abr":"SJL CR. MO","dir":"AV. FERNANDO WIESSE MZ. Q LOTE 1 AA.HH. CRUZ DE MOTUPE","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.93826773166503,"lon":-76.97569645009727},{"id":159,"abr":"SJL FLO.","dir":"AV. CANTO GRANDE N°. 2570 - URB. GANIMEDES, REFERENCIA: A 3 CDRAS. DE PLAZA VEA","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.98644445593093,"lon":-77.01549062944763},{"id":240,"abr":"PRO.SJL","dir":"AV. PRÓCERES DE LA INDEPENDENCIA NRO.  1295 - 1299 REFERENCIA: AL COSTADO DEL BANCO DE LA NACIÓN DE AV. LOS TUSILAGOS OESTE","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-12.01272454409549,"lon":-77.0023639335885},{"id":410,"abr":"6CNTG","dir":"CALLE SAN MARTIN CON AV. COMERCIAL NORTE 189 - SAN JUAN DE LURIGANCHO, REF. A 1/2 CUADRA DE LA AV 6 DE CANTO GRANDE - AL COSTADO DEL PLAY PARK (PARQUE BOLOGNESI)","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.97389819859523,"lon":-77.00615208127309},{"id":411,"abr":"AVFW","dir":"MZ. B1 LT. 25 URBANIZACIÓN LOS PINOS SAN JUAN DE LURIGANCHO, REF. AV. FERNANDO WIESSE - CERCA A LA ESTACIÓN SAN MARTÍN","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.973859486208,"lon":-76.999139704875},{"id":439,"abr":"BAY","dir":"AV. FERNANDO WIESSE MZ. E8. LOTE 38B, MARISCAL CÁCERES BAYOVAR - SAN JUAN DE LURIGANCHO - LIMA, REF. AUXILIAR PRÓCERES DE LA INDEPENDENCIA, AL FRENTE DE LA UNIVERSIDAD SAN MARCOS – AGROINDUSTRIAL","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.9526493280063,"lon":-76.9868396646944},{"id":453,"abr":"CAMP","dir":"AV. MALECÓN CHECA MZ. B LT. 7, URB. CAMPOY, SAN JUAN DE LURIGANCHO, REF. A 1 CDRA. DEL CRUCE DE AV. MALECÓN CHECA CON AV. SAN MARTÍN","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-12.02468494055596,"lon":-76.96870763756485},{"id":537,"abr":"AVDO","dir":"PROGRAMA CIUDAD MRCAL. CACERES, SECTOR III MZ. Q8 LT. 11 SAN JUAN DE LURIGANCHO - LIMA, REF. A MEDIA CDRA. DEL CRUCE DE AV. DEL MERCADO CON AV. AMPLIACION OESTE","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.93887049947234,"lon":-76.9899343671839},{"id":553,"abr":"ZRT","dir":"JR. CHINCHAYSUYO 468 ZARATE, SAN JUAN DE LURIGANCHO - LIMA, REF. A 1 CDRA. DE TIENDAS 3 A","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-12.023579,"lon":-77.000722},{"id":562,"abr":"AVCRAL","dir":"AV. CENTRAL MZ R9 LOTE 3 PROGRAMA CIUDAD MRCAL. CACERES, SECTOR II, BARRIO 3, GRUPO RESIDENCIAL R - SAN JUAN DE LURIGANCHO, REF. EN MEDIO DEL CRUCE CON LAS AV. EL MURO Y AMPLIACION ESTE","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.948238651609,"lon":-76.97919847596},{"id":563,"abr":"AVSRL","dir":"AV. SANTA ROSA DE LIMA MZ. D LT. 4 - AAHH 2 DE SETIEMBRE - SAN JUAN DE LURIGANCHO, REF. A TRES CDRAS. DEL CRUCE CON AV. EL SOL","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.98966604407686,"lon":-76.99894440000024},{"id":619,"abr":"AV.MCON","dir":"AV. MALECÓN MIGUEL CHECA EGUIGUREN N° 167 Y 169 DE LA URB. ZÁRATE, SJL - LIMA, REF. ESQUINA CON AV. GRAN CHIMÚ","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-12.03068626503971,"lon":-77.01069288124661},{"id":626,"abr":"AVCVINSJL","dir":"AV. CIRCUNVALACIÓN MZ. B-5 LT. 20 AA. HH. SARGENTO FERNANDO LORES TENAZOA COMUNA 20, SAN JUAN DE LURIGANCHO - LIMA, REF. A DOS CDRAS. DEL COLEGIO RAMIRO PRIALE","lugar":"LIMA-LIMA-SAN JUAN DE LURIGANCHO","lat":-11.97117157272077,"lon":-76.9893916747466}],"SAN JUAN DE MIRAFLORES":[{"id":97,"abr":"SJM","dir":"AV. DE LOS HÉROES N° 228 - SAN JUAN DE MIRAFLORES - (ESTACIÓN ATOCONGO)","lugar":"LIMA-LIMA-SAN JUAN DE MIRAFLORES","lat":-12.1518357,"lon":-76.9781867},{"id":246,"abr":"SJM.HOSP","dir":"AV. LOS HÉROES 1140 - SJM, REFERENCIA: UNA CDRA. ANTES DEL HOSPITAL MARÍA AUXILIADORA","lugar":"LIMA-LIMA-SAN JUAN DE MIRAFLORES","lat":-12.158926,"lon":-76.960685},{"id":380,"abr":"AV.CA","dir":"AV. CANEVARO 336 - A, REF. A 2 CUADRAS DE LA AV. VARGAS MACHUGA  Y A UNA CUADRA DE LA FISCALÍA PROVINCIAL PENAL DE S.J.M.","lugar":"LIMA-LIMA-SAN JUAN DE MIRAFLORES","lat":-12.16633629086516,"lon":-76.9690565560943},{"id":382,"abr":"PAM ALT","dir":"AV. ALMIRANTE MIGUEL GRAU MZ. Y3 LT. 29,PAMPLONA ALTA - SAN JUAN DE MIRAFLORES - LIMA, REF. A MEDIA CDRA. DEL MERCADO OLLANTAY PAMPLONAALTA","lugar":"LIMA-LIMA-SAN JUAN DE MIRAFLORES","lat":-12.1367497811897,"lon":-76.9658882149969},{"id":589,"abr":"AVSJN","dir":"AV. SAN JUAN MZ. 24 LT. 1, SECT. NUEVO HORIZONTE, PP. JJ PAMPLONA ALTA - SAN JUAN DE MIRAFLORES, REF. A 3 CDRAS. DEL CRUCE CON AV. SALVADOR ALLENDE","lugar":"LIMA-LIMA-SAN JUAN DE MIRAFLORES","lat":-12.1462220555428,"lon":-76.9669646},{"id":694,"abr":"AVPCSRS","dir":"AV. LOS PRECURSORES MZ. B LT. 17 AA.HH EL INTI, SAN JUAN DE MIRAFLORES - LIMA - LIMA, REF. A 1 CDRA. DEL CRUCE CON AV. LOS PRÓCERES","lugar":"LIMA-LIMA-SAN JUAN DE MIRAFLORES","lat":-12.187290105723,"lon":-76.981656592911}],"SAN MARTIN DE PORRES":[{"id":68,"abr":"SMP.fio","dir":"AV. MIGUEL ANGEL N° 235 - URB. FIORI 4TA ETAPA MZ. N-1 LT. 04 U.I N°6, SAN MARTÍN DE PORRES - LIMA, REF. A 1 CDRA. DEL CRUCE CON AV. MARCO POLO","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.0098736818125,"lon":-77.05573138335198},{"id":106,"abr":"CCA.SMP","dir":"AV. CANTA CALLAO, MZ. A LT. 3 URB. ARIZONA - 2DA ETAPA  ","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.97783423,"lon":-77.09336287},{"id":107,"abr":"CCACAL","dir":"AV. ALEJANDRO BERTELLO BOLLATI MZ. H LT. 2-A - ASOC. DE VIV. SAN REMO II ETAPA, SAN MARTÍN DE PORRES - LIMA - LIMA, REF. A MEDIA CDRA. DEL CRUCE CON AV. CANTA CALLAO","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.995717209191,"lon":-77.113550598391},{"id":193,"abr":"PROC.SMP","dir":"AV. PRÓCERES N° 588 URB. COVICEM, REF. A 2 CDRAS. DE TOMÁS VALLE ","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.01450065585205,"lon":-77.08699865886146},{"id":224,"abr":"SMP.PERU","dir":" Av. Perú 1589, San Martin de Porres -  Lima. Referencia: a dos cuadras del CruCe con la Av. Canadá.","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.0327011,"lon":-77.0626605},{"id":285,"abr":"AV.PER36","dir":"AV. LIMA 3899 - SMP, REF. A 3 CDRAS. DEL TOTTUS DE QUILCA CON AV. LIMA","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.02842090715659,"lon":-77.0905094113077},{"id":307,"abr":"av.car23","dir":"AV. CARLOS IZAGUIRRE SUB LT. 8, MZ. C - ASOC. DE VIV. LOS NISPEROS, REFERENCIA: ENTRE AV. 12 DE OCTUBRE Y AV. SANTA ROSA","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.99001,"lon":-77.09459},{"id":387,"abr":"AVGERUNGR","dir":"AV. GERARDO UNGER 6475, URB. SANTA LUISA, 1RA ETAPA, S.M.P., REF. ESQUINA CON AV. 22 DE AGOSTO, LÍMITE CON COMAS / A UNA CDRA. Y MEDIA DE LA COMISARIA SANTA LUZMILA","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.94597458951921,"lon":-77.0665273461935},{"id":389,"abr":"GRAGURRE","dir":"AV. GERMAN AGUIRRE UGARTE 649 URB. SAN GERMAN - SAN MARTIN DE PORRES, REF. A LA ALTURA DE LA CUADRA 6 DE LA AV. GERMAN AGUIRRE Y A 3 CUADRAS DE AV. TOMAS VALLE","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.01520062837022,"lon":-77.07138320411397},{"id":431,"abr":"JSGDA","dir":"AV. JOSÉ GRANDA 3826 DE LA URB. CONDEVILLA SEÑOR Y VALDIVIESO MZ. M7 LT 20, 2 ETAPA, 2 SECTOR - S.M.P. , REF.  ENTRE AV. CONDEVILLA Y AV. LOS PRÓCERES","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.02056124415257,"lon":-77.08705644110377},{"id":457,"abr":"AVDO14","dir":"AV. LOS DOMINICOS 1460 - URB. LOS CIPRESES MZ. Z LT. 4 - SAN MARTÍN DE PORRES, REF. A UNA CDRA. DEL CRUCE CON AV. SANTA ROSA AL LADO DEL MERCADO LOS CIPRESES","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.00023669998434,"lon":-77.10181607059472},{"id":462,"abr":"AVJGRA","dir":"AV. JOSE GRANDA 2546 - SAN MARTIN DE PORRES  -LIMA - LIMA, REF. A UNA CDRA. DEL ÓVALO JOSE GRANDA Y AV. UNIVERSITARIA","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.0266539350006,"lon":-77.07307865890112},{"id":507,"abr":"AVCLO","dir":"AV. CANTA CALLAO MZ. A LT. 3 ASOC. BRISAS SANTA ROSA 1RA ETAPA, REF. A MEDIA CDRA. DEL COLEGIO AMISTAD Y/O A CUATRO CDRAS. DE LA AV. CARLOS IZAGUIRRE","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.985684244067,"lon":-77.102068570552},{"id":539,"abr":"AVIA","dir":"AV. UNIVERSITARIA 1619 - URB. MARIA GRACIA DE ANTARES MZ. B LT. 25 – SAN MARTIN DE PORRES - LIMA, REF. FRENTE AL PLAZA VEA DE UNIVERSITARIA CON TOMAS VALLE","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-12.010046601589,"lon":-77.081589491522},{"id":697,"abr":"AVCTL","dir":"AV. CENTRAL MZ. A LT. 07, URB. PROGRAMA DE VIVIENDA LUCERITO DE NARANJAL, SAN MARTÍN DE PORRES - LIMA - LIMA, REF. A 5 CDRAS. DEL CRUCE CON AV. TANTAMAYO","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.959972288593,"lon":-77.091252270512},{"id":706,"abr":"AVURIA","dir":"AV. UNIVERSITARIA MZ. D LT. 01 ASOCIACIÓN DE VIVIENDA SAN JUAN DE DIOS, SAN MARTÍN DE PORRES - LIMA - LIMA, REF. A 1 CDRA. DEL CRUCE CON AV. CARLOS IZAGUIRRE","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.993691495867,"lon":-77.08386534618},{"id":708,"abr":"PCSYO","dir":"AV. PACASMAYO MZ. A LT. 03 – URB. SANTA FE DE NARANJAL, SAN MARTÍN DE PORRES - LIMA - LIMA, REF. A 3 CDRAS. DEL CRUCE CON AV. EL SOL DE NARANJAL","lugar":"LIMA-LIMA-SAN MARTIN DE PORRES","lat":-11.971120370669,"lon":-77.100521064793}],"SANTA ANITA":[{"id":454,"abr":"AHRI","dir":"AV. HUAROCHIRÍ MZ. E1 LT. 03 - URB. LOS CEDROS SANTA ANITA, REF. CRUCE DE AV. HUAROCHIRÍ CON AV. SANTA ANA","lugar":"LIMA-LIMA-SANTA ANITA","lat":-12.04144417680665,"lon":-76.9522978000373},{"id":495,"abr":"SRATA","dir":"AV. SANTA ROSA #147 – URB. SANTA ANITA MZ. B1 LT. 08 UNIDAD INMOBILIARIA N° 1 - SANTA ANITA - LIMA, REF. A UNA CDRA. DE LA CARRETERA CENTRAL","lugar":"LIMA-LIMA-SANTA ANITA","lat":-12.05226684612813,"lon":-76.96148503819886},{"id":546,"abr":"HRISTA","dir":"AV. HUAROCHIRI MZ. D8 LT. 13, URB. LOS CEDROS, SANTA ANITA - LIMA, REF. A MEDIA CDRA. DEL CRUCE CON AV. SANTA ROSA","lugar":"LIMA-LIMA-SANTA ANITA","lat":-12.04180665513058,"lon":-76.95260172004053},{"id":653,"abr":"JRCRVJO","dir":"JR. CESAR VALLEJO 302 MZ. B1 LT. 02 URB UNIVERSAL, SANTA ANITA- LIMA-LIMA, REF. A 1 CDRA. DEL CRUCE CON AV. TUPAC AMARU","lugar":"LIMA-LIMA-SANTA ANITA","lat":-12.04326750269462,"lon":-76.97980031394222}],"SANTA ROSA":[{"id":369,"abr":"ACN","dir":"MZ. L 23 URB. COOVITIOMAR,  - SANTA ROSA - LIMA, REF. CRUCE DE INGRESO A SANTA ROSA Y/O AL COSTADO DE IMAGEN DE SANTA ROSA","lugar":"LIMA-LIMA-SANTA ROSA","lat":-11.785832663255,"lon":-77.154776871103}],"SANTIAGO DE SURCO":[{"id":151,"abr":"HIGUE","dir":"Calle Barlovento N° 134 REFERENCIA: A 3 CDRAS DE POLVOS ROSADOS, CERCA AL ÓVALO HIGUERETA, surco","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.128290656591,"lon":-76.999440079644},{"id":191,"abr":"SANT.SURC","dir":"Av. Primavera Nº 120 Tda. A-21 – Urb. Tambo de Monterrico","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.11155055108042,"lon":-76.99288637421152},{"id":261,"abr":"AV.PRIM","dir":"AV. PRIMAVERA N° 1314, URB. C.C. MONTERRICO - SURCO, REFERENCIA: CRUCE JR. EL POLO","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.11012859255803,"lon":-76.97482357045575},{"id":283,"abr":"AG1","dir":"AV. PRIMAVERA 264 TDA 187 C.C. CHACARILLA – SANTIAGO DE SURCO - LIMA - LIMA, REF. C.C. CHACARILLA PRIMER PISO (PUERTA PRINCIPAL DEL CENTRO COMERCIAL)","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.11136311804378,"lon":-76.9913844045743},{"id":383,"abr":"smpuma ","dir":"AV. SAN JUAN MZ A LOTE 01 MATEO PUMACAHUA - SURCO, REF. A 2 CUADRAS DE LA AV. TUPAC AMARU ENTRE EL LÍMITE DE CHORRILLOS Y SURCO","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.19108002284478,"lon":-76.98405895275964},{"id":437,"abr":"AVTOMARS","dir":"AV. TOMÁS MARSANO 3767 - SANTIAGO DE SURCO, REF. A MEDIA CUADRA DE LA ESTACIÓN DE TREN AYACUCHO","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.13580473632657,"lon":-76.99589010595446},{"id":578,"abr":"AVTMSNO","dir":"AV. SANTIAGO DE SURCO Nº 4348, URBANIZACIÓN LA VIRREYNA, SANTIAGO DE SURCO - LIMA, REF. AL LADO DE INTECI SEDE SURCO","lugar":"LIMA-LIMA-SANTIAGO DE SURCO","lat":-12.14075536666277,"lon":-76.99291252944776}],"SURQUILLO":[{"id":111,"abr":"REPPAN","dir":"AV REPÚBLICA DE PANAMÁ N° 5115, REFERENCIA: costado del grifo Repsol.","lugar":"LIMA-LIMA-SURQUILLO","lat":-12.1155255,"lon":-77.01815066},{"id":278,"abr":"ARAMBU","dir":"AV. ARAMBURÚ 808, REFERENCIA: A 2 CDRAS. DE LA AV. PANAMÁ","lugar":"LIMA-LIMA-SURQUILLO","lat":-12.102527,"lon":-77.022326},{"id":432,"abr":"PRALSQ","dir":"LT. 12 MZ. G, AV. PRINCIPAL 995 (EX AV. UNO) URB. LOS SAUCES 2DA ETAPA, SURQUILLO, REF. CRUCE CON A. MANUEL VILLARÁN","lugar":"LIMA-LIMA-SURQUILLO","lat":-12.120399751438,"lon":-77.003503247772}],"VILLA EL SALVADOR":[{"id":95,"abr":"ces","dir":"AV. CESAR VALLEJO, MZ. F LT. 1 - SECT. 2, REFERENCIA: FRENTE A ESSALUD, AL COSTADO DEL MERCADO VILLA SUR","lugar":"LIMA-LIMA-VILLA EL SALVADOR","lat":-12.21071898339341,"lon":-76.9327330431671},{"id":254,"abr":"AVPAS","dir":"MZ. B LT. 3 BARRIO 3 SECTOR 2 - 4TA ETAPA - VES, REFERENCIA: POR EL ÓVALO CERRO LOMAS, FRENTE AL COLEGIO VIRGEN DEL ROSARIO","lugar":"LIMA-LIMA-VILLA EL SALVADOR","lat":-12.24227874826065,"lon":-76.92582672867127},{"id":378,"abr":"OVM","dir":"AV. PASTOR SEVILLA SECT. 6 - GP 7 - MZ. A - LOTE 05  - V.E.S., REF. A 2 CUADRAS DEL ÓVALO MARIÁTEGUI CON 3 DE OCTUBRE","lugar":"LIMA-LIMA-VILLA EL SALVADOR","lat":-12.2227719947757,"lon":-76.94317697476002},{"id":379,"abr":"01MAY","dir":"AV. 01DE MAYO 1 SECT GP 23 - A MZ N LOTE 13 - V.E.S., REF. AV. PASTOR SEVILLA CON AV. 1 DE MAYO A 2 CUADRAS DEL HOSPITAL DE LA SOLIDARIDAD POR LA RUTA C","lugar":"LIMA-LIMA-VILLA EL SALVADOR","lat":-12.19781345206759,"lon":-76.95645150975598},{"id":673,"abr":"PS","dir":"test sistemas","lugar":"LIMA-LIMA-VILLA EL SALVADOR","lat":-16.414719927538,"lon":-76.992912529448}],"VILLA MARIA DEL TRIUNFO":[{"id":45,"abr":"VMT","dir":"AV. PACHACUTEC 6779, MZ. N, LT. 20, VILLA MARIA DEL TRIUNFO - REFERENCIA: A UNA CDRA. DEL GRIFO REPSOL LAS CONCHITAS","lugar":"LIMA-LIMA-VILLA MARIA DEL TRIUNFO","lat":-12.208631,"lon":-76.9259818},{"id":185,"abr":"pesq","dir":"AV. PACHACUTEC N° 3548, REFERENCIA: FRENTE A REAL PLAZA, A 1 CDRA. DE MAYORSA","lugar":"LIMA-LIMA-VILLA MARIA DEL TRIUNFO","lat":-12.17908353510596,"lon":-76.94455568962945},{"id":215,"abr":"LIM","dir":"AV. LIMA 2208 JOSÉ GÁLVEZ- VILLA MARÍA  DEL TRIUNFO, REFERENCIA: A DOS CDRAS. DE LA CURVA JOSÉ GÁLVEZ","lugar":"LIMA-LIMA-VILLA MARIA DEL TRIUNFO","lat":-12.226053,"lon":-76.908879},{"id":381,"abr":"AVM","dir":"AV VILLA MARIA  MZ. G12 LT. 9 - B PS 1 SECT. VILLA MARIA DEL TRIUNFO, REF. AV. VILLA MARIA  A 2 CUADRAS DE LA MUNICIPALIDAD DE VMT Y AL COSTADO DE ESSALUD","lugar":"LIMA-LIMA-VILLA MARIA DEL TRIUNFO","lat":-12.16005416739874,"lon":-76.94150305828285},{"id":627,"abr":"AV26OV","dir":"AV. 26 DE NOVIEMBRE, 1728B - 1728C MZ. 90 SUB LOTE. 19B PUEBLO JOVEN NUEVA ESPERANZA, VILLA MARIA DEL TRIUNFO - LIMA, REF. A 3 CDRAS. DEL MERCADO VIRGEN DE LOURDES","lugar":"LIMA-LIMA-VILLA MARIA DEL TRIUNFO","lat":-12.16755252598657,"lon":-76.92398425823932}]},"OYON":{"CHURIN":[{"id":691,"abr":"CHRN","dir":"AV. VÍA DE AVITAMIENTO N° N/S CHURÍN - OYÓN - LIMA, REF. A MEDIA CDRA. DE LA PLAZA DE ARMAS Y DE LA MUNICIPALIDAD ","lugar":"LIMA-OYON-CHURIN","lat":-10.80683461731783,"lon":-76.87611109999513}]}},"LORETO":{"ALTO AMAZONAS":{"YURIMAGUAS":[{"id":234,"abr":"YURIM","dir":"CALLE JORGE CHÁVEZ N° 300, REFERENCIA: ESQUINA CON PROGRESO, AL COSTADO DE ENAPU","lugar":"LORETO-ALTO AMAZONAS-YURIMAGUAS","lat":-5.8863186,"lon":-76.1105129},{"id":252,"abr":"PTOYI","dir":"Shalom","lugar":"LORETO-ALTO AMAZONAS-YURIMAGUAS","lat":0,"lon":0}]},"MAYNAS":{"IQUITOS":[{"id":52,"abr":"IQU","dir":"Jr. Francisco Bolognesi Nro 203 - 215  IQUITOS.  REFERENCIA : esquina con Putumayo","lugar":"LORETO-MAYNAS-IQUITOS","lat":-3.7468824,"lon":-73.2484034},{"id":364,"abr":"IQUIT","dir":".......","lugar":"LORETO-MAYNAS-IQUITOS","lat":0,"lon":0},{"id":460,"abr":"IQJRPAB","dir":"JR. PABLO ROSSELL 590 CON NANAY, REF. CRUCE CON AV. NANAY FRENTE AL INSTITUTO CEPRO AMÉRICA COMPUTER","lugar":"LORETO-MAYNAS-IQUITOS","lat":-3.7421506375217,"lon":-73.24346254642},{"id":493,"abr":"IQTS","dir":"Aeropuerto Coronel Francisco secada Vignetta","lugar":"LORETO-MAYNAS-IQUITOS","lat":null,"lon":null},{"id":624,"abr":"IQITS","dir":"AV.  TUPAC AMARU CON - CALLE LOURDES DE LEÓN #479 IQUITOS MAYNAS - LORETO, REF. FRENTE A LA BOTICA THIAGOFAMA","lugar":"LORETO-MAYNAS-IQUITOS","lat":-3.7550842625749,"lon":-73.269944604887}],"IQUITOS SAN JUAN BAUTISTA":[{"id":497,"abr":"SJBA","dir":"AV. PARTICIPACIÓN PARCELA 9-A SAN JUAN BAUTISTA - MAYNAS - LORETO, REF. FRENTE AL LAVADERO OSITO Y A MEDIA CDRA. DEL PARQUE 1 DE ENERO","lugar":"LORETO-MAYNAS-IQUITOS SAN JUAN BAUTISTA","lat":-3.7793125277868,"lon":-73.27991317086},{"id":594,"abr":"AVJSQNS","dir":"AV. JOSÉ ABELARDO QUIÑONES # 2475 SAN JUAN BAUTISTA - MAYNAS - LORETO, REF. FRENTE A LA UNIVERSIDAD CIENTÍFICA DEL PERÚ (UCP)","lugar":"LORETO-MAYNAS-IQUITOS SAN JUAN BAUTISTA","lat":-3.7704160308984,"lon":-73.281970858895},{"id":678,"abr":"CTRAIQTS","dir":"CARRETERA IQUITOS NAUTA, S/N MZ. K - LT. 20, SAN JUAN BAUTISTA - MAYNAS - LORETO, REF. AL COSTADO DE LA DISTRIBUIDORA AMAZON GAS.","lugar":"LORETO-MAYNAS-IQUITOS SAN JUAN BAUTISTA","lat":-3.7960541680007,"lon":-73.301555482859}],"PUNCHANA":[{"id":605,"abr":"PCHNA","dir":"CALLE BORJA N°648 PUNCHANA - MAYNAS - LORETO, REF. AL COSTADO DE LA FARMACIA SAN CARLOS CENTRO MÉDICO","lugar":"LORETO-MAYNAS-PUNCHANA","lat":-3.7299283680047,"lon":-73.247475881523}]}},"MADRE DE DIOS":{"TAHUAMANU":{"IBERIA":[{"id":558,"abr":"IBRA","dir":"AV. JORGE CHAVEZ MZ. H1 SUB LOTE 11-B, IBERIA - TAHUAMANU - MADRE DE DIOS, REF. A UNA CDRA. DE LA EMPRESA REAL DORADO / A UNA CDRA. Y MEDIA DE LA AV JOSE ALDAMIZ","lugar":"MADRE DE DIOS-TAHUAMANU-IBERIA","lat":-11.406554280783,"lon":-69.487970049644}]},"TAMBOPATA":{"INAMBARI":[{"id":299,"abr":"MAZU","dir":"AV. LOS PIONEROS, LT. 2 Y 3, INAMBARI – TAMBOPATA - MADRE DE DIOS, REF. AL COSTADO DEL TERMINAL TERRESTRE DE MAZUKO / AL PIE DE LA CARRETERA AL RIO INAMBARI","lugar":"MADRE DE DIOS-TAMBOPATA-INAMBARI","lat":-13.09894652177176,"lon":-70.36991732806855}],"LAS PIEDRAS":[{"id":639,"abr":"ELTFO","dir":"AV. INTEROCEANICA KM. 1 , LAS PIEDRAS - TAMBOPATA - MADRE DE DIOS, REF. AL COSTADO DEL GRIFO VIRGEN NATIVIDAD","lugar":"MADRE DE DIOS-TAMBOPATA-LAS PIEDRAS","lat":-12.580879,"lon":-69.172572}],"TAMBOPATA":[{"id":280,"abr":"PUE.MA","dir":"AV. LA JOYA N° 122 - PTO. MALDONADO, REFERENCIA: FRENTE AL ÓVALO DE LOS OTORONGOS","lugar":"MADRE DE DIOS-TAMBOPATA-TAMBOPATA","lat":-12.599565,"lon":-69.1949842},{"id":487,"abr":"PTDO","dir":"Aeropuerto Internacional Padre Aldamiz","lugar":"MADRE DE DIOS-TAMBOPATA-TAMBOPATA","lat":0,"lon":0},{"id":516,"abr":"JRTCSO","dir":"AV. 15 DE AGOSTO N° 529, TAMBOPATA - TAMBOPATA - MADRE DE DIOS, REF. A ESPALDAS DEL COLEGIO CARLOS FERMIN FITZCARRALD / CRUCE CON JR. ICA","lugar":"MADRE DE DIOS-TAMBOPATA-TAMBOPATA","lat":-12.590861310162,"lon":-69.189889605433},{"id":617,"abr":"CVLCN","dir":"AV. CIRCUNVALACION MZ. C LT. 01, TAMBOPATA - TAMBOPATA - MADRE DE DIOS, REF. A DOS CDRAS. DE LA CARRETERA INTEROCEANICA SUR / CRUCE CON JR. LAS MERCEDES CABELLO","lugar":"MADRE DE DIOS-TAMBOPATA-TAMBOPATA","lat":-12.581888331368,"lon":-69.202891221518}]}},"MOQUEGUA":{"ILO":{"ILO":[{"id":20,"abr":"ILO","dir":"URB. CIUDAD DEL PESCADOR, MZ. J LT. 18-19, REFERENCIA: A DOS CUADRAS DEL PODER JUDICIAL","lugar":"MOQUEGUA-ILO-ILO","lat":-17.646726685783,"lon":-71.332508637667},{"id":308,"abr":"ILOPUERTO","dir":"JR. CALLAO PROLONGACIÓN MZ. N, LT. 19 - A, REFERENCIA: A MEDIA CDRA. DE LA COOPERATIVA CUAJONE","lugar":"MOQUEGUA-ILO-ILO","lat":-17.644710705275,"lon":-71.34212390418}],"PACOCHA":[{"id":515,"abr":"ICHA","dir":"AGRUPACIÓN DE FAMILIAS PUEBLO NUEVO M.Z E2 LT. COM2A SECT. II – ILO - MOQUEGUA, REF. AL COSTADO DEL BANCO BCP","lugar":"MOQUEGUA-ILO-PACOCHA","lat":-17.614692860029,"lon":-71.338305548056}]},"MARISCAL NIETO":{"MOQUEGUA":[{"id":41,"abr":"MOQ","dir":"Av. Santa Fortunata Mz. N5 Lt. 10 Asoc. Villa Moquegua San Antonio. referencia : A una cuadra de la Casa de la Mujer","lugar":"MOQUEGUA-MARISCAL NIETO-MOQUEGUA","lat":-17.2102839,"lon":-70.9480949},{"id":366,"abr":"CLLMA","dir":"CALLE LIMA 190 - MARISCAL NIETO - MOQUEGUA, REF. A DOS CUADRAS DEL PARQUE LOS HÉROES/ALAMEDA","lugar":"MOQUEGUA-MARISCAL NIETO-MOQUEGUA","lat":-17.194764722676,"lon":-70.938348672668},{"id":551,"abr":"QBRDA","dir":"SECTOR QUEBRADA LAS LECHUZAS MOQUEGUA CALLE N°1 MZ H LT. 04, MOQUEGUA - MARISCAL NIETO - MOQUEGUA, REF. QUEBRADA DE LECHUZAS","lugar":"MOQUEGUA-MARISCAL NIETO-MOQUEGUA","lat":-17.196494104692,"lon":-70.94804437675},{"id":642,"abr":"CHEN","dir":"MZ. C LT. 24 – ASOCIACIÓN CÉSAR VIZCARRA – CENTRO POBLADO CHEN CHEN , MOQUEGUA –MARISCAL NIETO – MOQUEGUA, REF. AL COSTADO DEL OVALO CHEN CHEN","lugar":"MOQUEGUA-MARISCAL NIETO-MOQUEGUA","lat":-17.199167770597,"lon":-70.922473397987}]}},"PASCO":{"OXAPAMPA":{"OXAPAMPA":[{"id":277,"abr":"OXA","dir":"MZ. 239 SUB LOTE H – 1 OXAPAMPA - OXAPAMPA - PASCO, REF. ENTRE AV. ANGÉLICA FREY Y JR. LIMA","lugar":"PASCO-OXAPAMPA-OXAPAMPA","lat":-10.582583283003,"lon":-75.398971637447}],"VILLA RICA":[{"id":281,"abr":"VILLRIC","dir":"AV. LEOPOLDO KRAUSSE N° 442 VILLA RICA - OXAPAMPA - PASCO, REF. ENTRE EL JR. POZUZO Y JR. COOPERATIVA, AL COSTADO DE LA NOTARÍA GUERRA Y A 20 METROS DE LA PLAZA PRINCIPAL","lugar":"PASCO-OXAPAMPA-VILLA RICA","lat":-10.735805270593,"lon":-75.268361100077}]},"PASCO":{"CHAUPIMARCA":[{"id":11,"abr":"CDP","dir":"JR. HUARICAPCHA S/N A.H. TUPAC AMARU CHAUPIMARCA, REFERENCIA: FRENTE AL NUEVO TERMINAL","lugar":"PASCO-PASCO-CHAUPIMARCA","lat":-10.686749,"lon":-76.246862}],"HUAYLLAY":[{"id":132,"abr":"HUAYL","dir":"calle Lima S/N Barrio Arenales  Huayllay  Pasco   - REFERENCIA: AL COSTADO DEL COLEGIO CESAR VALLEJO","lugar":"PASCO-PASCO-HUAYLLAY","lat":-11.0007095,"lon":-76.3672417}]}},"PIURA":{"AYABACA":{"AYABACA":[{"id":370,"abr":"AYCA","dir":"CALLE BOLOGNESI N° 136, REF. A 2 CUADRAS DE LA PLAZA DE ARMAS DE AYABACA","lugar":"PIURA-AYABACA-AYABACA","lat":-4.6400387456146,"lon":-79.714678136096}],"PAIMAS":[{"id":376,"abr":"PMAS","dir":"AV. SULLANA S/N, REF. FRENTE AL COMPLEJO EDUCATIVO JUAN VELASCO ALVARADO","lugar":"PIURA-AYABACA-PAIMAS","lat":-4.62382798467,"lon":-79.948503000001}]},"HUANCABAMBA":{"HUANCABAMBA":[{"id":422,"abr":"HBBA","dir":"AV. RAMON CASTILLA 0351 HUANCABAMBA - PIURA, REF. A 1 CUADRA DE LA CAPILLA RAMON CASTILLA","lugar":"PIURA-HUANCABAMBA-HUANCABAMBA","lat":-5.24390333549,"lon":-79.453353341105}]},"MORROPON":{"CHULUCANAS":[{"id":98,"abr":"CHL","dir":"JR. HUANCAVELICA N° 548   REFERENCIA : AL LADO DEL TERMINAL DE RONCO","lugar":"PIURA-MORROPON-CHULUCANAS","lat":-5.0955589,"lon":-80.1629195}],"MORROPON":[{"id":103,"abr":"MOR","dir":"JR. ADRIANZÉN N° 099, MORROPON - MORROPON - PIURA, REF, A ESPALDAS DE DEL TERMINAL TERRESTRE DE TRAMPSA","lugar":"PIURA-MORROPON-MORROPON","lat":-5.1891950678039,"lon":-79.972304929448}]},"PAITA":{"PAITA":[{"id":102,"abr":"PAIT","dir":"MZ. H LT. 14 URB. SOL Y MAR  - PAITA, REFERENCIA: AL COSTADO DE LA EMPRESA SAN MIGUEL","lugar":"PIURA-PAITA-PAITA","lat":-5.0867947730703,"lon":-81.093009488701}]},"PIURA":{"26 DE OCTUBRE":[{"id":10,"abr":"CAEMA","dir":"CALLE TRES N° 102, SUBLOTE N° 1D MZ. Y - ZONA INDUSTRIAL II, DISTRITO 26 DE OCTUBRE - REFERENCIA: AL COSTADO DE SENATI","lugar":"PIURA-PIURA-26 DE OCTUBRE","lat":-5.1799717074005,"lon":-80.652250843267},{"id":222,"abr":"PQUEPIU","dir":"URB. PARQUE INDUSTRIAL PIURA FUTURA MZ. G, LT. 1A. 26 DE OCTUBRE - PIURA, REFERENCIA: AL FRENTE DEL GRIFO PETRO PERÚ","lugar":"PIURA-PIURA-26 DE OCTUBRE","lat":-5.1605551169742,"lon":-80.690649236109},{"id":514,"abr":"AVGM","dir":"A.A.H.H. CONSUELO DE VELASCO 1 ETAPA SECTOR B MZ LT.18  26 DE OCTUBRE – PIURA, REF. CRUCE AV. CIRCUNVALACIÓN CON AV. GULLMAN AL COSTADO DE LA FERRETERIA LOS REYES","lugar":"PIURA-PIURA-26 DE OCTUBRE","lat":-5.1979627644128,"lon":-80.642655599997},{"id":543,"abr":"AVCION","dir":"URB. SANTA ROSA MZ. D LT. 7, SECT. 7, 26 DE OCTUBRE - PIURA. REF. AV. RAUL MATA LA CRUZ CON CIRCUNVALACIÓN AL FRENTE DE REPUESTOS FRANK|","lugar":"PIURA-PIURA-26 DE OCTUBRE","lat":-5.1891416643432,"lon":-80.665360286188}],"CASTILLA":[{"id":219,"abr":"CAST","dir":"AV. TACNA 503 CASTILLA - PIURA, REFERENCIA: FRENTE A UGEL DE CASTILLA","lugar":"PIURA-PIURA-CASTILLA","lat":-5.2024612,"lon":-80.6241167},{"id":245,"abr":"TCL","dir":"CARR. PANAMERICANA A-2 AH. ALMIRANTE MIGUEL GRAU I ETAPA, CASTILLA - PIURA - PIURA, REF. AL COSTADO DE CERÁMICAS SAN LORENZO","lugar":"PIURA-PIURA-CASTILLA","lat":-5.1904180356006,"lon":-80.603083300001}],"CATACAOS":[{"id":101,"abr":"CAT","dir":"AV. FRANCISCO BOLOGNESI MZ. 60 LT. 37 CATACAOS - PIURA - PIURA, REF. AL LADO DEL EX PRONEI","lugar":"PIURA-PIURA-CATACAOS","lat":-5.267972200001,"lon":-80.672388229458}],"LA UNION":[{"id":100,"abr":"UNI","dir":"AV. LIMA N° 590  REFERENCIA : frente a tiendas chancafe","lugar":"PIURA-PIURA-LA UNION","lat":-5.3993284,"lon":-80.742189}],"LAS LOMAS":[{"id":391,"abr":"LMS","dir":"JR. MIGUEL GRAU MZ. H LT. 7, LAS LOMAS - PIURA, REF. AL COSTADO DE CAJA HUANCAYO Y AL COSTADO DE COMISARIA LAS LOMAS","lugar":"PIURA-PIURA-LAS LOMAS","lat":-4.6565833861674,"lon":-80.243888252653}],"PIURA":[{"id":200,"abr":"aVLE","dir":"AV. MÁLAGA MZ. A LT.20 INT. 105 PIURA, REF. A MEDIA CUADRA DE HONDA DEL PERU S.A. EN EL CRUCE DE AV. LUIS EGUIGUREN CON SULLANA NORTE ","lugar":"PIURA-PIURA-PIURA","lat":-5.185472601712148,"lon":-80.63332306469526},{"id":208,"abr":"AVGRAU","dir":"Av. grau manzana N, lote 33 - urbanización la alborada. ref. Grau con marcavelica","lugar":"PIURA-PIURA-PIURA","lat":-5.1867475,"lon":-80.6547354},{"id":491,"abr":"PRA","dir":"Aeropuerto Internacional Guillermo Concha Ibérico","lugar":"PIURA-PIURA-PIURA","lat":null,"lon":null},{"id":613,"abr":"GFSPRA","dir":"AV. RAÚL MATA LA CRUZ LT. 11 MZ. C URB. LOS JARDINES - CORPIURA, - PIURA - PIURA - PIURA, REF. A UNA CDRA. DE LOS 2 GRIFOS EN TODA LA AV. RAÚL MATA LA CRUZ","lugar":"PIURA-PIURA-PIURA","lat":-5.166389,"lon":-80.653667}],"TAMBO GRANDE":[{"id":199,"abr":"TGRAND","dir":"AA. HH. EL HUERTO MZ. E LT. 08 TAMBO GRANDE – PIURA - PIURA, REF. ATRÁS DEL COLEGIO INA 54 AGROPECUARIO, A LA ALTURA DEL CAMPO CAMPESTRE RIVERA DEL RÍO","lugar":"PIURA-PIURA-TAMBO GRANDE","lat":-4.9350843412188,"lon":-80.34533475739}]},"SECHURA":{"SECHURA":[{"id":99,"abr":"SCH","dir":"AV. BAYOVAR N° 311  REFERENCIA : AL COSTADO DE ANTENA 10 RADIO","lugar":"PIURA-SECHURA-SECHURA","lat":-5.5556999,"lon":-80.81829}]},"SULLANA":{"BELLAVISTA":[{"id":362,"abr":"BSA","dir":"CALLE MOQUEGUA 381, BELLAVISTA, REF. REST. PARRILLADAS CHAVELOS","lugar":"PIURA-SULLANA-BELLAVISTA","lat":-4.8911773362203,"lon":-80.678927709773}],"IGNACIO ESCUDERO":[{"id":470,"abr":"IGESCU","dir":"AV. PANAMERICANA CALLE 26 LOTE 3, IGNACIO ESCUDERO - SULLANA - PIURA, REF. FRENTE A LA INSTITUCIÓN EDUCATIVA IGNACIO ESCUDERO","lugar":"PIURA-SULLANA-IGNACIO ESCUDERO","lat":-4.8464431521603,"lon":-80.873376309797}],"SULLANA":[{"id":35,"abr":"SUL","dir":"Carretera Panamericana Norte Nº 790 SULLANA   REFERENCIA : FRENTE AL COLEGIO CHIQUITITOS","lugar":"PIURA-SULLANA-SULLANA","lat":-4.908899,"lon":-80.697109},{"id":303,"abr":"ZONSULL","dir":"CTRA. SULLANA Nº S/N MZ. K, LT. 06 - ZONA INDUSTRIAL MUNICIPAL, REFERENCIA: AL COSTADO DEL HOTEL COCO SUITE","lugar":"PIURA-SULLANA-SULLANA","lat":-4.924883,"lon":-80.696031}]},"TALARA":{"EL ALTO":[{"id":133,"abr":"E.ALTO","dir":"AV. BOLOGNESI O-37 CENTRO EL ALTO, REFERENCIA: A ESPALDAS DE LA MUNICIPALIDAD DE EL ALTO","lugar":"PIURA-TALARA-EL ALTO","lat":-4.268178,"lon":-81.221744}],"LOS ORGANOS":[{"id":135,"abr":"ORG","dir":"Av. Panamericana Norte P-29 - URB. Cercado zona URBANA,  Referencia al frente de grifo de troncos o grifo San Pedro","lugar":"PIURA-TALARA-LOS ORGANOS","lat":-4.1747753095423,"lon":-81.123411684872}],"MANCORA":[{"id":152,"abr":"MANC","dir":"AV. GRAU NRO. 432 MÁNCORA - TALARA - PIURA, REF. FRENTE AL PARADERO DE AUTOS DE LOS ÓRGANOS EN TODA LA PANAMERICANA NORTE.","lugar":"PIURA-TALARA-MANCORA","lat":-4.1067198549527,"lon":-81.048832633167}],"PARINAS":[{"id":37,"abr":"TAL","dir":"ASOCIACIÓN CALIFORNIA C - 03 FRENTE A CARRETERA NEGRITOS, TALARA - PARIÑAS, REFERENCIA: AL COSTADO DEL RESTAURANTE MI TORETE","lugar":"PIURA-TALARA-PARINAS","lat":-4.5895156321892,"lon":-81.27349917493},{"id":599,"abr":"TLRATA","dir":"MZ. N-10 AA.HH 9 DE OCTUBRE TALARA ALTA, PARIÑAS - TALARA - PIURA, REF. A 1 CDRA. ANTES DE AMECFA","lugar":"PIURA-TALARA-PARINAS","lat":-4.591314005199,"lon":-81.252495670549},{"id":606,"abr":"AVTLRBJ","dir":"PARQUE 22 – 03 LATERAL. TALARA BAJA, PARIÑAS - TALARA - PIURA. REF. FRENTE A MINSA","lugar":"PIURA-TALARA-PARINAS","lat":-4.575510000001,"lon":-81.268615329431}]}},"PUNO":{"AZANGARO":{"AZANGARO":[{"id":506,"abr":"AZGRO","dir":"AV. PRÓCERES S/N, AZÁNGARO - PUNO, REF. A DOS CDRAS. DEL PARQUE DE LA MADRE / A ORILLAS DE LA MISMA AV. PROCERES","lugar":"PUNO-AZANGARO-AZANGARO","lat":-14.917112408676,"lon":-70.198471956773}]},"CHUCUITO":{"DESAGUADERO":[{"id":358,"abr":"DSRO","dir":"AV. 28 DE JULIO N° 564 - 566, CHUCUITO REF. A 50 MTRS. DEL BANCO DE LA NACION","lugar":"PUNO-CHUCUITO-DESAGUADERO","lat":-16.561694166328,"lon":-69.04113822944},{"id":705,"abr":"DSDRO","dir":"AV. PANAMERICANA N° 1158 - 1160, DESAGUADERO - CHUCUITO - PUNO, REF. AL COSTADO DEL GRIFO BARTOLOME","lugar":"PUNO-CHUCUITO-DESAGUADERO","lat":-16.554335117983,"lon":-69.042693675199}]},"EL COLLAO":{"ILAVE":[{"id":368,"abr":"IVE","dir":"JR. BOLOGNESI NRO. 866 BARRIO CRUZANI, EL COLLAO - PUNO, REF. A UNA CUADRA DEL COLISEO Y DEL CEMENTERIO DE ILAVE","lugar":"PUNO-EL COLLAO-ILAVE","lat":-16.082861100001,"lon":-69.644722199963}]},"MELGAR":{"AYAVIRI":[{"id":456,"abr":"AYV","dir":"JR. SANTA ROSA PROLONGACIÓN S/N MAGISTERIAL - PUNO - MELGAR - AYAVIRI, REF. A 50 METROS DEL ÓVALO, SALIDA A JULIACA","lugar":"PUNO-MELGAR-AYAVIRI","lat":-14.886554,"lon":-70.598362}]},"PUNO":{"PUNO":[{"id":33,"abr":"PUN","dir":"AV. COSTANERA N° 211 CON JR. LOS INCAS - PUNO","lugar":"PUNO-PUNO-PUNO","lat":-15.834283484814,"lon":-70.018396968946},{"id":547,"abr":"SLDO","dir":"URB. AZIRUNI TEPRO I ETAPA MZ. 18 LT. 52 JR LOS ROSALES – SALCEDO PUNO, REF. A UNA CDRA. DE LA AV. ESTUDIANTE / A DOS CDRAS. DE SENATI PUNO","lugar":"PUNO-PUNO-PUNO","lat":-15.871121071441,"lon":-69.996589930673},{"id":598,"abr":"ATPN","dir":"URB. SAN PEDRO-ALTO PUNO, AV LA CULTURA N° 160, PUNO - PUNO - PUNO, REF. A TRES CDRAS. DE LA AV. QUE VA A JULIACA / A DOS CDRAS. DEL GRIFO BRONCO","lugar":"PUNO-PUNO-PUNO","lat":-15.817227035489,"lon":-70.0309222},{"id":679,"abr":"AV4NOV","dir":"AV. 4 DE NOVIEMBRE N° 474-B Y 486-B BARRIO SANTA ROSA, PUNO - PUNO – PUNO, REF. A UNA CDRA. DE SUNAFIL","lugar":"PUNO-PUNO-PUNO","lat":-15.855167345042,"lon":-70.015778470551}]},"SAN ROMAN":{"JULIACA":[{"id":29,"abr":"JUL","dir":"Jr. Mama Ocllo 915 - B ( Cruce con Jr Azángaro )","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.490571,"lon":-70.119498},{"id":398,"abr":"AHNE","dir":"JR. SILLUSTANI N° 202, SAN ROMAN - JULIACA, REF. A 3 CDRAS. DEL HOSPITAL CARLOS MONGE MEDRANO","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.480556232291,"lon":-70.117833304412},{"id":399,"abr":"SLMS","dir":"JR. PORVENIR N° 228 URB. LAS MERCEDES, SAN ROMAN - PUNO, REF. A UNA CDRA. DE LA AV. CIRCUNVALACION OESTE - A UNA CDRA. DEL TERMINAL LAS MERCEDES","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.483920800815,"lon":-70.141390859993},{"id":485,"abr":"JCA","dir":"Aeropuerto Internacional Inca Manco Capac","lugar":"PUNO-SAN ROMAN-JULIACA","lat":null,"lon":null},{"id":513,"abr":"LPA","dir":"AV. LAMPA MZ. B2 LT. 3 URB. SANTA ADRIANA, JULIACA - SAN ROMÁN - PUNO, REF. A MEDIA CDRA. DE LA POSTA DE SALUD DE LA URB. SANTA ADRIANA","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.483557842074,"lon":-70.15544291753},{"id":535,"abr":"AVMTO","dir":"AV. MODESTO BORDA MZ. A LT. 04 URB. ARRABAL DON JULIO, JULIACA - SAN ROMAN - PUNO, REF. DOS CDRAS. ANTES DEL GRIFO BLANCO / A DOS CDRAS. DEL SALON DE EVENTOS PARAISO AZUL","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.507584214102,"lon":-70.108751042171},{"id":604,"abr":"AVICIA","dir":"AV. INDEPENDENCIA NRO. 1538 MZ. A1 LT. 04 URB. HORACIO ZEBALLOS GAMEZ, JULIACA - SAN ROMÁN - PUNO, AL FRENTE DEL GRIFO SAN CARLOS / CRUCE CON JR 21 DE ENEROREF.","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.467833299999,"lon":-70.137583970548},{"id":623,"abr":"JRAGTNGMRA","dir":"JR. AGUSTIN GAMARRA MZ. R1 LT. 09 URB. HUANCANE, JULIACA - SAN ROMÁN - PUNO, REF. A UNA CDRA. DE LA AV. HUANCANE / CRUCE CON JR. ALBERTO CUENTAS ZABALA","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.473583959348,"lon":-70.112417233275},{"id":657,"abr":"HRSPCO","dir":"AV. HÉROES DE LA GUERRA DEL PACIFICO KM 3.5, JULIACA - SAN ROMÁN - PUNO, REF. AL FRENTE DEL GRIFO LEON SERVICE","lugar":"PUNO-SAN ROMAN-JULIACA","lat":-15.507667505495,"lon":-70.165000342215}]}},"SAN MARTIN":{"BELLAVISTA":{"BELLAVISTA":[{"id":359,"abr":"SMBTA","dir":"AV. LIMA S/N C-4 MZ 71 – LOTE A – TERCER PISO, BELLAVISTA- BELLAVISTA- SAN MARTIN, REF. ESPALDAS DE FERRETERÍA EL IMAN","lugar":"SAN MARTIN-BELLAVISTA-BELLAVISTA","lat":-7.0574980035849,"lon":-76.590528470552}]},"EL DORADO":{"SAN JOSE DE SISA":[{"id":616,"abr":"SJSSA","dir":"JR. BOLOGNESI CDRA 6, SAN JOSE DE SISA - EL DORADO - SAN MARTIN, REF. ALTURA DE JR LAMAS Y JR ELADIO TAPULLIMA","lugar":"SAN MARTIN-EL DORADO-SAN JOSE DE SISA","lat":-6.6129721999995,"lon":-76.691166029444}]},"HUALLAGA":{"SAPOSOA":[{"id":668,"abr":"SPSA","dir":"AV. LORETO S/N - SAPOSOA - EL HUALLAGA - SAN MARTIN, REF. EN EL HOSTAL EL GATO, A UNA CDRA. Y MEDIA DE LA PLAZA DE ARMAS","lugar":"SAN MARTIN-HUALLAGA-SAPOSOA","lat":-6.9342505921754,"lon":-76.772416367679}]},"LAMAS":{"LAMAS":[{"id":318,"abr":"LAMAS","dir":"JR. 16 DE OCTUBRE N°1137, REFERENCIA: A LA ESPALDA DEL GRIFO VARGAS TELLO","lugar":"SAN MARTIN-LAMAS-LAMAS","lat":-6.4187426338969,"lon":-76.517489745486}]},"MARISCAL CACERES":{"JUANJUI":[{"id":232,"abr":"JJUI","dir":"CARRETERA FERNANDO TERRY KM. 1 S/N REFERENCIA: AL COSTADO DE PARADERO DE AUTOS HUALLAGA EXPRESS","lugar":"SAN MARTIN-MARISCAL CACERES-JUANJUI","lat":-7.1779108,"lon":-76.737078},{"id":644,"abr":"JNJICTRO","dir":"JR. SARGENTO LOREZ N° 568, JUANJUI - MARISCAL CÁCERES - SAN MARTIN, REF. A UNA CDRA. DE DEL JR. HUALLAGA CDRA. 11 Y A UNA CDRA. DE IMPORTACIONES PATRICIA","lugar":"SAN MARTIN-MARISCAL CACERES-JUANJUI","lat":-7.1799173139874,"lon":-76.731222452114}]},"MOYOBAMBA":{"MOYOBAMBA":[{"id":14,"abr":"MOY","dir":"JR. 20 de abril  2138 -  REFERENCIA : Altura de la  pampa del  hambre","lugar":"SAN MARTIN-MOYOBAMBA-MOYOBAMBA","lat":-6.0465912,"lon":-76.9725996},{"id":640,"abr":"MYBCRFFLM","dir":"JR. SERAFÍN FILOMENO N°279, MOYOBAMBA - MOYOBAMBA - SAN MARTÍN, REF. A UNA CUADRA IMEDIA DEL CUMO (CENTRO CULTURAL DE MOYOBAMBA)","lugar":"SAN MARTIN-MOYOBAMBA-MOYOBAMBA","lat":-6.0335151300825,"lon":-76.971054929448}],"SORITOR":[{"id":615,"abr":"STRSMM","dir":"JR. MIGUEL GRAU CDRA 7 N°741 MZ.05 LTE.16B, SORITOR - MOYOBAMBA - SAN MARTÍN, REF. A MEDIA CDRA. DE LA IGLESIA ASAMBLEAS DE DIOS","lugar":"SAN MARTIN-MOYOBAMBA-SORITOR","lat":-6.1398617667064,"lon":-77.1038333}]},"PICOTA":{"PICOTA":[{"id":357,"abr":"PCTA","dir":"AV. FERNANDO BELAUNDE TERRY LOTE 2B PICOTA - PICOTA - SAN MARTIN. REF, A UNA CDRA. DE LA COMISARIA DE PICOTA SALIDA A BELLAVISTA","lugar":"SAN MARTIN-PICOTA-PICOTA","lat":-6.9200547910068,"lon":-76.33327738221}]},"RIOJA":{"ELIAS SOPLIN VARGAS":[{"id":658,"abr":"SGDAJSLN","dir":"JR. LIMA MZ. 43 LT. 08 , ELIAS SOPLIN VARGAS - RIOJA - SAN MARTIN, REF. AL COSTADO DE TIENDA CHINGAY","lugar":"SAN MARTIN-RIOJA-ELIAS SOPLIN VARGAS ","lat":-5.9887225879191,"lon":-77.279860552607}],"NUEVA CAJAMARCA":[{"id":32,"abr":"NCA","dir":"AV. CAJAMARCA NORTE MZ. 51 LT. 15, REFERENCIA: AL COSTADO DE ESSALUD","lugar":"SAN MARTIN-RIOJA-NUEVA CAJAMARCA","lat":-5.92927759481,"lon":-77.3132981226}],"PARDO MIGUEL":[{"id":416,"abr":"NJS","dir":"JR. MIGUEL GRAU 101 MZ. 34 LT. 6, PARDO MIGUEL - RIOJA - SAN MARTIN, REF. AV. MARGINAL CDRA 5","lugar":"SAN MARTIN-RIOJA-PARDO MIGUEL","lat":-5.739746366208,"lon":-77.501779316434}],"RIOJA":[{"id":85,"abr":"RIO","dir":"CTRA. FERNANDO BELAÚNDE TERRY N° 415, REFERENCIA: AL COSTADO DE LA CLÍNICA CHILCON HOPE","lugar":"SAN MARTIN-RIOJA-RIOJA","lat":-6.053861100001365,"lon":-77.16166602945009}]},"SAN MARTIN":{"LA BANDA DE SHILCAYO":[{"id":317,"abr":"BNDSHIL","dir":"JR. PERÚ N°186, REFERENCIA: A 2 CDRS. DE LA PLAZA DE LA BANDA DE SHILCAYO","lugar":"SAN MARTIN-SAN MARTIN-LA BANDA DE SHILCAYO","lat":-6.4914695349871,"lon":-76.35514024111}],"MORALES":[{"id":319,"abr":"TPTSGTO","dir":"JR. SARGENTO LOREZ N° 264, MORALES - SAN MARTIN, REF. A UNA CDRA. Y MEDIA DE LA PLAZA DE MORALES, FRENTE A VULCANO GAS","lugar":"SAN MARTIN-SAN MARTIN-MORALES","lat":-6.4774160027321,"lon":-76.385222238053}],"TARAPOTO":[{"id":38,"abr":"TPP","dir":"JR. ALFONSO UGARTE N°2283 - TARAPOTO - SAN MARTIN - SAN MARTIN, REF. FRENTE A LA CANCHA SINTÉTICO EL GOLAZO","lugar":"SAN MARTIN-SAN MARTIN-TARAPOTO","lat":-6.4952242568055,"lon":-76.383499958709},{"id":320,"abr":"TPCO","dir":"JR. LEONCIO PRADO N° 1175, REFERENCIA: A UNA CUADRA DEL INSTITUTO MARÍA PARADO DE BELLIDO","lugar":"SAN MARTIN-SAN MARTIN-TARAPOTO","lat":-6.4786878039267,"lon":-76.365822199258},{"id":488,"abr":"TPTO","dir":"Aeropuerto Guillermo del Castillo Paredes","lugar":"SAN MARTIN-SAN MARTIN-TARAPOTO","lat":null,"lon":null},{"id":501,"abr":"JRTYO","dir":"JR. TAHUANTINSUYO N° 158 - TARAPOTO - SAN MARTÍN, REF. AL COSTADO DEL GRIFO SAN MARTÍN","lugar":"SAN MARTIN-SAN MARTIN-TARAPOTO","lat":-6.489609616265,"lon":-76.363556270566},{"id":509,"abr":"RNCA","dir":"JR. RAMON CASTILLA N°1362 TARAPOTO - SAN MARTIN, REF. A MEDIA CDRA. DE MANNUCCI MOTOR S.A.","lugar":"SAN MARTIN-SAN MARTIN-TARAPOTO","lat":-6.4959447897907,"lon":-76.372085319981}]},"TOCACHE":{"TOCACHE":[{"id":427,"abr":"TCHE","dir":"AV. FERNANDO BELAUNDE C-09 MZ H6 (21), LT. 04, CERCADO DE TOCACHE, REF. FRENTE AL MERCADILLO DE TOCACHE","lugar":"SAN MARTIN-TOCACHE-TOCACHE","lat":-8.186307,"lon":-76.517989},{"id":566,"abr":"TCAE","dir":"JR. FREDY ALIAGA N°3046 -TOCACHE - TOCACHE - SAN MARTIN, REF. AL COSTADO DEL RECREO CAMPESTRE ESTRAGOS","lugar":"SAN MARTIN-TOCACHE-TOCACHE","lat":-8.1900825478844,"lon":-76.535472388443}],"UCHIZA":[{"id":573,"abr":"UCZA","dir":"AV. LEONCIO PRADO N°524 - UCHIZA - TOCACHE - SAN MARTIN, REF. A MEDIA CDRA. DE LA PLAZA CENTRAL / FRENTE A COOPACT","lugar":"SAN MARTIN-TOCACHE-UCHIZA","lat":-8.4599452725746,"lon":-76.462081959446}]}},"TACNA":{"TACNA":{"CIUDAD NUEVA":[{"id":442,"abr":"CDNUEV","dir":"CIUDAD NUEVA MZ 46 LT 12 COMITÉ 10 CIUDAD NUEVA - TACNA, REF. A UNA CDRA. DE LA PLAZA JOSÉ OLAYA DE CIUDAD NUEVA","lugar":"TACNA-TACNA-CIUDAD NUEVA","lat":-17.984471588057,"lon":-70.236055095903}],"CORONEL GREGORIO ALBARRACIN LANCHIPA":[{"id":260,"abr":"GREALB","dir":"ASOC. VILLA SAN FRANCISCO MZ. 94 LT. 22, REFERENCIA: CERCA A CAJA CUSCO","lugar":"TACNA-TACNA-CORONEL GREGORIO ALBARRACIN LANCHIPA","lat":-18.047103237436,"lon":-70.255889232014},{"id":542,"abr":"AVMCPL","dir":"ASOCIACIÓN LAS VILCAS  MZ. E LT. 16, GREGORIO ALBARRACÍN LANCHIPA - TACNA REF. FRENTE AL MERCADO HÉROES DEL CENEPA","lugar":"TACNA-TACNA-CORONEL GREGORIO ALBARRACIN LANCHIPA","lat":-18.033417923278,"lon":-70.250918108114},{"id":674,"abr":"VNNS","dir":"PROMUVI VIÑANI, AMP. I ETAPA, MZ. 574, LT. 09 – CORONEL GREGORIO ALBARRACÍN LANCHIPA – TACNA - TACNA, REF. A MEDIA CDRA. DEL ÓVALO LOS MOLLES","lugar":"TACNA-TACNA-CORONEL GREGORIO ALBARRACIN LANCHIPA","lat":-18.062945787541,"lon":-70.251860014921}],"TACNA":[{"id":36,"abr":"AVJOR","dir":"Av. Jorge Basadre Grohmann Oeste n° 366 - tACNA","lugar":"TACNA-TACNA-TACNA","lat":-18.014034875512,"lon":-70.259915218194},{"id":290,"abr":"AVVIG","dir":"AV. VIGIL 1636, REFERENCIA: A UNA CDRA. DE LA PLAZA GRAU","lugar":"TACNA-TACNA-TACNA","lat":-17.999550724531,"lon":-70.239101658895},{"id":490,"abr":"TCA","dir":"Aeropuerto Internacional Coronel Carlos Ciriani Santa Rosa","lugar":"TACNA-TACNA-TACNA","lat":null,"lon":null},{"id":533,"abr":"CAEZ","dir":"CALLE ARIAS ARAGUEZ N° 836  TACNA, REF. A UNA CDRA. ANTES DE LLEGAR AL COLISEO PERÚ","lugar":"TACNA-TACNA-TACNA","lat":-18.006778378004,"lon":-70.252973965232},{"id":641,"abr":"AVEJCTCNA","dir":"AV. LITORAL NRO. 306 – PARA CHICO (ANTERIOR AV. EJÉRCITO PROLONGACIÓN 306 TACNA), TACNA - TACNA - TACNA, REF. DENTRO DEL ESTABLECIMIENTO DEL GRIFO PRIMAX","lugar":"TACNA-TACNA-TACNA","lat":-18.029249633968,"lon":-70.274333272827},{"id":643,"abr":"PCLLY","dir":"PUEBLO TRADICIONAL POCOLLAY MZ. T LOTE 01 , POCOLLAY - TACNA - TACNA, REF. A UNA CDRA. DEL CENTRO DE SALUD POCOLLAY","lugar":"TACNA-TACNA-TACNA","lat":-17.993277680713,"lon":-70.218443730944}]}},"TUMBES":{"CONTRALMIRANTE VILLA":{"ZORRITOS":[{"id":136,"abr":"ZOR","dir":"AV. 28 DE JULIO N° 205 MZ. 14 LT. 04 LOS PINOS TUMBES, CONTRALMIRAANTE VILLAR - ZORRITOS - TUMBES","lugar":"TUMBES-CONTRALMIRANTE VILLA-ZORRITOS","lat":-3.6826429893427,"lon":-80.686485170117}]},"TUMBES":{"CORRALES":[{"id":463,"abr":"CORR","dir":"AV. HUÁSCAR Nº 311 INT. 01 CENTRO, CORRALES - TUMBES, REF. A ESPALDAS DE LA PLAZA DE ARMAS","lugar":"TUMBES-TUMBES-CORRALES","lat":-3.602026086071,"lon":-80.480083521582}],"LA CRUZ":[{"id":552,"abr":"LCZ","dir":"JR. PIURA 105 CALETA LA CRUZ, LA CRUZ - TUMBES, REF. FRENTE A CTR. PANAMERICANA NORTE Y AL FRENTE DE MOTOREPUESTOS Y MULTISERVICIOS LUJAN","lugar":"TUMBES-TUMBES-LA CRUZ","lat":-3.6376008662908,"lon":-80.586921583879}],"TUMBES":[{"id":40,"abr":"TBP","dir":"Av. Arica N° 227 - Tumbes.","lugar":"TUMBES-TUMBES-TUMBES","lat":-3.5654275,"lon":-80.4590402},{"id":375,"abr":"AAM","dir":"URB. ANDRÉS ARAUJO MORÁN MZ. 28-A LOTE 03 CALLE JACINTO SEMINARIO, REF. AL COSTADO DEL MERCADO PUYANGO","lugar":"TUMBES-TUMBES-TUMBES","lat":-3.5630010344404,"lon":-80.426500210134},{"id":400,"abr":"TBSCO","dir":"AV. PANAMERICANA NORTE S/N VILLA PRIMAVERA - TUMBES. REF. PASANDO SENATI FRENTE A AGRIPAC","lugar":"TUMBES-TUMBES-TUMBES","lat":-3.5524449279815,"lon":-80.419805284875},{"id":492,"abr":"TBS","dir":"Aeropuerto Internacional Pedro Canga Rodríguez","lugar":"TUMBES-TUMBES-TUMBES","lat":null,"lon":null},{"id":548,"abr":"PMPAGDE","dir":"MZ. 0U LT. 00A AA.HH. PAMPA GRANDE, TUMBES, REF. FRENTE A LA AV. UNIVERSITARIA, Y AL FRENTE A LA IGLESIA MORMONES Y AL LADO DE UN LAVADERO DE AUTOS.","lugar":"TUMBES-TUMBES-TUMBES","lat":-3.5777440688748,"lon":-80.451575070302}]},"ZARUMILLA":{"AGUAS VERDES":[{"id":134,"abr":"AVERD","dir":"AV TUMBES S/N LOTE 09 MZ 17 , A.H TOMAS ARIZOLA OLAYA , SECTOR II - REFERENCIA : A UNA CUADRA DEL PARQUE TOMAS ARIZOLA.","lugar":"TUMBES-ZARUMILLA-AGUAS VERDES","lat":-3.4805719,"lon":-80.2469869}],"ZARUMILLA":[{"id":397,"abr":"ZARTUM","dir":"JIRON INDEPENDENCIA 309 ZARUMILLA, REF. ATRÁS DE LA PLAZA DE ARMAS Y FRENTE AL DORADO PASANDO 5 CASAS","lugar":"TUMBES-ZARUMILLA-ZARUMILLA","lat":-3.5026340959138,"lon":-80.274779168572}]}},"UCAYALI":{"CORONEL PORTILLO":{"PUCALLPA CALLERIA":[{"id":53,"abr":"PUC","dir":"Jr. Jose Galvez 147 calleria - CORONEL PORTILLO - Ucayali.  RefERENCIA :  a media cuadra de la Av. Centenario","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA CALLERIA","lat":-8.382759,"lon":-74.545825},{"id":489,"abr":"PPA","dir":"Aeropuerto David Abensur Rengifo","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA CALLERIA","lat":null,"lon":null},{"id":612,"abr":"CLLRYLI","dir":"AV. SAENZ PEÑA 229, CALLERIA - CORONEL PORTILLO - UCAYALI, REF. A DOS CUADRAS DEL OVALO DE FEDERICO BASADRE Y SAENZ PEÑA","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA CALLERIA","lat":-8.3798995267862,"lon":-74.538027470552}],"PUCALLPA MANANTAY":[{"id":609,"abr":"MNTYTIA","dir":"AV. AGUAYTIA MZ., 26 LT. 20 MANANTAY - CORONEL PORTILLO - UCAYALI, REF. A MEDIA CDRA. DEL NUEVO MERCADO DE SAN FERNANDO","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA MANANTAY","lat":-8.3978536633598,"lon":-74.540658011659},{"id":611,"abr":"UCYLI","dir":"AV. TUPAC AMARU 2315 MANANTAY - CORONEL PORTILLO - UCAYALI, REF. A MEDIA CDRA. DE LA POLLERIA EMANUEL","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA MANANTAY","lat":-8.3984739366528,"lon":-74.555353799976}],"PUCALLPA YARINACOCHA":[{"id":312,"abr":"FEDBAS","dir":"CARRETERA FEDERICO BASADRE KM 6.800 YARINACOCHA - CORONEL PORTILLO - UCAYALI, REF. Entrada del Asentamiento Humano Alan Sisley/Al costado de la empresa JVJ Service Oriente SAC","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA YARINACOCHA","lat":-8.3937480000004,"lon":-74.588120999999},{"id":313,"abr":"YAR","dir":"JR. TUPAC AMARU, MZ. 50, LT. 07, REFERENCIA: A ESPALDA DE MAESTRANZA DE YARINACOCHA","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA YARINACOCHA","lat":-8.3577486634305,"lon":-74.576310341108},{"id":610,"abr":"YCOCHA","dir":"AV. UNIVERSITARIA MZA A LOTE 6, YARINACOCHA - CORONEL PORTILLO - UCAYALI, REF. A MEDIA CDRA. DEL LOCAL ROKALPA","lugar":"UCAYALI-CORONEL PORTILLO-PUCALLPA YARINACOCHA","lat":-8.3800171366071,"lon":-74.568467158895}]},"PADRE ABAD":{"AGUAYTIA":[{"id":395,"abr":"AGY","dir":"U. VECINAL BARRIO UNIDO MZ. 1 LT. 2, PADRE ABAD - UCAYALI, REF. AL COSTADO DEL TERMINAL TERRESTRE DE AGUAYTIA","lugar":"UCAYALI-PADRE ABAD-AGUAYTIA","lat":-9.0356284532572,"lon":-75.496011504332}]}}};
+
+/* ===== JSON de precios motorizado ===== */
+const preciosMotorizado = [
+  {"distrito":"SURCO","precio":10.0,"nombre":"ZONA SURCO S/.10","descripcion":"RECOJO Y ENTREGA"},
+  {"distrito":"SAN ISIDRO","precio":10.0,"nombre":"ZONA SAN ISIDRO S/.10","descripcion":""},
+  {"distrito":"SAN MIGUEL","precio":10.0,"nombre":"ZONA SAN MIGUEL S/.10","descripcion":""},
+  {"distrito":"PUEBLO LIBRE","precio":10.0,"nombre":"ZONA PUEBLO LIBRE S/.10","descripcion":""},
+  {"distrito":"LINCE","precio":10.0,"nombre":"ZONA LINCE S/.10","descripcion":""},
+  {"distrito":"JESUS MARIA","precio":10.0,"nombre":"ZONA JESUS MARIA S/.10","descripcion":""},
+  {"distrito":"MAGDALENA","precio":10.0,"nombre":"ZONA MAGDALENA S/.10","descripcion":""},
+  {"distrito":"SMP","precio":10.0,"nombre":"ZONA SMP S/.10","descripcion":""},
+  {"distrito":"INDEPENDENCIA S","precio":10.0,"nombre":"ZONA INDEPENDENCIA S/.10","descripcion":""},
+  {"distrito":"CALLAO","precio":10.0,"nombre":"ZONA CALLAO S/.10","descripcion":""},
+  {"distrito":"LOS OLIVOS","precio":10.0,"nombre":"ZONA LOS OLIVOS S/.10","descripcion":""},
+  {"distrito":"SAN LUIS","precio":10.0,"nombre":"ZONA SAN LUIS S/.10","descripcion":""},
+  {"distrito":"SAN BORJA","precio":10.0,"nombre":"ZONA SAN BORJA S/.10","descripcion":""},
+  {"distrito":"CERCADO","precio":10.0,"nombre":"ZONA CERCADO S/.10","descripcion":""},
+  {"distrito":"AGUSTINO","precio":10.0,"nombre":"ZONA AGUSTINO S/.10","descripcion":""},
+  {"distrito":"BARRANCO","precio":10.0,"nombre":"ZONA BARRANCO S/.10","descripcion":""},
+  {"distrito":"MIRAFLORES","precio":10.0,"nombre":"ZONA MIRAFLORES S/.10","descripcion":""},
+  {"distrito":"SJM","precio":10.0,"nombre":"ZONA SJM S/.10","descripcion":""},
+  {"distrito":"CHORRILLOS","precio":10.0,"nombre":"ZONA CHORRILLOS S/.10","descripcion":""},
+  {"distrito":"LA MOLINA","precio":10.0,"nombre":"ZONA LA MOLINA S/.10","descripcion":""},
+  {"distrito":"LA VICTORIA","precio":10.0,"nombre":"ZONA LA VICTORIA S/.10","descripcion":""},
+  {"distrito":"COMAS","precio":10.0,"nombre":"ZONA ANDY COMAS S/.10","descripcion":""},
+  {"distrito":"LURIN","precio":20.0,"nombre":"ZONA LURIN S/.20","descripcion":""},
+  {"distrito":"VILLA EL SALVADOR","precio":12.0,"nombre":"ZONA VILLA EL SALVADOR S/.12","descripcion":""},
+  {"distrito":"VILLA MARIA","precio":12.0,"nombre":"ZONA VILLA MARIA S/.12","descripcion":""},
+  {"distrito":"LA PUNTA","precio":12.0,"nombre":"ZONA LA PUNTA S/.12","descripcion":""},
+  {"distrito":"CARMEN DE LA LEGUA","precio":10.0,"nombre":"ZONA CARMEN DE LA LEGUA S/.10","descripcion":""},
+  {"distrito":"BELLAVISTA","precio":null,"nombre":"ZONA BELLAVISTA 10","descripcion":""},
+  {"distrito":"LA PERLA","precio":10.0,"nombre":"ZONA LA PERLA S/.10","descripcion":""},
+  {"distrito":"SANTA ANITA","precio":10.0,"nombre":"ZONA SANTA ANITA S/.10","descripcion":""},
+  {"distrito":"EL AGUSTINO","precio":10.0,"nombre":"ZONA EL AGUSTINO S/.10","descripcion":""},
+  {"distrito":"ATE","precio":12.0,"nombre":"ZONA ATE S/.12","descripcion":""},
+  {"distrito":"VENTANILLA","precio":20.0,"nombre":"ZONA VENTANILLA S/.20","descripcion":""},
+  {"distrito":"PUENTE PIEDRA","precio":12.0,"nombre":"ZONA PUENTE PIEDRA S/.12","descripcion":""},
+  {"distrito":"SURQUILLO","precio":10.0,"nombre":"ZONA SURQUILLO S/.10","descripcion":""},
+  {"distrito":"ATE SALAMANCA","precio":10.0,"nombre":"ZONA ATE SALAMANCA S/.10","descripcion":""},
+  {"distrito":"VMT","precio":15.0,"nombre":"ZONA VMT S/.15","descripcion":""},
+  {"distrito":"CARABAYLLO","precio":15.0,"nombre":"CARABAYLLO S/.15","descripcion":""},
+  {"distrito":"SANTA CLARA","precio":18.0,"nombre":"SANTA CLARA S/18","descripcion":""},
+  {"distrito":"CHACLACAYO","precio":20.0,"nombre":"CHACLACAYO S/.20","descripcion":""},
+  {"distrito":"HUAYCAN","precio":15.0,"nombre":"HUAYCAN S/.15","descripcion":""},
+  {"distrito":"HUACHIPA","precio":15.0,"nombre":"HUACHIPA S/15","descripcion":""},
+  {"distrito":"JICAMARCA","precio":20.0,"nombre":"JICAMARCA S/.20","descripcion":""},
+  {"distrito":"CAMPOY","precio":12.0,"nombre":"CAMPOY S/.12","descripcion":""},
+  {"distrito":"SJL","precio":12.0,"nombre":"ZONA SJL S/.12","descripcion":""},
+  {"distrito":"SAN JUAN DE MIRAFLORES","precio":12.0,"nombre":"ZONA SAN JUAN DE MIRAFLORES S/.12","descripcion":""},
+  {"distrito":"RIMAC","precio":10.0,"nombre":"ZONA RIMAC S/.10","descripcion":""},
+  {"distrito":"COLLIQUE","precio":12.0,"nombre":"COLLIQUE S/.12","descripcion":""}
+];
+
+/* ===== Distritos Lima/Callao ===== */
+const distritosLimaCallao = {
+  "lima": [
+    {"ubigeo":"150101","distrito":"Lima"},{"ubigeo":"150102","distrito":"Ancón"},{"ubigeo":"150103","distrito":"Ate"},
+    {"ubigeo":"150104","distrito":"Barranco"},{"ubigeo":"150105","distrito":"Breña"},{"ubigeo":"150106","distrito":"Carabayllo"},
+    {"ubigeo":"150107","distrito":"Chaclacayo"},{"ubigeo":"150108","distrito":"Chorrillos"},{"ubigeo":"150109","distrito":"Cieneguilla"},
+    {"ubigeo":"150110","distrito":"Comas"},{"ubigeo":"150111","distrito":"El Agustino"},{"ubigeo":"150112","distrito":"Independencia"},
+    {"ubigeo":"150113","distrito":"Jesús María"},{"ubigeo":"150114","distrito":"La Molina"},{"ubigeo":"150115","distrito":"La Victoria"},
+    {"ubigeo":"150116","distrito":"Lince"},{"ubigeo":"150117","distrito":"Los Olivos"},{"ubigeo":"150118","distrito":"Lurigancho-Chosica"},
+    {"ubigeo":"150119","distrito":"Lurín"},{"ubigeo":"150120","distrito":"Magdalena del Mar"},{"ubigeo":"150121","distrito":"Pueblo Libre"},
+    {"ubigeo":"150122","distrito":"Miraflores"},{"ubigeo":"150123","distrito":"Pachacámac"},{"ubigeo":"150124","distrito":"Pucusana"},
+    {"ubigeo":"150125","distrito":"Puente Piedra"},{"ubigeo":"150126","distrito":"Punta Hermosa"},{"ubigeo":"150127","distrito":"Punta Negra"},
+    {"ubigeo":"150128","distrito":"Rímac"},{"ubigeo":"150129","distrito":"San Bartolo"},{"ubigeo":"150130","distrito":"San Borja"},
+    {"ubigeo":"150131","distrito":"San Isidro"},{"ubigeo":"150132","distrito":"San Juan de Lurigancho"},{"ubigeo":"150133","distrito":"San Juan de Miraflores"},
+    {"ubigeo":"150134","distrito":"San Luis"},{"ubigeo":"150135","distrito":"San Martín de Porres"},{"ubigeo":"150136","distrito":"San Miguel"},
+    {"ubigeo":"150137","distrito":"Santa Anita"},{"ubigeo":"150138","distrito":"Santa María del Mar"},{"ubigeo":"150139","distrito":"Santa Rosa"},
+    {"ubigeo":"150140","distrito":"Santiago de Surco"},{"ubigeo":"150141","distrito":"Surquillo"},{"ubigeo":"150142","distrito":"Villa El Salvador"},
+    {"ubigeo":"150143","distrito":"Villa María del Triunfo"}
+  ],
+  "callao": [
+    {"ubigeo":"070101","distrito":"Callao"},{"ubigeo":"070102","distrito":"Bellavista"},{"ubigeo":"070103","distrito":"Carmen de la Legua Reynoso"},
+    {"ubigeo":"070104","distrito":"La Perla"},{"ubigeo":"070105","distrito":"La Punta"},{"ubigeo":"070106","distrito":"Ventanilla"},
+    {"ubigeo":"070107","distrito":"Mi Perú"}
+  ]
+};
+
+/* ===== Ubicación (Entrega gratuita) ===== */
+function abrirUbicacionMaps(){
+  window.open('https://maps.app.goo.gl/7sHRahw1WVifPwWQA','_blank');
+}
+
+/* ===== Estado ===== */
+let tipoEnvioSeleccionado = null;
+let horarioRecojoSeleccionado = '';
+let modalidadShalomSeleccionada = 'terrestre';
+
+/* ===== Helpers fecha ===== */
+function getHoy(){return new Date().toISOString().split('T')[0]}
+function getManana(){const h=new Date();h.setDate(h.getDate()+1);return h.toISOString().split('T')[0]}
+
+/* ===== Helpers selects ===== */
+function limpiarSelect(id, placeholder){
+  const s=document.getElementById(id);
+  s.innerHTML='<option value="" disabled selected>'+(placeholder||'Selecciona')+'</option>';
+  s.disabled=true;
+}
+
+function llenarSelect(id, items, valueKey, textKey){
+  const s=document.getElementById(id);
+  s.innerHTML='<option value="" disabled selected>Selecciona</option>';
+  items.forEach(it=>{
+    const o=document.createElement('option');
+    o.value=it[valueKey]; o.textContent=it[textKey];
+    s.appendChild(o);
+  });
+  s.disabled=false;
+}
+
+/* ===== Shalom cascada ===== */
+function cargarDepartamentosShalom(){
+  const deps=Object.keys(shalomData).sort();
+  const s=document.getElementById('departamento');
+  s.innerHTML='<option value="" disabled selected>Selecciona departamento</option>';
+  deps.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;s.appendChild(o);});
+  s.disabled=false;
+}
+
+function onDepartamentoChange(){
+  limpiarSelect('provincia','Selecciona provincia');
+  limpiarSelect('zona','Selecciona zona');
+  limpiarSelect('lugarEntrega','Selecciona el punto de entrega');
+  document.getElementById('lugarEntregaInfo').textContent='';
+
+  const dep=document.getElementById('departamento').value;
+  if(!dep) return;
+  const provs=Object.keys(shalomData[dep]).sort();
+  llenarSelect('provincia', provs.map(p=>{return{'v':p,'t':p}}), 'v', 't');
+}
+
+function onProvinciaChange(){
+  limpiarSelect('zona','Selecciona zona');
+  limpiarSelect('lugarEntrega','Selecciona el punto de entrega');
+  document.getElementById('lugarEntregaInfo').textContent='';
+
+  const dep=document.getElementById('departamento').value;
+  const prov=document.getElementById('provincia').value;
+  if(!dep||!prov) return;
+  const zonas=Object.keys(shalomData[dep][prov]).sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}));
+  llenarSelect('zona', zonas.map(z=>{return{'v':z,'t':z}}), 'v', 't');
+}
+
+function onZonaChange(){
+  limpiarSelect('lugarEntrega','Selecciona el punto de entrega');
+  document.getElementById('lugarEntregaInfo').textContent='';
+
+  if(tipoEnvioSeleccionado===2){
+    onZonaLimaChange();
+  }
+
+  if(tipoEnvioSeleccionado!==3){
+    // Para opciones Lima/Callao, zona es el distrito, no necesitamos lugar de entrega
+    return;
+  }
+
+  const dep=document.getElementById('departamento').value;
+  const prov=document.getElementById('provincia').value;
+  const zona=document.getElementById('zona').value;
+  if(!dep||!prov||!zona) return;
+
+  const lugares=shalomData[dep][prov][zona];
+  const s=document.getElementById('lugarEntrega');
+  s.innerHTML='<option value="" disabled selected>Selecciona el punto de entrega</option>';
+  lugares.forEach(l=>{
+    const o=document.createElement('option');
+    o.value=l.id;
+    o.textContent=l.lugar+' — '+l.abr;
+    o.dataset.info=JSON.stringify(l);
+    s.appendChild(o);
+  });
+  s.disabled=false;
+}
+
+function onLugarEntregaChange(){
+  const s=document.getElementById('lugarEntrega');
+  const infoDiv=document.getElementById('lugarEntregaInfo');
+  const direccionEl=document.getElementById('direccion');
+  if(!s.value){
+    infoDiv.textContent='';
+    direccionEl.value='';
+    return;
+  }
+  const opt=s.options[s.selectedIndex];
+  const data=JSON.parse(opt.dataset.info||'{}');
+  let txt='📍 '+(data.dir||'Sin dirección registrada');
+  if(data.lat && data.lon && data.lat!==0 && data.lon!==0){
+    txt += ' | 🌐 Ver en mapa';
+  }
+  infoDiv.textContent=txt;
+  direccionEl.value=data.dir||'';
+}
+
+/* ===== Cargar distritos Lima/Callao ===== */
+function cargarDistritosLimaCallao(){
+  limpiarSelect('zona','Selecciona zona');
+  const s=document.getElementById('zona');
+  s.innerHTML='<option value="" disabled selected>Selecciona zona / distrito</option>';
+  const ogLima=document.createElement('optgroup');ogLima.label='Lima';
+  distritosLimaCallao.lima.forEach(d=>{const o=document.createElement('option');o.value=d.distrito.toUpperCase();o.textContent=d.distrito;ogLima.appendChild(o);});
+  s.appendChild(ogLima);
+  const ogCallao=document.createElement('optgroup');ogCallao.label='Callao';
+  distritosLimaCallao.callao.forEach(d=>{const o=document.createElement('option');o.value=d.distrito.toUpperCase();o.textContent=d.distrito;ogCallao.appendChild(o);});
+  s.appendChild(ogCallao);
+  s.disabled=false;
+}
+
+const nombresDistritoMotorizado={
+  'SMP':'San Martín de Porres','SJM':'San Juan de Miraflores','SJL':'San Juan de Lurigancho',
+  'VMT':'Villa María del Triunfo','ATE SALAMANCA':'Ate (Salamanca)','LA PUNTA':'La Punta',
+  'CARMEN DE LA LEGUA':'Carmen de la Legua Reynoso','MAGDALENA':'Magdalena del Mar',
+  'CERCADO':'Cercado de Lima','AGUSTINO':'El Agustino','INDEPENDENCIA S':'Independencia'
+};
+function formatDistritoMotorizado(cod){
+  if(nombresDistritoMotorizado[cod]) return nombresDistritoMotorizado[cod];
+  return cod.toLowerCase().split(' ').map(w=>w?w.charAt(0).toUpperCase()+w.slice(1):w).join(' ');
+}
+function cargarDistritosMotorizado(){
+  limpiarSelect('zona','Selecciona zona');
+  const s=document.getElementById('zona');
+  s.innerHTML='<option value="" disabled selected>Selecciona zona / distrito</option>';
+  const ordenado=[...preciosMotorizado].sort((a,b)=>a.distrito.localeCompare(b.distrito,undefined,{sensitivity:'base'}));
+  ordenado.forEach(d=>{
+    const o=document.createElement('option');
+    o.value=d.distrito;
+    const nombreDistrito=formatDistritoMotorizado(d.distrito);
+    const costoTxt=(d.precio!==null&&d.precio!==undefined)?('S/ '+d.precio.toFixed(2)):'Consultar precio';
+    o.textContent=nombreDistrito+' — '+costoTxt;
+    o.dataset.precio=d.precio;
+    s.appendChild(o);
+  });
+  s.disabled=false;
+}
+
+function onZonaLimaChange(){
+  if(tipoEnvioSeleccionado!==2) return;
+  const s=document.getElementById('zona');
+  const cont=document.getElementById('precioContainer');
+  cont.innerHTML='';
+  if(!s.value) return;
+  const item=preciosMotorizado.find(x=>x.distrito===s.value);
+  if(!item) return;
+  if(item.precio===null||item.precio===undefined){
+    cont.innerHTML='<div class="price-badge">💬 Consultar precio para este distrito</div>';
+  }else{
+    cont.innerHTML='<div class="price-badge">Costo de envío: <span class="amount">S/ '+item.precio.toFixed(2)+'</span></div>';
+  }
+}
+
+/* ===== Selección de envío ===== */
+function seleccionarEnvio(tipo){
+  tipoEnvioSeleccionado=tipo;
+  document.querySelectorAll('.ship-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelector('.ship-card[data-tipo="'+tipo+'"]').classList.add('selected');
+  document.getElementById('btnContinuar').disabled=false;
+}
+
+function seleccionarHorario(el, valor){
+  el.closest('.radio-group').querySelectorAll('.radio-option').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked=true;
+  horarioRecojoSeleccionado=valor;
+  document.getElementById('errorHorarioRecojo').style.display='none';
+}
+
+function seleccionarModalidadShalom(el, valor){
+  el.closest('.radio-group').querySelectorAll('.radio-option').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked=true;
+  modalidadShalomSeleccionada=valor;
+}
+
+function continuarEnvio(){
+  if(!tipoEnvioSeleccionado) return;
+  document.getElementById('modalEnvio').style.display='none';
+
+  const config={
+    1:{icono:'🎁',titulo:'Entrega gratuita',sub:'Entrega gratuita disponible en zona Comas.',depto:'LIMA',prov:'LIMA',zona:'comas_fijo',fechaRecojo:true,horarioRecojo:true,fechaM:false,fechaE:false,fechaShalom:false,maps:false,direccion:false,precioM:false,lugarEntrega:false,notaMotorizado:false,btnUbicacion:true,modalidadShalom:false},
+    2:{icono:'🛵',titulo:'Envío motorizado',sub:'Selecciona tu distrito para ver el costo de envío y programa la fecha.',depto:'LIMA',prov:'LIMA',zona:'distrito_motorizado',fechaRecojo:false,horarioRecojo:false,fechaM:true,fechaE:false,fechaShalom:false,maps:true,direccion:true,precioM:true,lugarEntrega:false,notaMotorizado:true,btnUbicacion:false,modalidadShalom:false},
+    3:{icono:'📦',titulo:'Envío Shalom',sub:'Selecciona departamento, provincia y zona de entrega nacional.',depto:'shalom',prov:'shalom',zona:'shalom',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:false,fechaShalom:true,maps:false,direccion:true,precioM:false,lugarEntrega:true,notaMotorizado:false,btnUbicacion:false,modalidadShalom:true},
+    4:{icono:'⚡',titulo:'Envío Express',sub:'Entrega el mismo día (sujeta a horario y disponibilidad).',depto:'LIMA',prov:'LIMA',zona:'distrito_lima',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:true,fechaShalom:false,maps:false,direccion:true,precioM:false,lugarEntrega:false,notaMotorizado:false,btnUbicacion:false,modalidadShalom:false}
+  };
+  const c=config[tipoEnvioSeleccionado];
+
+  document.getElementById('ribbonIcono').textContent=c.icono;
+  document.getElementById('ribbonTexto').textContent=c.titulo;
+  document.getElementById('tituloFormulario').textContent=c.titulo;
+  document.getElementById('subtituloFormulario').textContent=c.sub;
+
+  // Mostrar/ocultar campos específicos
+  document.getElementById('grupoFechaRecojo').hidden=!c.fechaRecojo;
+  document.getElementById('grupoHorarioRecojo').hidden=!c.horarioRecojo;
+  document.getElementById('grupoFechaMotorizado').hidden=!c.fechaM;
+  document.getElementById('grupoNotaMotorizado').hidden=!c.notaMotorizado;
+  document.getElementById('grupoFechaExpress').hidden=!c.fechaE;
+  document.getElementById('grupoFechaShalom').hidden=!c.fechaShalom;
+  document.getElementById('grupoMaps').hidden=!c.maps;
+  document.getElementById('grupoDireccion').hidden=!c.direccion;
+  document.getElementById('grupoPrecioMotorizado').hidden=!c.precioM;
+  document.getElementById('grupoLugarEntrega').hidden=!c.lugarEntrega;
+  document.getElementById('btnUbicacion').hidden=!c.btnUbicacion;
+  document.getElementById('grupoModalidadShalom').hidden=!c.modalidadShalom;
+  if(c.modalidadShalom){
+    modalidadShalomSeleccionada='terrestre';
+    const radioTerrestre=document.querySelector('input[name="modalidadShalom"][value="terrestre"]');
+    if(radioTerrestre){
+      radioTerrestre.checked=true;
+      document.querySelectorAll('#grupoModalidadShalom .radio-option').forEach(r=>r.classList.remove('selected'));
+      radioTerrestre.closest('.radio-option').classList.add('selected');
+    }
+  }
+
+  // Dirección de entrega: solo lectura y autocompletada en Shalom
+  const direccionEl=document.getElementById('direccion');
+  direccionEl.value='';
+  direccionEl.readOnly=(tipoEnvioSeleccionado===3);
+
+  // Configurar DNI: opcional solo para motorizado
+  const dniLabel=document.querySelector('#grupoDNI label');
+  if(tipoEnvioSeleccionado===2){
+    dniLabel.innerHTML='DNI <span style="font-weight:400;color:var(--stone)">— Opcional</span>';
+  }else{
+    dniLabel.innerHTML='DNI';
+  }
+
+  // Configurar Departamento y Provincia
+  const depEl=document.getElementById('departamento');
+  const provEl=document.getElementById('provincia');
+  const zonaEl=document.getElementById('zona');
+
+  if(c.depto==='LIMA'){
+    depEl.innerHTML='<option value="LIMA" selected>LIMA</option>';
+    depEl.disabled=true;
+    provEl.innerHTML='<option value="LIMA" selected>LIMA</option>';
+    provEl.disabled=true;
+    if(c.zona==='distrito_lima') { zonaEl.disabled=false; cargarDistritosLimaCallao(); }
+    else if(c.zona==='distrito_motorizado') { zonaEl.disabled=false; cargarDistritosMotorizado(); }
+    else if(c.zona==='comas_fijo'){
+      zonaEl.innerHTML='<option value="COMAS" selected>Comas</option>';
+      zonaEl.disabled=true;
+    }
+  }else{
+    depEl.disabled=false;
+    provEl.disabled=false;
+    cargarDepartamentosShalom();
+  }
+
+  // Fechas
+  if(c.fechaRecojo){
+    const fr=document.getElementById('fechaRecojo');
+    fr.min=getHoy(); fr.value=getHoy();
+  }
+  if(c.fechaM){
+    const fm=document.getElementById('fechaMotorizado');
+    fm.min=getManana(); fm.value='';
+  }
+  if(c.fechaE){
+    document.getElementById('fechaExpress').value=getHoy();
+  }
+  if(c.fechaShalom){
+    const fs=document.getElementById('fechaShalom');
+    fs.min=getHoy(); fs.value=getHoy();
+  }
+
+  // Reset horario
+  horarioRecojoSeleccionado='';
+  document.querySelectorAll('#grupoHorarioRecojo .radio-option').forEach(r=>r.classList.remove('selected'));
+  document.querySelectorAll('input[name="horarioRecojo"]').forEach(r=>r.checked=false);
+
+  document.getElementById('panelFormulario').hidden=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function volverAtras(){
+  document.getElementById('panelFormulario').hidden=true;
+  document.getElementById('modalEnvio').style.display='flex';
+  document.getElementById('btnContinuar').disabled=true;
+  document.querySelectorAll('.ship-card').forEach(c=>c.classList.remove('selected'));
+  tipoEnvioSeleccionado=null;
+  horarioRecojoSeleccionado='';
+  modalidadShalomSeleccionada='terrestre';
+  // Limpiar form
+  document.getElementById('pedidoForm').reset();
+  document.querySelectorAll('#grupoModalidadShalom .radio-option').forEach(r=>r.classList.remove('selected'));
+  const radioTerrestreReset=document.querySelector('input[name="modalidadShalom"][value="terrestre"]');
+  if(radioTerrestreReset) radioTerrestreReset.closest('.radio-option').classList.add('selected');
+  limpiarSelect('departamento','Selecciona departamento');
+  limpiarSelect('provincia','Selecciona provincia');
+  limpiarSelect('zona','Selecciona zona');
+  limpiarSelect('lugarEntrega','Selecciona el punto de entrega');
+  document.getElementById('lugarEntregaInfo').textContent='';
+  document.getElementById('precioContainer').innerHTML='';
+  document.getElementById('btnUbicacion').hidden=true;
+  document.getElementById('direccion').readOnly=false;
+}
+
+/* ===== Validación ===== */
+function validar(){
+  let ok=true;
+  const limpiar=()=>document.querySelectorAll('.form-group').forEach(g=>g.classList.remove('invalid'));
+  const invalidar=(id)=>{const el=document.getElementById(id);if(el)el.closest('.form-group').classList.add('invalid');ok=false;};
+  limpiar();
+  document.getElementById('errorHorarioRecojo').style.display='none';
+
+  if(document.getElementById('nombres').value.trim().length<3) invalidar('nombres');
+
+  // DNI: opcional solo para motorizado
+  if(tipoEnvioSeleccionado!==2){
+    if(!/^\d{8}$/.test(document.getElementById('dni').value.trim())) invalidar('dni');
+  }else{
+    const dniVal=document.getElementById('dni').value.trim();
+    if(dniVal && !/^\d{8}$/.test(dniVal)) invalidar('dni');
+  }
+
+  if(!/^\d{7,12}$/.test(document.getElementById('telefono').value.trim())) invalidar('telefono');
+
+  // Departamento y provincia
+  if(document.getElementById('departamento').disabled===false && !document.getElementById('departamento').value) invalidar('departamento');
+  if(document.getElementById('provincia').disabled===false && !document.getElementById('provincia').value) invalidar('provincia');
+
+  // Zona
+  if(!document.getElementById('zona').value) invalidar('zona');
+
+  // Lugar entrega Shalom
+  if(!document.getElementById('grupoLugarEntrega').hidden){
+    if(!document.getElementById('lugarEntrega').value) invalidar('lugarEntrega');
+  }
+
+  // Dirección
+  if(!document.getElementById('grupoDireccion').hidden){
+    if(document.getElementById('direccion').value.trim().length<5) invalidar('direccion');
+  }
+
+  // Fecha recojo (>= hoy)
+  if(!document.getElementById('grupoFechaRecojo').hidden){
+    const f=document.getElementById('fechaRecojo').value;
+    if(!f || f<getHoy()) invalidar('fechaRecojo');
+  }
+
+  // Horario recojo
+  if(!document.getElementById('grupoHorarioRecojo').hidden){
+    if(!horarioRecojoSeleccionado){
+      document.getElementById('errorHorarioRecojo').style.display='block';
+      ok=false;
+    }
+  }
+
+  // Fecha motorizado (> hoy)
+  if(!document.getElementById('grupoFechaMotorizado').hidden){
+    const f=document.getElementById('fechaMotorizado').value;
+    if(!f || f<=getHoy()) invalidar('fechaMotorizado');
+  }
+
+  // Fecha Shalom (>= hoy)
+  if(!document.getElementById('grupoFechaShalom').hidden){
+    const f=document.getElementById('fechaShalom').value;
+    if(!f || f<getHoy()) invalidar('fechaShalom');
+  }
+
+  return ok;
+}
+
+/* ===== Confirmar ===== */
+function confirmarPedido(){
+  if(!validar()) return;
+
+  const nombres=document.getElementById('nombres').value.trim();
+  const dni=document.getElementById('dni').value.trim()||'—';
+  const telefono=document.getElementById('telefono').value.trim();
+  const departamento=document.getElementById('departamento').value;
+  const provincia=document.getElementById('provincia').value;
+  const zonaSelect=document.getElementById('zona');
+  const zonaText=zonaSelect.options[zonaSelect.selectedIndex]?.text||'—';
+  const zonaValue=zonaSelect.value;
+  const direccion=document.getElementById('direccion').value.trim()||'—';
+  const ubicacionMaps=document.getElementById('ubicacionMaps').value.trim()||'—';
+
+  let lugarEntregaText='—';
+  if(!document.getElementById('grupoLugarEntrega').hidden){
+    const le=document.getElementById('lugarEntrega');
+    lugarEntregaText=le.options[le.selectedIndex]?.text||'—';
+  }
+
+  let fecha='—';
+  let horario='—';
+  if(tipoEnvioSeleccionado===1){
+    fecha=document.getElementById('fechaRecojo').value;
+    horario=horarioRecojoSeleccionado;
+  }
+  if(tipoEnvioSeleccionado===2) fecha=document.getElementById('fechaMotorizado').value;
+  if(tipoEnvioSeleccionado===3) fecha=document.getElementById('fechaShalom').value;
+  if(tipoEnvioSeleccionado===4) fecha=document.getElementById('fechaExpress').value;
+
+  const nombresTipo={1:'Entrega gratuita',2:'Envío motorizado',3:'Envío Shalom',4:'Envío Express'};
+
+  let html='<div class="row"><span>Tipo de envío</span><b>'+nombresTipo[tipoEnvioSeleccionado]+'</b></div>';
+  html+='<div class="row"><span>Cliente</span><b>'+nombres+'</b></div>';
+  html+='<div class="row"><span>DNI</span><b>'+dni+'</b></div>';
+  html+='<div class="row"><span>Teléfono</span><b>'+telefono+'</b></div>';
+  html+='<div class="row"><span>Departamento</span><b>'+departamento+'</b></div>';
+  html+='<div class="row"><span>Provincia</span><b>'+provincia+'</b></div>';
+  html+='<div class="row"><span>Zona</span><b>'+zonaText+'</b></div>';
+
+  if(!document.getElementById('grupoModalidadShalom').hidden){
+    const modalidadTexto=modalidadShalomSeleccionada==='aereo'?'✈️ Aéreo':'🚌 Terrestre';
+    html+='<div class="row"><span>Modalidad</span><b>'+modalidadTexto+'</b></div>';
+  }
+
+  if(!document.getElementById('grupoLugarEntrega').hidden){
+    html+='<div class="row"><span>Punto de entrega</span><b>'+lugarEntregaText+'</b></div>';
+  }
+
+  if(!document.getElementById('grupoDireccion').hidden){
+    html+='<div class="row"><span>Dirección</span><b>'+direccion+'</b></div>';
+  }
+
+  if(!document.getElementById('grupoMaps').hidden && ubicacionMaps!=='—'){
+    html+='<div class="row"><span>Ubicación Maps</span><b>'+ubicacionMaps+'</b></div>';
+  }
+
+  if(fecha!=='—'){
+    html+='<div class="row"><span>Fecha</span><b>'+fecha+'</b></div>';
+  }
+
+  if(horario!=='—'){
+    html+='<div class="row"><span>Horario</span><b>'+horario+'</b></div>';
+  }
+
+  // Mostrar precio en resumen si es motorizado
+  if(tipoEnvioSeleccionado===2){
+    const item=preciosMotorizado.find(x=>x.distrito===zonaValue);
+    if(item && item.precio!==null && item.precio!==undefined){
+      html+='<div class="row"><span>Costo de envío</span><b style="color:var(--olive)">S/ '+item.precio.toFixed(2)+'</b></div>';
+    }
+  }
+
+  document.getElementById('resumenPedido').innerHTML=html;
+
+  /* ===== Construir mensaje de WhatsApp con todos los datos del envío ===== */
+  let msg='🛍️ *Nuevo pedido — Infinity Leather*%0A';
+  msg+='------------------------------%0A';
+  msg+='*Tipo de envío:* '+nombresTipo[tipoEnvioSeleccionado]+'%0A';
+  msg+='*Cliente:* '+nombres+'%0A';
+  msg+='*DNI:* '+dni+'%0A';
+  msg+='*Teléfono:* '+telefono+'%0A';
+  msg+='*Departamento:* '+departamento+'%0A';
+  msg+='*Provincia:* '+provincia+'%0A';
+  msg+='*Zona/Distrito:* '+zonaText+'%0A';
+
+  if(!document.getElementById('grupoModalidadShalom').hidden){
+    const modalidadTextoMsg=modalidadShalomSeleccionada==='aereo'?'Aéreo':'Terrestre';
+    msg+='*Modalidad:* '+modalidadTextoMsg+'%0A';
+  }
+
+  if(!document.getElementById('grupoLugarEntrega').hidden){
+    msg+='*Punto de entrega:* '+lugarEntregaText+'%0A';
+  }
+  if(!document.getElementById('grupoDireccion').hidden){
+    msg+='*Dirección:* '+direccion+'%0A';
+  }
+  if(!document.getElementById('grupoMaps').hidden && ubicacionMaps!=='—'){
+    msg+='*Ubicación Maps:* '+ubicacionMaps+'%0A';
+  }
+  if(fecha!=='—'){
+    msg+='*Fecha:* '+fecha+'%0A';
+  }
+  if(horario!=='—'){
+    msg+='*Horario:* '+horario+'%0A';
+  }
+  if(tipoEnvioSeleccionado===2){
+    const item=preciosMotorizado.find(x=>x.distrito===zonaValue);
+    if(item && item.precio!==null && item.precio!==undefined){
+      msg+='*Costo de envío:* S/ '+item.precio.toFixed(2)+'%0A';
+    }
+  }
+
+  const urlWhatsApp='https://wa.me/51912472560?text='+msg;
+  window.open(urlWhatsApp,'_blank');
+
+  document.getElementById('panelFormulario').hidden=true;
+  document.getElementById('panelGracias').hidden=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Inicializar evento de lugar de entrega
+document.getElementById('lugarEntrega').addEventListener('change', onLugarEntregaChange);
+</script>
+</body>
+</html>
