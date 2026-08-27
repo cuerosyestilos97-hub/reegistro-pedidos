@@ -352,6 +352,21 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
             <div class="field-error">La fecha no puede ser anterior a hoy</div>
           </div>
 
+          <!-- Tipo de envío Shalom: Terrestre / Aéreo -->
+          <div class="form-group full" id="grupoTipoTransporteShalom" hidden>
+            <label>Tipo de envío Shalom</label>
+            <div class="radio-group">
+              <label class="radio-option selected" onclick="seleccionarTransporteShalom(this,'terrestre')">
+                <input type="radio" name="tipoTransporteShalom" value="terrestre" checked>
+                <span>🚚 Terrestre</span>
+              </label>
+              <label class="radio-option" onclick="seleccionarTransporteShalom(this,'aereo')">
+                <input type="radio" name="tipoTransporteShalom" value="aereo">
+                <span>✈️ Aéreo</span>
+              </label>
+            </div>
+          </div>
+
           <!-- Fecha Shalom -->
           <div class="form-group full" id="grupoFechaShalom" hidden>
             <label for="fechaShalom">Fecha de envío</label>
@@ -416,26 +431,24 @@ const preciosMotorizado = [
   {"distrito":"JESUS MARIA","precio":10.0,"nombre":"ZONA JESUS MARIA S/.10","descripcion":""},
   {"distrito":"MAGDALENA","precio":10.0,"nombre":"ZONA MAGDALENA S/.10","descripcion":""},
   {"distrito":"SMP","precio":10.0,"nombre":"ZONA SMP S/.10","descripcion":""},
-  {"distrito":"INDEPENDENCIA S","precio":10.0,"nombre":"ZONA INDEPENDENCIA S/.10","descripcion":""},
-  {"distrito":"CALLAO","precio":10.0,"nombre":"ZONA CALLAO S/.10","descripcion":""},
+  {"distrito":"INDEPENDENCIA","precio":10.0,"nombre":"ZONA INDEPENDENCIA S/.10","descripcion":""},
+  {"distrito":"CALLAO","precio":12.0,"nombre":"ZONA CALLAO S/.12","descripcion":""},
   {"distrito":"LOS OLIVOS","precio":10.0,"nombre":"ZONA LOS OLIVOS S/.10","descripcion":""},
   {"distrito":"SAN LUIS","precio":10.0,"nombre":"ZONA SAN LUIS S/.10","descripcion":""},
   {"distrito":"SAN BORJA","precio":10.0,"nombre":"ZONA SAN BORJA S/.10","descripcion":""},
   {"distrito":"CERCADO","precio":10.0,"nombre":"ZONA CERCADO S/.10","descripcion":""},
-  {"distrito":"AGUSTINO","precio":10.0,"nombre":"ZONA AGUSTINO S/.10","descripcion":""},
   {"distrito":"BARRANCO","precio":10.0,"nombre":"ZONA BARRANCO S/.10","descripcion":""},
   {"distrito":"MIRAFLORES","precio":10.0,"nombre":"ZONA MIRAFLORES S/.10","descripcion":""},
-  {"distrito":"SJM","precio":10.0,"nombre":"ZONA SJM S/.10","descripcion":""},
-  {"distrito":"CHORRILLOS","precio":10.0,"nombre":"ZONA CHORRILLOS S/.10","descripcion":""},
-  {"distrito":"LA MOLINA","precio":10.0,"nombre":"ZONA LA MOLINA S/.10","descripcion":""},
+  {"distrito":"SJM","precio":12.0,"nombre":"ZONA SJM S/.12","descripcion":""},
+  {"distrito":"CHORRILLOS","precio":12.0,"nombre":"ZONA CHORRILLOS S/.12","descripcion":""},
+  {"distrito":"LA MOLINA","precio":12.0,"nombre":"ZONA LA MOLINA S/.12","descripcion":""},
   {"distrito":"LA VICTORIA","precio":10.0,"nombre":"ZONA LA VICTORIA S/.10","descripcion":""},
   {"distrito":"COMAS","precio":10.0,"nombre":"ZONA ANDY COMAS S/.10","descripcion":""},
-  {"distrito":"LURIN","precio":20.0,"nombre":"ZONA LURIN S/.20","descripcion":""},
   {"distrito":"VILLA EL SALVADOR","precio":12.0,"nombre":"ZONA VILLA EL SALVADOR S/.12","descripcion":""},
   {"distrito":"VILLA MARIA","precio":12.0,"nombre":"ZONA VILLA MARIA S/.12","descripcion":""},
   {"distrito":"LA PUNTA","precio":12.0,"nombre":"ZONA LA PUNTA S/.12","descripcion":""},
   {"distrito":"CARMEN DE LA LEGUA","precio":10.0,"nombre":"ZONA CARMEN DE LA LEGUA S/.10","descripcion":""},
-  {"distrito":"BELLAVISTA","precio":null,"nombre":"ZONA BELLAVISTA 10","descripcion":""},
+  {"distrito":"BELLAVISTA","precio":10.0,"nombre":"ZONA BELLAVISTA S/.10","descripcion":""},
   {"distrito":"LA PERLA","precio":10.0,"nombre":"ZONA LA PERLA S/.10","descripcion":""},
   {"distrito":"SANTA ANITA","precio":10.0,"nombre":"ZONA SANTA ANITA S/.10","descripcion":""},
   {"distrito":"EL AGUSTINO","precio":10.0,"nombre":"ZONA EL AGUSTINO S/.10","descripcion":""},
@@ -444,7 +457,7 @@ const preciosMotorizado = [
   {"distrito":"PUENTE PIEDRA","precio":12.0,"nombre":"ZONA PUENTE PIEDRA S/.12","descripcion":""},
   {"distrito":"SURQUILLO","precio":10.0,"nombre":"ZONA SURQUILLO S/.10","descripcion":""},
   {"distrito":"ATE SALAMANCA","precio":10.0,"nombre":"ZONA ATE SALAMANCA S/.10","descripcion":""},
-  {"distrito":"VMT","precio":15.0,"nombre":"ZONA VMT S/.15","descripcion":""},
+  {"distrito":"VMT","precio":12.0,"nombre":"ZONA VMT S/.12","descripcion":""},
   {"distrito":"CARABAYLLO","precio":15.0,"nombre":"CARABAYLLO S/.15","descripcion":""},
   {"distrito":"SANTA CLARA","precio":18.0,"nombre":"SANTA CLARA S/18","descripcion":""},
   {"distrito":"CHACLACAYO","precio":20.0,"nombre":"CHACLACAYO S/.20","descripcion":""},
@@ -453,8 +466,7 @@ const preciosMotorizado = [
   {"distrito":"JICAMARCA","precio":20.0,"nombre":"JICAMARCA S/.20","descripcion":""},
   {"distrito":"CAMPOY","precio":12.0,"nombre":"CAMPOY S/.12","descripcion":""},
   {"distrito":"SJL","precio":12.0,"nombre":"ZONA SJL S/.12","descripcion":""},
-  {"distrito":"SAN JUAN DE MIRAFLORES","precio":12.0,"nombre":"ZONA SAN JUAN DE MIRAFLORES S/.12","descripcion":""},
-  {"distrito":"RIMAC","precio":10.0,"nombre":"ZONA RIMAC S/.10","descripcion":""},
+  {"distrito":"RIMAC","precio":12.0,"nombre":"ZONA RIMAC S/.12","descripcion":""},
   {"distrito":"COLLIQUE","precio":12.0,"nombre":"COLLIQUE S/.12","descripcion":""}
 ];
 
@@ -486,6 +498,15 @@ const distritosLimaCallao = {
 
 /* ===== Estado ===== */
 let tipoEnvioSeleccionado = null;
+let tipoTransporteShalom = 'terrestre';
+
+function seleccionarTransporteShalom(el, valor){
+  tipoTransporteShalom = valor;
+  el.closest('.radio-group').querySelectorAll('.radio-option').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+  const input = el.querySelector('input[type="radio"]');
+  if(input) input.checked = true;
+}
 let horarioRecojoSeleccionado = '';
 let ultimoPedido = null;
 const WHATSAPP_DESTINO = '51912472560';
@@ -662,7 +683,7 @@ function continuarEnvio(){
   const config={
     1:{icono:'🏠',titulo:'Recojo en tienda',sub:'Completa tus datos y programa tu visita al taller.',depto:'LIMA',prov:'LIMA',zona:'recojo_fijo',fechaRecojo:true,horarioRecojo:true,fechaM:false,fechaE:false,fechaShalom:false,maps:false,direccion:false,referencia:false,precioM:false,lugarEntrega:false},
     2:{icono:'🛵',titulo:'Envío motorizado',sub:'Selecciona tu distrito para ver el costo de envío y programa la fecha.',depto:'LIMA',prov:'LIMA',zona:'distrito_motorizado',fechaRecojo:false,horarioRecojo:false,fechaM:true,fechaE:false,fechaShalom:false,maps:true,direccion:true,referencia:true,precioM:true,lugarEntrega:false},
-    3:{icono:'📦',titulo:'Envío Shalom',sub:'Selecciona departamento, provincia y zona de entrega nacional.',depto:'shalom',prov:'shalom',zona:'shalom',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:false,fechaShalom:true,maps:false,direccion:true,referencia:false,precioM:false,lugarEntrega:true},
+    3:{icono:'📦',titulo:'Envío Shalom',sub:'Selecciona departamento, provincia y zona de entrega nacional.',depto:'shalom',prov:'shalom',zona:'shalom',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:false,fechaShalom:true,tipoTransporte:true,maps:false,direccion:true,referencia:false,precioM:false,lugarEntrega:true},
     4:{icono:'⚡',titulo:'Envío Express',sub:'Entrega el mismo día (sujeta a horario y disponibilidad).',depto:'LIMA',prov:'LIMA',zona:'distrito_lima',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:true,fechaShalom:false,maps:false,direccion:true,referencia:false,precioM:false,lugarEntrega:false}
   };
   const c=config[tipoEnvioSeleccionado];
@@ -678,6 +699,7 @@ function continuarEnvio(){
   document.getElementById('grupoFechaMotorizado').hidden=!c.fechaM;
   document.getElementById('grupoFechaExpress').hidden=!c.fechaE;
   document.getElementById('grupoFechaShalom').hidden=!c.fechaShalom;
+  document.getElementById('grupoTipoTransporteShalom').hidden=!c.tipoTransporte;
   document.getElementById('grupoMaps').hidden=!c.maps;
   document.getElementById('grupoDireccion').hidden=!c.direccion;
   document.getElementById('grupoReferencia').hidden=!c.referencia;
@@ -742,6 +764,16 @@ function continuarEnvio(){
     const fs=document.getElementById('fechaShalom');
     fs.min=getHoy(); fs.value=getHoy();
   }
+  if(c.tipoTransporte){
+    tipoTransporteShalom='terrestre';
+    const grupoTTS=document.getElementById('grupoTipoTransporteShalom');
+    const inputTerrestre=grupoTTS.querySelector('input[value="terrestre"]');
+    grupoTTS.querySelectorAll('.radio-option').forEach(r=>r.classList.remove('selected'));
+    if(inputTerrestre){
+      inputTerrestre.checked=true;
+      inputTerrestre.closest('.radio-option').classList.add('selected');
+    }
+  }
 
   // Reset horario
   horarioRecojoSeleccionado='';
@@ -749,6 +781,7 @@ function continuarEnvio(){
   document.querySelectorAll('input[name="horarioRecojo"]').forEach(r=>r.checked=false);
 
   document.getElementById('panelFormulario').hidden=false;
+  if(c.tipoTransporte) document.getElementById('grupoTipoTransporteShalom').querySelectorAll('.radio-option')[0].classList.add('selected');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -890,6 +923,11 @@ function confirmarPedido(){
     html+='<div class="row"><span>Punto de entrega</span><b>'+lugarEntregaText+'</b></div>';
   }
 
+  if(!document.getElementById('grupoTipoTransporteShalom').hidden){
+    const tipoTransporteText = tipoTransporteShalom==='aereo' ? 'Aéreo' : 'Terrestre';
+    html+='<div class="row"><span>Tipo de envío Shalom</span><b>'+tipoTransporteText+'</b></div>';
+  }
+
   if(!document.getElementById('grupoDireccion').hidden){
     html+='<div class="row"><span>Dirección</span><b>'+direccion+'</b></div>';
   }
@@ -927,6 +965,7 @@ function confirmarPedido(){
     tipo:nombresTipo[tipoEnvioSeleccionado],
     nombres, dni, telefono, departamento, provincia, zonaText,
     lugarEntregaText: (!document.getElementById('grupoLugarEntrega').hidden)?lugarEntregaText:'',
+    tipoTransporteShalom: (!document.getElementById('grupoTipoTransporteShalom').hidden)?(tipoTransporteShalom==='aereo'?'Aéreo':'Terrestre'):'',
     direccion: (!document.getElementById('grupoDireccion').hidden)?direccion:'',
     referencia: (!document.getElementById('grupoReferencia').hidden)?referencia:'',
     ubicacionMaps: (!document.getElementById('grupoMaps').hidden)?ubicacionMaps:'',
@@ -964,6 +1003,7 @@ function construirMensajeWhatsApp(p){
   msg+=linea('Provincia', p.provincia);
   msg+=linea('Zona', p.zonaText);
   msg+=linea('Punto de entrega', p.lugarEntregaText);
+  msg+=linea('Tipo de envío Shalom', p.tipoTransporteShalom);
   msg+=linea('Dirección', p.direccion);
   msg+=linea('Referencia', p.referencia);
   msg+=linea('Ubicación Maps', p.ubicacionMaps);
