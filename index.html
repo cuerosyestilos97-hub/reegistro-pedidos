@@ -245,9 +245,9 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
           </div>
 
           <div class="form-group" id="grupoDNI">
-            <label for="dni">DNI</label>
-            <input type="text" id="dni" maxlength="8" placeholder="Ej: 45678912">
-            <div class="field-error">Ingresa un DNI válido (8 dígitos)</div>
+            <label for="dni">DNI - CE</label>
+            <input type="text" id="dni" maxlength="11" placeholder="Ej: 45678912">
+            <div class="field-error">Ingresa un DNI - CE válido (8 a 11 dígitos)</div>
           </div>
 
           <div class="form-group">
@@ -663,9 +663,9 @@ function continuarEnvio(){
   // Configurar DNI: opcional solo para motorizado
   const dniLabel=document.querySelector('#grupoDNI label');
   if(tipoEnvioSeleccionado===2){
-    dniLabel.innerHTML='DNI <span style="font-weight:400;color:var(--stone)">— Opcional</span>';
+    dniLabel.innerHTML='DNI - CE <span style="font-weight:400;color:var(--stone)">— Opcional</span>';
   }else{
-    dniLabel.innerHTML='DNI';
+    dniLabel.innerHTML='DNI - CE';
   }
 
   // Configurar Departamento y Provincia
@@ -771,10 +771,10 @@ function validar(){
 
   // DNI: opcional solo para motorizado
   if(tipoEnvioSeleccionado!==2){
-    if(!/^\d{8}$/.test(document.getElementById('dni').value.trim())) invalidar('dni');
+    if(!/^\d{8,11}$/.test(document.getElementById('dni').value.trim())) invalidar('dni');
   }else{
     const dniVal=document.getElementById('dni').value.trim();
-    if(dniVal && !/^\d{8}$/.test(dniVal)) invalidar('dni');
+    if(dniVal && !/^\d{8,11}$/.test(dniVal)) invalidar('dni');
   }
 
   if(!/^\d{7,12}$/.test(document.getElementById('telefono').value.trim())) invalidar('telefono');
@@ -867,7 +867,7 @@ function confirmarPedido(){
 
   let html='<div class="row"><span>Tipo de envío</span><b>'+nombresTipo[tipoEnvioSeleccionado]+'</b></div>';
   html+='<div class="row"><span>Cliente</span><b>'+nombres+'</b></div>';
-  html+='<div class="row"><span>DNI</span><b>'+dni+'</b></div>';
+  html+='<div class="row"><span>DNI - CE</span><b>'+dni+'</b></div>';
   html+='<div class="row"><span>Teléfono</span><b>'+telefono+'</b></div>';
   html+='<div class="row"><span>Departamento</span><b>'+departamento+'</b></div>';
   html+='<div class="row"><span>Provincia</span><b>'+provincia+'</b></div>';
@@ -951,7 +951,7 @@ function construirMensajeWhatsApp(p){
   msg+='*Nuevo pedido — Infinity Leather*\n\n';
   msg+='Tipo de envío: *'+String(p.tipo||'').toUpperCase()+'*\n';
   msg+=linea('Cliente', p.nombres);
-  msg+=linea('DNI', p.dni);
+  msg+=linea('DNI - CE', p.dni);
   msg+=linea('Teléfono', p.telefono);
   msg+=linea('Departamento', p.departamento);
   msg+=linea('Provincia', p.provincia);
