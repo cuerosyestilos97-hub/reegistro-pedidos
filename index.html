@@ -342,7 +342,7 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
           <div class="form-group full" id="grupoFechaMotorizado" hidden>
             <label for="fechaMotorizado">Fecha programada de entrega</label>
             <input type="date" id="fechaMotorizado">
-            <div class="field-error">La fecha debe ser posterior a hoy</div>
+            <div class="field-error">Antes de las 8:30am puedes elegir hoy; después, solo fechas posteriores a hoy</div>
           </div>
 
           <!-- Fecha express -->
@@ -468,6 +468,12 @@ const WHATSAPP_DESTINO = '51912472560';
 /* ===== Helpers fecha ===== */
 function getHoy(){return new Date().toISOString().split('T')[0]}
 function getManana(){const h=new Date();h.setDate(h.getDate()+1);return h.toISOString().split('T')[0]}
+function getMinFechaMotorizado(){
+  const ahora=new Date();
+  const limite=new Date();
+  limite.setHours(8,30,0,0);
+  return ahora<limite ? getHoy() : getManana();
+}
 
 /* ===== Helpers selects ===== */
 function limpiarSelect(id, placeholder){
@@ -708,7 +714,7 @@ function continuarEnvio(){
   }
   if(c.fechaM){
     const fm=document.getElementById('fechaMotorizado');
-    fm.min=getManana(); fm.value='';
+    fm.min=getMinFechaMotorizado(); fm.value='';
   }
   if(c.fechaE){
     const fe=document.getElementById('fechaExpress');
@@ -810,10 +816,10 @@ function validar(){
     }
   }
 
-  // Fecha motorizado (> hoy)
+  // Fecha motorizado (según horario: antes de 8:30am se permite hoy, después solo posterior a hoy)
   if(!document.getElementById('grupoFechaMotorizado').hidden){
     const f=document.getElementById('fechaMotorizado').value;
-    if(!f || f<=getHoy()) invalidar('fechaMotorizado');
+    if(!f || f<getMinFechaMotorizado()) invalidar('fechaMotorizado');
   }
 
   // Fecha Shalom (>= hoy)
