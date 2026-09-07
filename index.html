@@ -342,7 +342,7 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
           <div class="form-group full" id="grupoFechaMotorizado" hidden>
             <label for="fechaMotorizado">Fecha programada de entrega</label>
             <input type="date" id="fechaMotorizado">
-            <div class="field-error">Antes de las 8:30am puedes elegir hoy; después, solo fechas posteriores a hoy</div>
+            <div class="field-error">Antes de las 8:00am puedes elegir hoy; después, solo fechas posteriores a hoy</div>
           </div>
 
           <!-- Fecha express -->
@@ -466,12 +466,22 @@ let ultimoPedido = null;
 const WHATSAPP_DESTINO = '51912472560';
 
 /* ===== Helpers fecha ===== */
-function getHoy(){return new Date().toISOString().split('T')[0]}
-function getManana(){const h=new Date();h.setDate(h.getDate()+1);return h.toISOString().split('T')[0]}
+// Usamos componentes LOCALES (no toISOString, que convierte a UTC y en Perú
+// -UTC-5- puede adelantar la fecha durante la noche, bloqueando el día correcto).
+function formatearFechaLocal(d){
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const dia=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+dia;
+}
+function getHoy(){return formatearFechaLocal(new Date())}
+function getManana(){const h=new Date();h.setDate(h.getDate()+1);return formatearFechaLocal(h)}
 function getMinFechaMotorizado(){
+  // Única condición: a partir de las 8:00am ya no se puede elegir hoy,
+  // solo fechas posteriores a hoy. Antes de las 8:00am, sí se puede elegir hoy.
   const ahora=new Date();
   const limite=new Date();
-  limite.setHours(8,30,0,0);
+  limite.setHours(8,0,0,0);
   return ahora<limite ? getHoy() : getManana();
 }
 
