@@ -6,7 +6,7 @@
 <title>Infinity Leather — Registro de Pedido</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:           #F8F6F1;
@@ -31,7 +31,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Inter',sans-serif;
+  font-family:'Jost',sans-serif;
   background: radial-gradient(1200px 600px at 10% -5%, #eef0dd55, transparent 60%),
               radial-gradient(1000px 500px at 110% 10%, #e7e2c855, transparent 55%),
               var(--bg);
@@ -50,22 +50,22 @@ body{
 .card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(28px,5vw,44px)}
 #panelFormulario .card{padding:clamp(20px,4vw,32px)}
 .brand{text-align:center;margin-bottom:28px}
-.brand-name{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,38px);font-weight:700;color:var(--olive-dark);letter-spacing:-0.02em;line-height:1.1}
+.brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,5vw,38px);font-weight:700;color:var(--olive-dark);letter-spacing:-0.02em;line-height:1.1}
 .brand-name span{font-weight:400;font-style:italic;color:var(--olive)}
-.brand-sub{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-top:6px}
-.brand-tag{display:inline-block;margin-top:10px;padding:6px 18px;background:var(--olive-pale);color:var(--olive-dark);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:var(--radius-pill)}
-h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:var(--charcoal);font-weight:600;margin-bottom:6px;line-height:1.2}
-.subtitle{font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal-soft);margin-bottom:16px}
+.brand-sub{font-family:'Jost',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-top:6px}
+.brand-tag{display:inline-block;margin-top:10px;padding:6px 18px;background:var(--olive-pale);color:var(--olive-dark);font-family:'Jost',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:var(--radius-pill)}
+h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,3.5vw,28px);color:var(--charcoal);font-weight:600;margin-bottom:6px;line-height:1.2}
+.subtitle{font-family:'Jost',sans-serif;font-size:14px;color:var(--charcoal-soft);margin-bottom:16px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 14px}
 .form-grid .full{grid-column:1/-1}
 @media(max-width:560px){.form-grid{grid-template-columns:1fr}}
 .form-group{position:relative}
 .form-group label{
-  display:block;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  display:block;font-family:'Jost',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
   color:var(--olive-dark);margin-bottom:6px;
 }
 .form-group input,.form-group select,.form-group textarea{
-  width:100%;font-family:'Inter',sans-serif;font-size:15px;font-weight:400;color:var(--charcoal);
+  width:100%;font-family:'Jost',sans-serif;font-size:15px;font-weight:400;color:var(--charcoal);
   background:#FAFAF8;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;outline:none;
   transition:border-color .2s,box-shadow .2s,background .2s;
 }
@@ -86,11 +86,11 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
 .price-badge{
   display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:8px 16px;
   background:var(--olive-pale);color:var(--olive-dark);border-radius:var(--radius-pill);
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+  font-family:'Jost',sans-serif;font-size:13px;font-weight:700;
 }
 .price-badge .amount{font-size:16px;color:var(--olive)}
 .btn{
-  font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:var(--radius-pill);
+  font-family:'Jost',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:var(--radius-pill);
   padding:14px 28px;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
 }
@@ -115,7 +115,7 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
 }
 @keyframes modalUp{to{transform:scale(1) translateY(0);opacity:1}}
 .modal-head{text-align:center;margin-bottom:24px}
-.modal-head h1{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,26px);color:var(--charcoal)}
+.modal-head h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,4vw,26px);color:var(--charcoal)}
 .modal-head p{color:var(--charcoal-soft);font-size:14px;margin-top:6px}
 .ship-options{display:grid;grid-template-columns:1fr;gap:12px}
 .ship-card{
@@ -125,7 +125,7 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
 .ship-card:hover{border-color:var(--olive-light);transform:translateY(-2px);box-shadow:var(--shadow)}
 .ship-card.selected{border-color:var(--olive-dark);background:var(--olive-pale);box-shadow:0 0 0 4px rgba(122,139,62,.12)}
 .ship-icon{font-size:24px;flex-shrink:0}
-.ship-name{display:block;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:var(--charcoal)}
+.ship-name{display:block;font-family:'Jost',sans-serif;font-weight:700;font-size:15px;color:var(--charcoal)}
 .ship-desc{display:block;font-size:12.5px;color:var(--charcoal-soft);margin-top:2px}
 .ship-check{
   position:absolute;right:16px;top:50%;transform:translateY(-50%) scale(0);width:22px;height:22px;
@@ -138,12 +138,12 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
 @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .thanks-card{text-align:center}
 .thanks-title{
-  font-family:'Playfair Display',serif;font-size:clamp(36px,7vw,52px);color:var(--olive);letter-spacing:.01em;
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(36px,7vw,52px);color:var(--olive);letter-spacing:.01em;
   margin:8px 0 16px;animation:titlePop .6s ease both;
 }
 @keyframes titlePop{0%{opacity:0;transform:scale(.85) rotate(-1deg)}60%{transform:scale(1.03) rotate(.5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 .thanks-ribbon{
-  display:inline-block;background:var(--olive-dark);color:var(--bg);font-family:'DM Sans',sans-serif;
+  display:inline-block;background:var(--olive-dark);color:var(--bg);font-family:'Jost',sans-serif;
   font-weight:700;font-size:12px;letter-spacing:.06em;padding:10px 22px;border-radius:var(--radius-pill);margin-bottom:22px;
 }
 .thanks-summary{text-align:left;background:var(--olive-pale);border-radius:var(--radius-sm);padding:20px 22px;display:grid;gap:10px;margin-bottom:20px}
@@ -172,12 +172,68 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
 .alert-box strong{color:var(--error)}
 ::selection{background:var(--olive-soft);color:var(--olive-dark)}
 </style>
+<style id="rediseno">
+:root{--bg:#FBF6F1;--olive:#9C3D54;--olive-light:#C9778A;--olive-soft:#E3B5BF;--olive-dark:#5B1F2E;--olive-pale:#F8EAEC;--charcoal:#2B1E20;--charcoal-soft:#6B5A58;--stone:#9A8582;--border:#E8D8D2;--border-focus:#C9778A;--shadow:0 6px 28px rgba(91,31,46,.09);--shadow-lg:0 18px 50px rgba(91,31,46,.18);--cognac:#B5753F}
+body{background:radial-gradient(900px 500px at 0% -5%,#f6dfe055,transparent 60%),radial-gradient(900px 500px at 105% 8%,#ecd2b455,transparent 55%),var(--bg);font-weight:400}
+.stitch-frame{border-color:var(--cognac);opacity:.35}
+.deco{filter:none;color:var(--olive-light);opacity:.28}
+.brand-name{font-size:clamp(38px,7vw,56px);font-weight:600;letter-spacing:-.01em}
+.brand-name span{color:var(--cognac)}
+.brand-sub{letter-spacing:.3em;font-weight:500}
+.brand-tag{background:transparent;border:1px solid var(--cognac);color:var(--cognac)}
+h2{font-size:clamp(28px,4.5vw,38px);font-weight:600}
+.card,.modal-card{border-radius:22px;border-color:var(--border)}
+.ship-card{background:#fff;border-radius:16px;align-items:flex-start;padding:18px 54px 18px 16px}
+.ship-icon{width:46px;height:46px;border-radius:50%;background:var(--olive-pale);display:grid;place-items:center;font-size:22px}
+.ship-check{top:22px;transform:scale(0)}.ship-card.selected .ship-check{transform:scale(1)}
+.ship-guide{margin-top:10px;font:600 12px Jost,sans-serif;color:var(--olive-dark);background:var(--olive-pale);border:0;border-radius:99px;padding:7px 14px;cursor:pointer;transition:.2s}
+.ship-guide:hover{background:var(--olive-dark);color:#fff}
+.btn-primary{background:linear-gradient(135deg,var(--olive-dark),var(--olive))}
+.gdet{margin:4px 0 18px;border:1px solid var(--border);border-radius:16px;background:#FFFBF8}
+.gdet summary{cursor:pointer;padding:14px 18px;font:600 14px Jost;color:var(--olive-dark);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.gdet ol{padding:0 18px 16px 40px;font-size:14px;color:var(--charcoal-soft);line-height:1.6}
+.gdet li{margin-bottom:8px}.gdet li b{color:var(--charcoal)}
+.gdet button{margin:0 18px 16px}
+#guia{position:fixed;inset:0;z-index:80;background:rgba(43,30,32,.6);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:14px}
+#guia.on{display:flex}
+.gp{background:#fff;border-radius:24px;width:100%;max-width:880px;max-height:94vh;overflow:auto;display:grid;grid-template-columns:1.25fr 1fr;box-shadow:var(--shadow-lg)}
+@media(max-width:760px){.gp{grid-template-columns:1fr}}
+.stage{position:relative;min-height:440px;padding:26px;color:#fff;display:flex;flex-direction:column;background:radial-gradient(500px 300px at 20% 0%,#9C3D54,transparent 70%),linear-gradient(160deg,#5B1F2E,#2B1E20)}
+.pres{display:flex;align-items:center;gap:12px}
+.av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#E3B5BF,#B5753F);display:grid;place-items:center;font:700 22px 'Cormorant Garamond';color:#5B1F2E;position:relative}
+.av.talk::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid #E3B5BF;animation:ring 1.2s infinite}
+@keyframes ring{from{transform:scale(.9);opacity:1}to{transform:scale(1.35);opacity:0}}
+.pres small{display:block;opacity:.7;font-size:12px}.wave{margin-left:auto;display:flex;gap:3px;align-items:center;height:22px}
+.wave i{width:3px;background:#E3B5BF;border-radius:3px;height:6px}.talk~.wave i{animation:wv .8s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.15s!important}.wave i:nth-child(3){animation-delay:.3s!important}.wave i:nth-child(4){animation-delay:.45s!important}
+@keyframes wv{50%{height:20px}}
+.scene{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;animation:panelIn .5s both}
+.bigi{font-size:44px}.scene h3{font:600 clamp(28px,4vw,38px)/1.1 'Cormorant Garamond';margin:0}
+.mock{background:#fff;color:var(--charcoal);border-radius:14px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:340px}
+.mock small{display:block;font:600 11px Jost;color:var(--olive-dark);margin-bottom:4px}
+.mock b{font:500 16px Jost;min-height:22px;display:block;border-bottom:2px solid var(--olive-light)}
+.mock b::after{content:"|";animation:bl 1s infinite;color:var(--olive)}@keyframes bl{50%{opacity:0}}
+.cap{background:rgba(0,0,0,.35);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5}
+.bars{display:flex;gap:4px;margin:14px 0 10px}.bars i{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.22);overflow:hidden}
+.bars i.d{background:#E3B5BF}.bars i.a::after{content:"";display:block;height:100%;background:#E3B5BF;animation:fill var(--t) linear forwards}
+.paused .bars i.a::after{animation-play-state:paused}@keyframes fill{from{width:0}to{width:100%}}
+.ctl{display:flex;gap:8px;align-items:center}.ctl button{background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:99px;padding:9px 14px;cursor:pointer;font:600 13px Jost}
+.ctl button:hover{background:rgba(255,255,255,.28)}.ctl .sp{margin-left:auto}
+.side{padding:26px;display:flex;flex-direction:column}.side h4{font:600 26px 'Cormorant Garamond';color:var(--olive-dark);margin:0 0 4px}
+.side p{font-size:13px;color:var(--charcoal-soft);margin-bottom:14px}
+.st{display:flex;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;font-size:14px;transition:.2s;border:1px solid transparent}
+.st span{flex:none;width:24px;height:24px;border-radius:50%;background:var(--olive-pale);color:var(--olive-dark);font:700 12px Jost;display:grid;place-items:center}
+.st.on{background:var(--olive-pale);border-color:var(--olive-soft)}.st.on span{background:var(--olive-dark);color:#fff}
+.x{margin-left:auto;background:none;border:0;font-size:22px;color:#fff;cursor:pointer}
+.side .btn{margin-top:auto}
+</style>
+
 </head>
 <body>
 
 <div class="stitch-frame" aria-hidden="true"></div>
 <div class="deco-wrap" aria-hidden="true">
-  <span class="deco">🍃</span><span class="deco">♥</span><span class="deco">🍃</span><span class="deco">♥</span><span class="deco">🍃</span>
+  <span class="deco">✦</span><span class="deco">♥</span><span class="deco">✦</span><span class="deco">♥</span><span class="deco">✦</span>
 </div>
 
 <div class="page">
@@ -228,12 +284,13 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
   <!-- PASO 2: Formulario -->
   <div id="panelFormulario" class="step-panel" hidden>
     <div class="card">
-      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:8px 18px;background:var(--olive-dark);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:var(--radius-pill)">
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:8px 18px;background:var(--olive-dark);color:var(--bg);font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:var(--radius-pill)">
         <span id="ribbonIcono">🛵</span><span id="ribbonTexto">Envío seleccionado</span>
       </div>
 
       <h2 id="tituloFormulario">Completa tus datos</h2>
       <p class="subtitle" id="subtituloFormulario">Revisa que toda la información sea correcta antes de confirmar.</p>
+<div id="guiaInline"></div>
 
       <form id="pedidoForm" onsubmit="return false;">
         <div class="form-grid">
@@ -392,8 +449,8 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
   <!-- PASO 3: Gracias -->
   <div id="panelGracias" class="step-panel" hidden>
     <div class="card thanks-card">
-      <div style="font-size:28px;margin-bottom:4px">🍃</div>
-      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--charcoal)">¡Muchas</div>
+      <div style="font-size:28px;margin-bottom:4px">✦</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;color:var(--charcoal)">¡Muchas</div>
       <div class="thanks-title">Gracias!</div>
       <div class="thanks-ribbon">Por tu compra y la confianza brindada ♥</div>
       <p class="thanks-copy">Tu apoyo significa mucho para nosotros. Esperamos que disfrutes al máximo nuestro producto y que cumpla con tus expectativas.</p>
@@ -403,7 +460,7 @@ h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,28px);color:v
       </div>
 
       <div class="thanks-summary" id="resumenPedido"></div>
-      <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--olive);font-style:italic;margin-bottom:4px">¡Gracias por elegirnos!</p>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;color:var(--olive);font-style:italic;margin-bottom:4px">¡Gracias por elegirnos!</p>
       <p style="font-size:13px;color:var(--charcoal-soft)">Tu satisfacción es nuestra mayor motivación.</p>
       <div style="margin-top:22px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:12px;color:var(--stone);font-weight:600;text-transform:uppercase;letter-spacing:.06em">
         <span>♥ Calidad garantizada</span><span>♥ Hecho con pasión</span><span>♥ Empaque seguro</span>
@@ -992,6 +1049,66 @@ function enviarPedidoWhatsApp(){
 
 // Inicializar evento de lugar de entrega
 document.getElementById('lugarEntrega').addEventListener('change', onLugarEntregaChange);
+</script>
+
+<div id="guia" onclick="if(event.target===this)cerrarGuia()"><div class="gp">
+ <div class="stage" id="stage">
+  <div class="pres"><div class="av" id="av">R</div><div><b>Rut · Infinity Leather</b><small id="gTit"></small></div><div class="wave"><i></i><i></i><i></i><i></i></div><button class="x" onclick="cerrarGuia()" aria-label="Cerrar">×</button></div>
+  <div class="scene" id="scene"></div>
+  <div class="bars" id="bars"></div>
+  <div class="ctl"><button onclick="gPrev()">⏮</button><button id="gPlay" onclick="gToggle()">⏸ Pausar</button><button onclick="gNext()">⏭</button><button class="sp" id="gVoz" onclick="gVoz()">🔇 Voz</button></div>
+ </div>
+ <div class="side"><h4>Paso a paso</h4><p id="gSub"></p><div id="gList"></div><button class="btn btn-primary" onclick="gElegir()">Elegir este envío</button></div>
+</div></div>
+<script>
+const G={
+1:{n:'Recojo en tienda',i:'🏠',s:[
+ ['📝','Tus datos','Escribe tu nombre completo, tu DNI o CE y tu número de WhatsApp.','Nombres completos','María Elena Rojas'],
+ ['📅','Elige el día','Selecciona la fecha en que pasarás por el taller. No puede ser anterior a hoy.','Fecha de recojo','Mañana'],
+ ['🕙','Elige el horario','Tienes dos franjas: 10:00 a 12:00 o 5:00 a 7:00 de la tarde. Te avisamos 1 hora antes.','Horario de recojo','10:00 – 12:00'],
+ ['✅','Confirma','Pulsa Confirmar pedido y revisa que todo esté correcto.','Resumen','Todo en orden'],
+ ['💬','Envía por WhatsApp','Presiona Enviar pedido y se abrirá WhatsApp con tu resumen listo.','WhatsApp','Pedido enviado ♥']]},
+2:{n:'Envío motorizado',i:'🛵',s:[
+ ['📝','Tus datos','Nombre y teléfono. El DNI es opcional en esta modalidad.','Nombres completos','Lucía Paredes'],
+ ['📍','Tu distrito','Elige tu distrito de Lima o Callao y verás el costo del envío al instante.','Zona / Distrito','San Isidro · S/ 10'],
+ ['🏡','Dirección y referencia','Escribe calle, número e interior. Una referencia ayuda mucho al courier.','Dirección de entrega','Av. Los Rosales 123'],
+ ['🗺️','Ubicación (opcional)','Si quieres, pega el enlace de Google Maps de tu ubicación.','Enlace de Maps','maps.app.goo.gl/…'],
+ ['📅','Fecha de entrega','Antes de las 8:00 am puedes elegir hoy; después, desde mañana.','Fecha programada','Viernes'],
+ ['💬','Confirma y envía','Revisa el resumen y envíalo por WhatsApp.','WhatsApp','Pedido enviado ♥']]},
+3:{n:'Envío Shalom',i:'📦',s:[
+ ['📝','Tus datos','Nombre completo, DNI o CE y WhatsApp. Shalom los pide para entregarte.','DNI - CE','45678912'],
+ ['🧭','Destino','Elige departamento, provincia y zona de entrega nacional.','Departamento','Arequipa'],
+ ['🏢','Punto Shalom','Selecciona la agencia donde recogerás tu pedido.','Punto de entrega','Agencia Centro'],
+ ['✈️','Terrestre o aéreo','Escoge cómo viajará tu paquete y la fecha de envío.','Tipo de envío','Terrestre'],
+ ['🏡','Dirección','Completa la dirección para el registro del envío.','Dirección','Calle Mercaderes 45'],
+ ['💬','Confirma y envía','Revisa todo con calma y envía tu pedido por WhatsApp.','WhatsApp','Pedido enviado ♥']]},
+4:{n:'Envío Express',i:'⚡',s:[
+ ['📝','Tus datos','Nombre, DNI o CE y número de WhatsApp.','Teléfono / WhatsApp','987654321'],
+ ['📍','Distrito','Disponible solo en Lima y Callao. Elige tu distrito.','Zona / Distrito','Miraflores'],
+ ['🏡','Dirección','Calle, número e interior para que llegue el mismo día.','Dirección de entrega','Calle Berlín 210'],
+ ['📅','Fecha','Selecciona la fecha de entrega express, desde hoy.','Fecha express','Hoy'],
+ ['💬','Confirma y envía','Pulsa Confirmar pedido y luego Enviar pedido por WhatsApp.','WhatsApp','Pedido enviado ♥']]}};
+let gT=1,gI=0,gP=true,gV=false,gTm,gTy;
+const $=id=>document.getElementById(id);
+function abrirGuia(t){gT=t;gI=0;gP=true;$('guia').classList.add('on');$('gTit').textContent=G[t].n;$('gSub').textContent='Sigue estos '+G[t].s.length+' pasos y tu pedido queda listo.';
+ $('gList').innerHTML=G[t].s.map((x,i)=>'<div class="st" onclick="gGo('+i+')"><span>'+(i+1)+'</span><div><b>'+x[1]+'</b></div></div>').join('');gRender()}
+function cerrarGuia(){$('guia').classList.remove('on');clearTimeout(gTm);clearInterval(gTy);speechSynthesis.cancel()}
+function gRender(){clearTimeout(gTm);clearInterval(gTy);const S=G[gT].s,x=S[gI],ms=Math.max(5000,x[2].length*70);
+ $('scene').innerHTML='<div class="bigi">'+x[0]+'</div><h3>'+x[1]+'</h3><div class="mock"><small>'+x[3]+'</small><b id="ty"></b></div><div class="cap">'+x[2]+'</div>';
+ $('scene').style.animation='none';void $('scene').offsetWidth;$('scene').style.animation='';
+ $('bars').innerHTML=S.map((_,i)=>'<i class="'+(i<gI?'d':i==gI?'a':'')+'" style="--t:'+ms+'ms"></i>').join('');
+ document.querySelectorAll('.st').forEach((e,i)=>e.classList.toggle('on',i==gI));
+ $('stage').classList.toggle('paused',!gP);$('gPlay').textContent=gP?'⏸ Pausar':'▶ Reproducir';$('av').classList.toggle('talk',gP);
+ let k=0;gTy=setInterval(()=>{$('ty').textContent=x[4].slice(0,++k);if(k>=x[4].length)clearInterval(gTy)},70);
+ speechSynthesis.cancel();if(gV&&gP){const u=new SpeechSynthesisUtterance(x[1]+'. '+x[2]);u.lang='es-PE';speechSynthesis.speak(u)}
+ if(gP)gTm=setTimeout(()=>gI<S.length-1?gGo(gI+1):(gP=false,gRender()),ms)}
+function gGo(i){gI=i;gRender()}function gNext(){gGo(Math.min(gI+1,G[gT].s.length-1))}function gPrev(){gGo(Math.max(gI-1,0))}
+function gToggle(){gP=!gP;gRender()}
+function gVoz(){gV=!gV;$('gVoz').textContent=gV?'🔊 Voz':'🔇 Voz';gRender()}
+function gElegir(){cerrarGuia();if($('modalEnvio').style.display!=='none')seleccionarEnvio(gT)}
+document.querySelectorAll('.ship-card').forEach(c=>{const t=+c.dataset.tipo;c.children[1].insertAdjacentHTML('beforeend','<button type="button" class="ship-guide" onclick="event.stopPropagation();abrirGuia('+t+')">▶ Ver guía paso a paso</button>')});
+const _c=continuarEnvio;continuarEnvio=function(){_c();const g=G[tipoEnvioSeleccionado];
+ $('guiaInline').innerHTML='<details class="gdet" open><summary>'+g.i+' Guía: cómo registrar tu '+g.n.toLowerCase()+' <span>＋</span></summary><ol>'+g.s.map(x=>'<li><b>'+x[1]+'.</b> '+x[2]+'</li>').join('')+'</ol><button type="button" class="ship-guide" onclick="abrirGuia('+tipoEnvioSeleccionado+')">▶ Ver el video guía</button></details>'};
 </script>
 </body>
 </html>
