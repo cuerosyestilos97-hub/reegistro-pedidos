@@ -509,7 +509,7 @@ const distritosLimaCallao = {
 /* ===== Consulta automática de DNI (silenciosa) =====
    Pega aquí la URL de tu Web App de Google Apps Script (consulta_dni_proxy.gs).
    Si queda vacía, la función simplemente no se activa y el formulario funciona igual. */
-const DNI_API_URL = 'https://script.google.com/macros/s/AKfycbztx_mFaR_jwIi008sc5dUCkbaWHfY-z2gvq4OoMC3wt188NO4Hl6CmZ-pfRC75Bh7HIw/exec';
+const DNI_API_URL = '';
 const dniCache = new Map();
 let dniAbort = null;
 
@@ -758,7 +758,7 @@ function continuarEnvio(){
   const config={
     1:{icono:'🏠',titulo:'Recojo en tienda',sub:'Completa tus datos y programa tu visita al taller.',depto:'LIMA',prov:'LIMA',zona:'recojo_fijo',fechaRecojo:true,horarioRecojo:true,fechaM:false,fechaE:false,fechaShalom:false,maps:false,direccion:false,referencia:false,precioM:false,lugarEntrega:false},
     2:{icono:'🛵',titulo:'Envío motorizado (courier)',sub:'Selecciona tu distrito para ver el costo de envío y programa la fecha.',depto:'LIMA',prov:'LIMA',zona:'distrito_motorizado',fechaRecojo:false,horarioRecojo:false,fechaM:true,fechaE:false,fechaShalom:false,maps:true,direccion:true,referencia:true,precioM:true,lugarEntrega:false},
-    3:{icono:'📦',titulo:'Envío Shalom',sub:'Selecciona departamento, provincia y zona de entrega nacional.',depto:'shalom',prov:'shalom',zona:'shalom',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:false,fechaShalom:true,tipoTransporte:true,maps:false,direccion:true,referencia:false,precioM:false,lugarEntrega:true},
+    3:{icono:'📦',titulo:'Envío Shalom',sub:'Selecciona departamento, provincia y zona de entrega nacional.',depto:'shalom',prov:'shalom',zona:'shalom',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:false,fechaShalom:true,tipoTransporte:true,maps:false,direccion:false,referencia:false,precioM:false,lugarEntrega:true},
     4:{icono:'⚡',titulo:'Envío Express',sub:'Entrega el mismo día (sujeta a horario y disponibilidad).',depto:'LIMA',prov:'LIMA',zona:'distrito_lima',fechaRecojo:false,horarioRecojo:false,fechaM:false,fechaE:true,fechaShalom:false,maps:false,direccion:true,referencia:false,precioM:false,lugarEntrega:false}
   };
   const c=config[tipoEnvioSeleccionado];
@@ -777,6 +777,7 @@ function continuarEnvio(){
   document.getElementById('grupoTipoTransporteShalom').hidden=!c.tipoTransporte;
   document.getElementById('grupoMaps').hidden=!c.maps;
   document.getElementById('grupoDireccion').hidden=!c.direccion;
+  document.getElementById('direccion').value='';
   document.getElementById('grupoReferencia').hidden=!c.referencia;
   document.getElementById('grupoPrecioMotorizado').hidden=!c.precioM;
   document.getElementById('grupoLugarEntrega').hidden=!c.lugarEntrega;
@@ -1003,7 +1004,7 @@ function confirmarPedido(){
     html+='<div class="row"><span>Tipo de envío Shalom</span><b>'+tipoTransporteText+'</b></div>';
   }
 
-  if(!document.getElementById('grupoDireccion').hidden){
+  if(!document.getElementById('grupoDireccion').hidden || (tipoEnvioSeleccionado===3 && direccion!=='—')){
     html+='<div class="row"><span>Dirección</span><b>'+direccion+'</b></div>';
   }
 
@@ -1041,7 +1042,7 @@ function confirmarPedido(){
     nombres, dni, telefono, departamento, provincia, zonaText,
     lugarEntregaText: (!document.getElementById('grupoLugarEntrega').hidden)?lugarEntregaText:'',
     tipoTransporteShalom: (!document.getElementById('grupoTipoTransporteShalom').hidden)?(tipoTransporteShalom==='aereo'?'Aéreo':'Terrestre'):'',
-    direccion: (!document.getElementById('grupoDireccion').hidden)?direccion:'',
+    direccion: (!document.getElementById('grupoDireccion').hidden || tipoEnvioSeleccionado===3)?(direccion==='—'?'':direccion):'',
     referencia: (!document.getElementById('grupoReferencia').hidden)?referencia:'',
     ubicacionMaps: (!document.getElementById('grupoMaps').hidden)?ubicacionMaps:'',
     fecha, horario, precioTexto
